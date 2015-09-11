@@ -2,7 +2,7 @@
 
 本UI框架底层渲染框架采用[nanovg](https://github.com/memononen/nanovg),采用类似浏览器WebKit的做法，将UI的样式与业务逻辑分离。
 
-TattyUI第一个较为成熟的production级的产品将会是为WIP 2D游戏引擎制作编辑器，尽请期待。
+TattyUI第一个较为成熟的production级的产品将会是为[WIP](https://github.com/wubugui/WIP) 2D游戏引擎制作编辑器，尽请期待。
 
 > TattyUI ver 0.0.3之前采用XML+Json+Lua的脚本配合
 
@@ -12,6 +12,7 @@ TattyUI第一个较为成熟的production级的产品将会是为WIP 2D游戏引
 
 #依赖项说明
 1.[GLFW](http://www.glfw.org/) ver 3.11
+
 2.[GLEW](http://glew.sourceforge.net/) ver 1.13.0
 
 > 依赖项已上传至Git，也可以根据自行需要更换
