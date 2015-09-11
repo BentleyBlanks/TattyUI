@@ -3,7 +3,7 @@
 本UI框架底层渲染框架采用[nanovg](https://github.com/memononen/nanovg),采用类似浏览器WebKit的做法，将UI的样式与业务逻辑分离。
 
 > TattyUI ver 0.0.3之前采用XML+Json+Lua的脚本配合
-TattyUI ver 0.0.4之后直接采用HTML+CSS+Lua的脚本
+> TattyUI ver 0.0.4之后直接采用HTML+CSS+Lua的脚本
 
 其中感谢[ccss](https://github.com/jdeng/ccss)给我提供了非常好的使用正则表达式解析CSS的案例。
 
