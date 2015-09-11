@@ -1,5 +1,7 @@
 # TattyUI
 
+![screenshot](https://github.com/BentleyBlanks/TattyUI/blob/master/screenshots/1.png)
+
 本UI框架底层渲染框架采用[nanovg](https://github.com/memononen/nanovg),采用类似浏览器WebKit的做法，将UI的样式与业务逻辑分离。
 
 TattyUI第一个较为成熟的production级的产品将会是为 [WIP2D](https://github.com/wubugui/WIP) 2D游戏引擎制作```编辑器```，尽请期待。
