@@ -27,9 +27,11 @@ TattyUI第一个较为成熟的production级的产品将会是为 [WIP2D](https:
 3.可自行构建```resources```文件夹用于放置资源
 
 #使用说明
-1.脚本说明 CSS目前支持的属性已在```t2Style.cpp```声明
+1.脚本说明 CSS目前支持的属性已在```t2Style.cpp```声明，可自行查阅
 
-2.C++通过和t2DivController交互即可获取全局```<div>```列表,详情可见example
+2.C++通过和t2DivController交互即可获取全局```<div>```列表,所有C++代码都会与全局表```divTable```进行交互，详情可见example。
+
+3.TattyUI较大的采用C++11标准，在回调函数的选择上使用```std::fucntion```从而支持成员函数，函数指针，Lambda表达式等，以最大的可能模拟浏览器的样式但采用本地矢量渲染。
 
 ##关于作者
 ```cpp
