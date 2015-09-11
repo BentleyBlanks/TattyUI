@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{B50800B1-6CCA-4528-92B8-E9989045A471}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"D:\CMake\CMake 2.8\bin\cmake.exe" -HE:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm -BE:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm --check-stamp-file E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeLists.txt;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeLists.txt;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeVS12FindMake.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeSystem.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerId.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CompilerId\VS-10.vcxproj.in;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeClDeps.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-CXX.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerId.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CompilerId\VS-10.vcxproj.in;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeClDeps.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeGenericSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\WindowsPaths.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeRCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeRCInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompilerABI.c;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompilerABI.cpp;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCXXCompiler.cmake;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"D:\CMake\CMake 2.8\bin\cmake.exe" -HE:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm -BE:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm --check-stamp-file E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeLists.txt;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeLists.txt;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeVS12FindMake.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeSystem.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerId.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CompilerId\VS-10.vcxproj.in;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeClDeps.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-CXX.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerId.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CompilerId\VS-10.vcxproj.in;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeClDeps.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeGenericSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\WindowsPaths.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeRCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeRCInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompilerABI.c;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompilerABI.cpp;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCXXCompiler.cmake;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"D:\CMake\CMake 2.8\bin\cmake.exe" -HE:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm -BE:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm --check-stamp-file E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeLists.txt;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeLists.txt;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeVS12FindMake.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeSystem.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerId.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CompilerId\VS-10.vcxproj.in;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeClDeps.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-CXX.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerId.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CompilerId\VS-10.vcxproj.in;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeClDeps.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeGenericSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\WindowsPaths.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeRCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeRCInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompilerABI.c;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompilerABI.cpp;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCXXCompiler.cmake;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"D:\CMake\CMake 2.8\bin\cmake.exe" -HE:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm -BE:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm --check-stamp-file E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeLists.txt;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeLists.txt;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeVS12FindMake.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeSystem.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerId.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CompilerId\VS-10.vcxproj.in;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeClDeps.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-CXX.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerId.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CompilerId\VS-10.vcxproj.in;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeClDeps.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeGenericSystem.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\WindowsPaths.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeRCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeRCInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestRCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompilerABI.c;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXInformation.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-MSVC.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCXXCompiler.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompilerABI.cpp;D:\CMake\CMake 2.8\share\cmake-2.8\Modules\CMakeCXXCompiler.cmake.in;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\2.8.12.2\CMakeCXXCompiler.cmake;E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="CMakeFiles\52f61b8e092e3eb1aedda6ff5309ff6d\ALL_BUILD.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build all projects</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeFiles/52f61b8e092e3eb1aedda6ff5309ff6d/ALL_BUILD.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\ALL_BUILD</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build all projects</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeFiles/52f61b8e092e3eb1aedda6ff5309ff6d/ALL_BUILD.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\ALL_BUILD</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Build all projects</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeFiles/52f61b8e092e3eb1aedda6ff5309ff6d/ALL_BUILD.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\ALL_BUILD</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Build all projects</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/CMakeFiles/52f61b8e092e3eb1aedda6ff5309ff6d/ALL_BUILD.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:\Program\OpenGL\opengl-tutorial-org-24d30a5a643a\external\glm-0.9.4.0\glm\CMakeFiles\ALL_BUILD</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeFiles\ALL_BUILD" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/ZERO_CHECK.vcxproj">
+      <Project>C65A6071-527A-4412-917B-01854125E0FE</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/Program/OpenGL/opengl-tutorial-org-24d30a5a643a/external/glm-0.9.4.0/glm/glm.vcxproj">
+      <Project>1DC97270-7513-4257-B43D-614CBF1D2039</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
