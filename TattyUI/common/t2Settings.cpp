@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 // --！重大革新:小改动:BUG修复
-t2Version tattyVersion = { 0, 0, 5 };
+t2Version tattyVersion = { 0, 0, 6 };
 
 // 注意:只能在Debug模式下才能使用
 void t2Log(const char* string, ...)

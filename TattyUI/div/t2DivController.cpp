@@ -116,7 +116,7 @@ namespace TattyUI
 
         if(it == divTable.end())
         {
-            t2Log("未能找到指定id: %s的div", id.c_str());
+            t2Log("Warning: 未能找到指定id: %s的div", id.c_str());
             return NULL;
         }
         else

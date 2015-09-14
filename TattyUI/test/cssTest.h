@@ -1,7 +1,9 @@
 ﻿#include <TattyUI/TattyUI.h>
 #include <regex> 
 
-#define T2_CPPREGEX_TEST
+using namespace TattyUI;
+//#define T2_CPPREGEX_TEST
+#define T2_CSSPARSER_TEST
 
 int main()
 {
@@ -31,7 +33,88 @@ int main()
     //std::cout << m.format("the expression matched [$0].\n");
     //std::cout << m.format("with sub-expressions [$1] and [$2].\n");
 
-#endif // T2_CPPREGEX_TEST
+#endif
+
+#ifdef T2_CSSPARSER_TEST
+    t2CSSParser parser("../bin/script/css/test.css");
+    //parser.set("\
+    //    /*World*/\
+    //    body, head, button, hello{\
+    //        /****\
+    //        * Common multi-line comment style.\
+    //        ****/\
+    //        /****\
+    //        * Another common multi-line comment style.\
+    //        */\
+    //        background-color: #d0e4fe;\
+    //    }\
+    //    \
+    //    h1, h2, h3, h4{\
+    //        color: orange;\
+    //        /*Whos*/\
+    //        text-align: center;\
+    //    }\
+    //    \
+    //    p{\
+    //       font-family: \"Times New Roman\";\
+    //       font-size: 20px;\
+    //    }\
+    //    \
+    //    body{\
+    //        background - color: #d0e4fe;\
+    //    }\
+    //    \
+    //    h1{\
+    //        color: orange;\
+    //        text-align: center;\
+    //    }\
+    //    \
+    //    p{\
+    //        font-family: \"Times New Roman\";\
+    //        \
+    //        font-size: 20px;\
+    //    }");
+
+    parser.parse();
+
+    cout << "-------------Comment-------------" << endl << endl;
+    for(auto c : parser.commentList)
+    {
+        cout << c->text << endl;
+    }
+
+    cout << endl << "-------------Declaration-------------" << endl << endl;
+
+    for(auto t : parser.ruleList)
+    {
+        for(auto a : t->classSelectors)
+        {
+            cout << a->classSelector;
+            if(a->pseudoSelector != "")
+                cout << ":" << a->pseudoSelector;
+
+            cout << "  ";
+        }
+
+        for(auto b : t->elementSelectors)
+        {
+            cout << b->elementSelector;
+
+            if(b->pseudoSelector != "")
+                cout << ":" << b->pseudoSelector;
+
+            cout << "  ";
+        }
+
+        cout << endl;
+
+        for(auto x : t->declarations)
+            cout << "property: " << x->attribute << ": " << x->value << endl;
+
+        cout << endl;
+    }
+
+#endif
 
     getchar();
     return 0;

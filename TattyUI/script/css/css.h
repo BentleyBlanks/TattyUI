@@ -237,7 +237,7 @@ struct StyleSheet
             //     }
             //     ......other selector
             NodePtr node;
-            // 剩余字符串长度 > 0 && 选择器不能为匿名 即第一个字符不得为{ && (@规则 || 选择器规则)
+            // 剩余字符串长度 > 0 && 选择器不能为匿名 即第一个字符不得为} && (@规则 || 选择器规则)
             while(length() > 0 && char_at(0) != '}' && ((node = atrule()) || (node = rule())))
             {
                 _rules.push_back(node);
