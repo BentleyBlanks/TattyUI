@@ -33,6 +33,8 @@ TattyUI第一个较为成熟的production级的产品将会是为 [WIP2D](https:
 
 3.TattyUI较大的采用C++11标准，在回调函数的选择上使用```std::fucntion```从而支持成员函数，函数指针，Lambda表达式等，以最大的可能模拟浏览器的样式但采用本地矢量渲染。
 
+4.支持CSS类选择器，伪类选择器，元素选择器。
+
 ##关于作者
 ```cpp
 int 官某某 = "Bingo";
