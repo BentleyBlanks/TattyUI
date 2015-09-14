@@ -9,17 +9,6 @@ namespace TattyUI
 {
     using namespace std;
 
-    //using t2NodePtr = t2CSSNode*;
-    //using t2NodeList = std::vector<t2CSSNode*>;
-    //using t2StringList = std::vector<std::string>;
-    //using t2DeclList = std::vector<t2Declaration*>;
-    //
-    //class t2CSSNode
-    //{
-    //public:
-    //    virtual std::string toString() = 0;
-    //};
-
     class t2Declaration
     {
     public:
@@ -34,22 +23,26 @@ namespace TattyUI
         string text;
     };
 
-    class t2ClassSelector
+    // selector
+    class t2PseudoSelector
     {
     public:
-        // 类选择器
-        string classSelector;
         // 伪类选择器
         string pseudoSelector;
     };
 
-    class t2ElementSelector
+    class t2ClassSelector :public t2PseudoSelector
+    {
+    public:
+        // 类选择器
+        string classSelector;
+    };
+
+    class t2ElementSelector :public t2PseudoSelector
     {
     public:
         // 元素选择器
         string elementSelector;
-        // 伪类选择器
-        string pseudoSelector;
     };
 
     class t2Rule
