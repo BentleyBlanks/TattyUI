@@ -3,6 +3,7 @@
 
 #include <TattyUI/render/t2Image.h>
 #include <TattyUI/common/t2Vector2.h>
+#include <TattyUI/common/t2Dimension.h>
 #include <TattyUI/common/t2Color.h>
 #include <TattyUI/common/t2Settings.h>
 
@@ -47,6 +48,12 @@ namespace TattyUI
         T2_VERTICAL
     };
 
+    enum t2BlockDisplay
+    {
+        T2_DISPLAY_NONE = 0,
+        T2_DISPLAY_BLOCK
+    };
+
     class t2Style
     {
     public:
@@ -56,7 +63,11 @@ namespace TattyUI
 
         // --!参考与 http://www.w3school.com.cn/cssref/
         // hidden property
+        // --!弃用绝对坐标
         int x, y;
+
+        // display
+        int display;
 
         // background
         // 设置元素的背景颜色
@@ -77,7 +88,7 @@ namespace TattyUI
         // 模糊距离
         int boxShadowBlur;
         // 阴影的颜色
-        t2Color boxShadowColor;
+        t2Color boxShadowInColor, boxShadowOutColor;
 
         // color
         // 规定书签的透明度[0.0f, 1.0f]
@@ -85,6 +96,7 @@ namespace TattyUI
 
         // dimension
         int width, height;
+        // --!maxHeight不起作用
         int maxHeight, maxWidth;
         int minHeight, minWidth;
 
@@ -117,6 +129,7 @@ namespace TattyUI
         int paddingTop;
 
         // position
+        // --!暂不支持
         int zIndex;
 
         // text
@@ -143,6 +156,12 @@ namespace TattyUI
         t2BoxGradient boxGradient;
 
         string fontName;
+
+        // 实际显示内容的dimension(x, y, width, height)
+        t2Dimensionf contentSize;
+
+        // 是否显示阴影
+        bool displayShadow;
     };
 }
 

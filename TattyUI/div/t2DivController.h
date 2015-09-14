@@ -11,7 +11,13 @@ namespace TattyUI
     public:
         static t2DivController* getInstance();
 
+        void init();
+
+        //void update();
+
         void draw();
+
+        bool setRoot(string rootName);
 
         void addDiv(string id, t2Div* div);
 
@@ -43,6 +49,9 @@ namespace TattyUI
         t2DivController& operator=(const t2DivController& event) const {}
 
         std::map<string, t2Div*> divTable;
+
+        // 所有实际遍历开始位置
+        t2Div* root;
     };
 }
 

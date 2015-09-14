@@ -5,7 +5,7 @@ namespace TattyUI
 {
     t2Style::t2Style() :
         // position
-        x(0), y(0), zIndex(0),
+        x(0), y(0), zIndex(0), display(T2_DISPLAY_BLOCK),
         // background
         backgroundPosition(T2_TOP_LEFT), 
         // border
@@ -23,22 +23,28 @@ namespace TattyUI
         // padding
         paddingBottom(0), paddingLeft(0), paddingRight(0), paddingTop(0),
         // text
-        letterSpacing(0), lineHeight(0), textAlign(T2_ALIGN_CENTER), wordSpacing(0),
+        letterSpacing(0), lineHeight(0), textAlign(T2_ALIGN_CENTER | T2_ALIGN_MIDDLE), wordSpacing(0),
         // text-shadow
         hTextShadow(0), vTextShadow(0), textShadowBlur(0)
     {
-        boxShadowColor.set(0, 0, 0, 100);
+        // 辅助属性
+        boxShadowInColor.set(0, 0, 0, 100);
+        boxShadowOutColor.set(0, 0, 0, 0);
 
         textColor.set(0, 0, 0, 255);
+        
+        contentSize.set(x, y, width, height);
+
+        displayShadow = false;
     }
 
     t2Style::t2Style(t2Style& s):
         // position
-        x(s.x), y(s.y), zIndex(s.zIndex),
+        x(s.x), y(s.y), zIndex(s.zIndex), display(s.display),
         // background
         backgroundPosition(s.backgroundPosition), backgroundColor(s.backgroundColor), backgroundImage(s.backgroundImage), backgroundSize(s.backgroundSize),
         // border
-        borderRadius(s.borderRadius), hBoxShadow(s.hBoxShadow), vBoxShadow(s.vBoxShadow), boxShadowBlur(s.boxShadowBlur), boxShadowColor(s.boxShadowColor),
+        borderRadius(s.borderRadius), hBoxShadow(s.hBoxShadow), vBoxShadow(s.vBoxShadow), boxShadowBlur(s.boxShadowBlur), boxShadowInColor(s.boxShadowInColor), boxShadowOutColor(s.boxShadowInColor),
         // color
         opacity(s.opacity),
         // dimension
@@ -56,7 +62,7 @@ namespace TattyUI
         // text-shadow
         hTextShadow(s.hTextShadow), vTextShadow(s.vTextShadow), textShadowBlur(s.textShadowBlur), textShadowColor(s.textShadowColor),
         // 辅助属性
-        fontName(s.fontName), boxGradient(s.boxGradient)
+        fontName(s.fontName), boxGradient(s.boxGradient), contentSize(s.contentSize), displayShadow(s.displayShadow)
     {
 
     }
@@ -67,6 +73,8 @@ namespace TattyUI
         // hidden property
         "x",
         "y",
+
+        "display",
 
         // background
         "background",

@@ -1,4 +1,4 @@
-#ifndef T2_DIV_H
+ï»¿#ifndef T2_DIV_H
 #define T2_DIV_H
 
 #include <TattyUI/div/t2Style.h>
@@ -18,9 +18,11 @@ namespace TattyUI
     public:
         t2Div(int width, int height, string fontName, string fontPath);
 
-        // --!Ò»¶¨ÒªÔÚcssÄÚÈİ¶¼ÒÑ¾­Íê³É¸³Öµºó²Å¿Éµ÷ÓÃ
-        // ³õÊ¼»¯¾ßÌådivÊôĞÔÄ¬ÈÏÄÚÈİ
+        // --!ä¸€å®šè¦åœ¨csså†…å®¹éƒ½å·²ç»å®Œæˆèµ‹å€¼åæ‰å¯è°ƒç”¨
+        // åˆå§‹åŒ–å…·ä½“divå±æ€§é»˜è®¤å†…å®¹ï¼ŒåŒ…æ‹¬å†…å¤–è¾¹è·é˜´å½±åˆå§‹åŒ–
         void init();
+
+        //void update();
 
         void draw();
 
@@ -28,19 +30,26 @@ namespace TattyUI
 
         int getStatus();
 
-        // »ñÈ¡µ±Ç°×´Ì¬µÄÑùÊ½±í
+        // è·å–å½“å‰çŠ¶æ€çš„æ ·å¼è¡¨
         t2Style& getCSS();
 
         t2Style normal, active, hover;
 
-        // »Øµ÷ ËùÓĞcallback¶¼Ö¸¶¨ÎªÕâ´Ë
+        // çˆ¶èŠ‚ç‚¹ / å…„å¼ŸèŠ‚ç‚¹ / ç¬¬ä¸€ä¸ªå­©å­èŠ‚ç‚¹
+        t2Div* parent, *next, *child;
+
+        // --!æµ‹è¯•ä½¿ç”¨
+        // æ˜¯å¦æ¸²æŸ“padding marginåŒ…å›´ç›’
+        bool bDrawPaddingAABB, bDrawMarginAABB;
+
+        // å›è°ƒ æ‰€æœ‰callbackéƒ½æŒ‡å®šä¸ºè¿™æ­¤
          std::function<void(int x, int y, int px, int py, int button)> mousePressed;
 
          std::function<void(int x, int y, int px, int py, int button)> mouseReleased;
 
          std::function<void(int x, int y, int px, int py)> mouseMoved;
 
-         // Êó±êÒÆÈëÒÆ³ö»Øµ÷
+         // é¼ æ ‡ç§»å…¥ç§»å‡ºå›è°ƒ
          std::function<void(int x, int y, int px, int py)> mouseMovedIn;
 
          std::function<void(int x, int y, int px, int py)> mouseMovedOut;
@@ -51,6 +60,8 @@ namespace TattyUI
 
          std::function<void(int key)> keyReleased;
     private:
+        // æ ¹æ®å…„å¼Ÿç»“ç‚¹ çˆ¶èŠ‚ç‚¹ä½ç½®æ›´æ–°è‡ªèº«å®é™…æ¸²æŸ“ä½ç½®
+        void updateContent();
 
         virtual void onMousePressed(int x, int y, int px, int py, int button);
 
@@ -67,6 +78,7 @@ namespace TattyUI
         friend class t2DivController;
 
         int status;
+
     };
 }
 

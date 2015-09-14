@@ -1,4 +1,5 @@
 ﻿#include <TattyUI/div/t2DivController.h>
+#include <LinearList/t3Queue.h>
 
 namespace TattyUI
 {
@@ -8,11 +9,78 @@ namespace TattyUI
         return &temp;
     }
 
+    //void t2DivController::update()
+    //{
+    //    for(auto it : divTable)
+    //        // --!未来更新为从根节点进入遍历渲染
+    //        it.second->update();
+    //}
+
     void t2DivController::draw()
     {
-        for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
+        if(!root)
         {
-            it->second->draw();
+            t2PrintError("未指定根节点，根节点为空");
+            return;
+        }
+
+        //for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
+        //{
+        //    // --!未来更新为从根节点进入遍历渲染
+        //    it->second->draw();
+        //}
+
+        //root->draw();
+
+        // --!层序遍历
+        t3Queue<t2Div*> queue;
+
+        if(!root) return;
+
+        queue.push(root);
+
+        for(;;)
+        {
+            //queue.print();
+
+            t2Div* temp;
+
+            if(queue.isEmpty())
+                temp = NULL;
+            else
+                temp = queue.pop();
+
+            if(temp)
+            {
+                temp->draw();
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else
+                break;
+        }
+    }
+
+    void t2DivController::init()
+    {
+        for(auto it : divTable)
+            it.second->init();
+    }
+
+    bool t2DivController::setRoot(string rootName)
+    {
+        std::map<string, t2Div*>::iterator it = divTable.find(rootName);
+        if(it != divTable.end())
+        {
+            this->root = it->second;
+            return true;
+        }
+        else
+        {
+            t2PrintErrorArg(rootName, root, "根节点不在指定div表中，请先调用addDiv()添加至表内");
+            return false;
         }
     }
 
@@ -32,7 +100,7 @@ namespace TattyUI
         divTable.erase(id);
     }
 
-    t2DivController::t2DivController()
+    t2DivController::t2DivController() :root(NULL)
     {
 
     }
@@ -59,7 +127,7 @@ namespace TattyUI
     {
         for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
         {
-                it->second->onMousePressed(x, y, px, py, button);
+            it->second->onMousePressed(x, y, px, py, button);
         }
     }
 
@@ -67,7 +135,7 @@ namespace TattyUI
     {
         for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
         {
-                it->second->onMouseReleased(x, y, px, py, button);
+            it->second->onMouseReleased(x, y, px, py, button);
         }
     }
 
@@ -75,7 +143,7 @@ namespace TattyUI
     {
         for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
         {
-                it->second->onMouseMoved(x, y, px, py);
+            it->second->onMouseMoved(x, y, px, py);
         }
     }
 
@@ -83,7 +151,7 @@ namespace TattyUI
     {
         for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
         {
-                it->second->onMouseScrolled(x, y, px, py);
+            it->second->onMouseScrolled(x, y, px, py);
         }
     }
 
@@ -91,7 +159,7 @@ namespace TattyUI
     {
         for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
         {
-                it->second->onKeyPressed(key);
+            it->second->onKeyPressed(key);
         }
     }
 
@@ -99,8 +167,7 @@ namespace TattyUI
     {
         for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
         {
-                it->second->onKeyReleased(key);
+            it->second->onKeyReleased(key);
         }
     }
-
 }

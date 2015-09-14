@@ -6,7 +6,7 @@ INCLUDE_DIRECTORIES(
 	"${CMAKE_SOURCE_DIR}/"
 	"${CMAKE_SOURCE_DIR}/dependency/glfw/include/"
 	"${CMAKE_SOURCE_DIR}/dependency/glew/include/"
-	"${CMAKE_SOURCE_DIR}/dependency/glm"
+	"${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/include/"
 )
 
 # print
@@ -15,7 +15,7 @@ MESSAGE(STATUS "sssssssssssss " ${CMAKE_SOURCE_DIR})
 link_directories(
 	"${CMAKE_SOURCE_DIR}/dependency/glfw/lib/"
 	"${CMAKE_SOURCE_DIR}/dependency/glew/lib/"
-	"${CMAKE_SOURCE_DIR}/dependency/glm/Debug/"
+	"${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/lib/"
 )
 
 #AUX_SOURCE_DIRECTORY(src DIR_SRCS)
@@ -24,6 +24,16 @@ link_directories(
 #SET(t3DS ${t3DS_SRCS})
 
 #add file to ide
+# t3DataStructures
+FILE(GLOB t3DataStructures_h "${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/include/LinearList/*.h") 
+SOURCE_GROUP("t3DataStructures\\LinearList" FILES ${t3DataStructures_h})
+
+FILE(GLOB t3DataStructures_common_h "${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/include/Common/*.h") 
+SOURCE_GROUP("t3DataStructures\\Common" FILES ${t3DataStructures_common_h})
+
+FILE(GLOB t3DataStructures_linearList_h "${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/include/LinearList/*.h") 
+SOURCE_GROUP("t3DataStructures\\LinearList" FILES ${t3DataStructures_linearList_h})
+
 # entrance
 FILE(GLOB MAIN "./TattyUI/*.h") 
 SOURCE_GROUP("TattyUI" FILES ${MAIN})
@@ -109,7 +119,8 @@ ADD_EXECUTABLE(TattyUI ${MAIN}
 	${t2_render_h} ${t2_render_cpp}
 	${test_h} ${test_cpp}
 	${event_h} ${event_cpp}
-	${script_h} ${script_cpp})
+	${script_h} ${script_cpp}
+	${t3DataStructures_h} ${t3DataStructures_common_h} ${t3DataStructures_linearList_h})
 
 
 	# ${layout_h} ${layout_cpp}
@@ -119,5 +130,5 @@ ADD_EXECUTABLE(TattyUI ${MAIN}
 # # dependency
 TARGET_LINK_LIBRARIES(TattyUI glfw3)  
 TARGET_LINK_LIBRARIES(TattyUI glew32s)
-TARGET_LINK_LIBRARIES(TattyUI glm)
+TARGET_LINK_LIBRARIES(TattyUI t3DataStructures)
 TARGET_LINK_LIBRARIES(TattyUI OpenGL32)

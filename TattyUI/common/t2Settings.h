@@ -110,7 +110,7 @@ void t2Log(const char* string, ...);
 
 #define t2PrintError(errorMessage) t2PrintError_<int>(std::string(__FUNCTION__), errorMessage)
 
-#define t2PrintErrorArg(argName, arg, errorMessage) t3PrintError_(std::string(__FUNCTION__), argName, arg, errorMessage)
+#define t2PrintErrorArg(argName, arg, errorMessage) t2PrintError_(std::string(__FUNCTION__), argName, arg, errorMessage)
 
 template<class T>
 void t2PrintError_(std::string functionName, std::string argName, T arg, std::string errorMessage)
@@ -339,7 +339,8 @@ enum t2FontSpacing
 #define T2_MOUSE_BUTTON_RIGHT     T2_MOUSE_BUTTON_2
 #define T2_MOUSE_BUTTON_MIDDLE    T2_MOUSE_BUTTON_3
 
-// Floekr2d版本信息
+
+// TattyUI版本信息
 // --!来自box2d http://en.wikipedia.org/wiki/Software_versioning
 struct t2Version
 {
