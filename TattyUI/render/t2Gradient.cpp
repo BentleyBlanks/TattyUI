@@ -161,18 +161,37 @@ namespace TattyUI
         }
     }
 
-    t2LinearGradient::t2LinearGradient(float x, float y, float ex, float ey, t2Color icol, t2Color ocol)
+    t2LinearGradient::t2LinearGradient(float x, float y, float ex, float ey, float width, float height, t2Color icol, t2Color ocol)
     {
         paint = nvgLinearGradient(t2GetContext(), x, y, ex, ey, nvgRGBA(icol.r, icol.g, icol.b, icol.a), nvgRGBA(ocol.r, ocol.g, ocol.b, ocol.a));
     
         setSize(x, y, width, height);
     }
 
-    void t2LinearGradient::set(float x, float y, float ex, float ey, t2Color icol, t2Color ocol)
+    void t2LinearGradient::set(float x, float y, float ex, float ey, float width, float height, t2Color icol, t2Color ocol)
     {
         paint = nvgLinearGradient(t2GetContext(), x, y, ex, ey, nvgRGBA(icol.r, icol.g, icol.b, icol.a), nvgRGBA(ocol.r, ocol.g, ocol.b, ocol.a));
         
         setSize(x, y, width, height);
+    }
+
+    void t2LinearGradient::drawInRect(bool bFill)
+    {
+        nvgBeginPath(t2GetContext());
+
+        nvgRect(t2GetContext(), x, y, width, height);
+        nvgPathWinding(t2GetContext(), solidity);
+
+        if(bFill)
+        {
+            nvgFillPaint(t2GetContext(), paint);
+            nvgFill(t2GetContext());
+        }
+        else
+        {
+            nvgStrokePaint(t2GetContext(), paint);
+            nvgStroke(t2GetContext());
+        }
     }
 
     t2RadialGradient::t2RadialGradient(float x, float y, float inRadius, float outRadius, t2Color icol, t2Color ocol)

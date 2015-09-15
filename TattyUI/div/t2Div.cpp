@@ -2,13 +2,14 @@
 #include <TattyUI/render/t2Renderer.h>
 
 #include <TattyUI/common/t2Math.h>
+#include <LinearList/t3Queue.h>
 
 #define renderer t2Renderer::getInstance()
 
 namespace TattyUI
 {
-    t2Div::t2Div(int width, int height, string fontName, string fontPath) :status(T2_NORAML), parent(NULL), next(NULL), child(NULL),
-        bDrawMarginAABB(false), bDrawPaddingAABB(false)
+    t2Div::t2Div(int width, int height, string fontName, string fontPath) :status(T2_NORMAL), parent(NULL), next(NULL), child(NULL),
+        bDrawMarginAABB(false), bDrawPaddingAABB(false), bHover(false), bNormal(false), bActive(false)
     {
         // 3状态
         normal.width = width;
@@ -68,13 +69,14 @@ namespace TattyUI
 
         // --!可选更新为静态，也就是只会在初始化时计算其位置
         //updateContent();
+        setStatus(T2_NORMAL);
     }
 
     t2Style& t2Div::getCSS()
     {
         switch(status)
         {
-        case T2_NORAML:
+        case T2_NORMAL:
             return normal;
         
         case T2_ACTIVE:
@@ -288,7 +290,7 @@ namespace TattyUI
         // not used <px, py>
         t2Style css = getCSS();
 
-        if(pointInsideRect(css.contentSize.x, css.y, css.contentSize.width, css.contentSize.height, x, y))
+        if(inDiv(x, y))
         {
             setStatus(T2_ACTIVE);
 
@@ -302,7 +304,7 @@ namespace TattyUI
         // not used <px, py>
         t2Style css = getCSS();
 
-        if(pointInsideRect(css.contentSize.x, css.contentSize.y, css.contentSize.width, css.contentSize.height, x, y))
+        if(inDiv(x, y))
         {
             setStatus(T2_HOVER);
 
@@ -316,20 +318,19 @@ namespace TattyUI
         // not used <px, py>
         t2Style css = getCSS();
 
-        if(mouseMoved && pointInsideRect(css.contentSize.x, css.contentSize.y, css.contentSize.width, css.contentSize.height, x, y))
+        if(mouseMoved && inDiv(x, y))
             mouseMoved(x, y, px, py);
 
-        if(!pointInsideRect(css.contentSize.x, css.contentSize.y, css.contentSize.width, css.contentSize.height, x, y) && 
-            pointInsideRect(css.contentSize.x, css.contentSize.y, css.contentSize.width, css.contentSize.height, px, py))
+        if(!inDiv(x, y) && inDiv(px, py))
         {    
             // 鼠标移出
-            setStatus(T2_NORAML);
+            setStatus(T2_NORMAL);
+
             if(mouseMovedOut)
                 mouseMovedOut(x, y, px, py);
         }
 
-        if(pointInsideRect(css.contentSize.x, css.contentSize.y, css.contentSize.width, css.contentSize.height, x, y) && 
-          !pointInsideRect(css.contentSize.x, css.contentSize.y, css.contentSize.width, css.contentSize.height, px, py))
+        if(inDiv(x, y) && !inDiv(px, py))
         {
             // 鼠标移入
             setStatus(T2_HOVER);
@@ -344,7 +345,7 @@ namespace TattyUI
         // not used <px, py>
         t2Style css = getCSS();
 
-        if(mouseScrolled && pointInsideRect(css.contentSize.x, css.contentSize.y, css.contentSize.width, css.contentSize.height, x, y))
+        if(mouseScrolled && inDiv(x, y))
             mouseScrolled(x, y, px, py);
     }
 
@@ -359,4 +360,57 @@ namespace TattyUI
         if(keyReleased)
             keyReleased(key);
     }
+
+    bool t2Div::inDiv(int x, int y)
+    {
+        t2Style css = getCSS();
+
+        if(pointInsideRect(css.contentSize.x, css.contentSize.y, css.contentSize.width, css.contentSize.height, x, y))
+           return true;
+        else
+            return false;
+    }
+
+    bool t2Div::inDiv(t2Point2i p)
+    {
+        return inDiv(p.x, p.y);
+    }
+
+    bool t2Div::inChild(t2Point2i pos)
+    {
+        return inChild(pos.x, pos.y);
+    }
+
+    bool t2Div::inChild(int x, int y)
+    {
+        // --!层序遍历
+        t3Queue<t2Div*> queue;
+        if(!child) return false;
+        // 将所有兄弟结点入队列
+        for(t2Div* c = child; c != NULL; c = c->next)
+            queue.push(c);
+
+        for(;;)
+        {
+            t2Div* temp;
+
+            if(queue.isEmpty()) temp = NULL;
+            else temp = queue.pop();
+
+            if(temp)
+            {
+                // 子节点符合
+                if(temp->inDiv(x, y))
+                    return true;
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else break;
+        }
+
+        return false;
+    }
+
 }

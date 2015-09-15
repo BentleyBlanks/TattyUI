@@ -1,108 +1,79 @@
-ï»¿#ifndef T2_WINDOW_H
+#ifndef T2_WINDOW_H
 #define T2_WINDOW_H
 
-#include <TattyUI/common/t2Vector2.h>
-
-struct GLFWwindow;
+#include <TattyUI/render/t2Image.h>
+#include <TattyUI/common/t2WindowBase.h>
 
 namespace TattyUI
 {
-	class t2Window
-	{
-	public:
-		t2Window();
+    class t2LinearGradient;
+    class t2BoxGradient;
+    //class t2WindowBase;
+    // ÉèÖÃ³Éµ¥Àı²»ÄÜÖ§³Ö¶à´°¿Ú ¸öÈË¸Ğ¾õÃ»¹ØÏµ
+    class t2Window
+    {
+    public:
+        static t2Window* getInstance();
 
-		void setup(int width, int height);
+        void init(string title, int width, int height, int positionX = 0, int positionY = 0);
 
-		// getter/setter
-		// --!get
-		t2Point2i getSize();
+        void draw();
 
-		t2Point2i getPosition();
+        void setTitleBar(int height);
 
-		int getHeight();
+        int getTitleBar();
 
-		int getWidth();
+        void setDrag(bool drag);
 
-		// å‚ç›´åŒæ­¥
-		bool isVerticalSync();
+        void setDoubleClick(bool doubleClick);
 
-		int getMode();
+        void setClose(t2Image normal, t2Image hover, t2Image pressed);
 
-		t2Point2i getScreenSize();
-		// --!set
-		// çª—å£è‡ªèº«å±æ€§è®¾ç½®
-		void setPosition(int x, int y);
+        void setMaximize(t2Image normal, t2Image hover, t2Image pressed);
 
-		void setPosition(t2Point2i position);
+        void setMinimize(t2Image normal, t2Image hover, t2Image pressed);
 
-		void setSize(int width, int height);
+        void setWindowRadius(int raidus);
 
-		void setSize(const t2Point2i size);
+        // ¸ø¶¨µãÊÇ·ñÔÚ±êÌâÀ¸ÖĞ
+        bool inTitleBar(int x, int y);
 
-		void setResizable(bool resizable);
+        // Êµ¼Ê´°¿Ú
+        t2WindowBase* window;
 
-		void setHeight(int height);
+    protected:
+        // ²»¿ÉÉ¾³ı ²»¿É¸´ÖÆ ²»¿É×Ô¼º´´½¨ÊµÀı
+        t2Window();
+        t2Window(const t2Window&) {}
+        ~t2Window() {}
+        t2Window& operator=(const t2Window& event) const {}
 
-		void setWidth(int width);
+        friend class t2EventController;
 
-		void setMode(int mode);
+        // ´¦ÀíÍÏ¶¯´°¿Ú Ë«»÷´°¿ÚµÈÊÂ¼ş
+        virtual void onMousePressed(int x, int y, int px, int py, int button);
 
-		void setTitle(std::string title);
+        virtual void onMouseReleased(int x, int y, int px, int py, int button);
 
-		void setIcon();
+        virtual void onMouseMoved(int x, int y, int px, int py);
 
-		// çª—å£ç›¸å…³å±æ€§
-		void setVeticalSync(bool verticalSync);
+        // ×îĞ¡»¯ ×î´ó»¯ ¹Ø±Õ°´Å¥
+        class t2Button;
+        t2Button *close, *maximize, *minimize;
 
-		void hideCursor(bool hide);
+        // ±êÌâÀ¸¸ß¶È
+        int titleBarHeight;
 
-		void swapBuffer();
+        // ´°¿ÚÔ²½Ç
+        int windowRadius;
 
-		void processEvents();
+        bool bDoubleClick, bDrag;
+        bool bPressed;
 
-		// æŒ‚é’©æ‰€æœ‰å›è°ƒå‡½æ•°
-		void initCallBack();
-
-		void exit();
-
-	protected:
-
-		// --!ä¸ä½¿ç”¨intæ˜¯é˜²æ­¢ç‰¹æ®Šéœ€æ±‚
-		int width, height;
-		// ä½¿ç”¨å¼•ç”¨/æŒ‡é’ˆé˜²æ­¢æŠ¥é”™
-		t2Vector2i size;
-		// ç»å¯¹ä½ç½®
-		t2Vector2i position;
-		// çª—å£æ¨¡å¼
-		// --!ä¸æ¸…æ¥šä¸ºä½•intä¸èƒ½è½¬æ¢ä¸ºtkWindowMode
-		int mode;
-		// å‚ç›´åŒæ­¥
-		bool verticalSync;
-		// å¯å¦å˜æ¢çª—å£å¤§å°
-		bool resizable;
-		// çª—å£æ ‡é¢˜
-		std::string title;
-
-	private:
-		// æŠ•å½±çŸ©é˜µç­‰åˆå§‹åŒ–
-		void set2d(float width = 0, float height = 0);
-		// å†…éƒ¨ä½¿ç”¨å‡½æ•°
-		void setFullScreen();
-		// è·å¾—å½“å‰ç„¦ç‚¹æ˜¾ç¤ºå™¨çš„åºå·
-		int getCurrentMonitor();
-        // åˆå§‹åŒ–glew
-        bool initGlew();
-	};
+        // ±êÌâÀ¸
+        t2LinearGradient *titleBar;
+        t2BoxGradient *titleBarShadow;
+    };
 }
-
-GLFWwindow* getGLFWWindow();
-
-// mouse
-void t2GetMousePos(float64 *x, float64 *y);
-
-float64 t2GetMouseX();
-
-float64 t2GetMouseY();
 
 #endif

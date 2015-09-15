@@ -1,4 +1,5 @@
 ﻿#include <TattyUI/controller/event/t2EventController.h>
+#include <TattyUI/common/t2Window.h>
 
 #include <TattyUI/div/t2Div.h>
 #include <TattyUI/div/t2DivController.h>
@@ -15,15 +16,39 @@ namespace TattyUI
         void notifyKeyEvent(int key, t2EventType type);
 
         t2DivController* divController;
+
+        t2Window* window;
     };
 
     t2EventController::t2RegistrantList::t2RegistrantList()
     {
         divController = t2DivController::getInstance();
+
+        window = t2Window::getInstance();
     }
 
 	void t2EventController::t2RegistrantList::notifyMouseEvent(int x, int y, int px, int py, int button, t2EventType type)
 	{
+        switch(type)
+        {
+        case T2_EVENT_MOUSE_MOVED:
+            window->onMouseMoved(x, y, px, py);
+            break;
+        case T2_EVENT_MOUSE_PRESSED:
+            window->onMousePressed(x, y, px, py, button);
+            break;
+        case T2_EVENT_MOUSE_RELEASED:
+            window->onMouseReleased(x, y, px, py, button);
+            break;
+        case T2_EVENT_MOUSE_SCROLLED:
+        case T2_EVENT_NONE:
+            break;
+        }
+
+        // 在标题栏上的消息不发送给div集
+        if(window->inTitleBar(x, y))
+            return;
+
         switch(type)
         {
         case T2_EVENT_MOUSE_MOVED:

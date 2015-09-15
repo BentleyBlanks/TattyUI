@@ -1,6 +1,7 @@
 ﻿#ifndef T2_DIV_H
 #define T2_DIV_H
 
+#include <TattyUI/common/t2Vector2.h>
 #include <TattyUI/div/t2Style.h>
 #include <functional>
 
@@ -8,7 +9,7 @@ namespace TattyUI
 {
     enum t2DivStatus
     {
-        T2_NORAML,
+        T2_NORMAL,
         T2_ACTIVE,
         T2_HOVER
     };
@@ -32,6 +33,19 @@ namespace TattyUI
 
         // 获取当前状态的样式表
         t2Style& getCSS();
+
+        // 给定位置是否在div内部
+        bool inDiv(int x, int y);
+
+        bool inDiv(t2Point2i p);
+
+        // 给定位置是否在div所有子节点内部
+        bool inChild(int x, int y);
+        
+        bool inChild(t2Point2i pos);
+
+        // 类型名
+        string className;
 
         t2Style normal, active, hover;
 
@@ -77,8 +91,12 @@ namespace TattyUI
 
         friend class t2DivController;
 
+        friend class t2CSSController;
+
         int status;
 
+        // 是否有被赋值
+        bool bNormal, bActive, bHover;
     };
 }
 

@@ -6,7 +6,7 @@ using namespace TattyUI;
 int main(int argc, char* argv[])
 {
     // TattyUI
-    t2Window *window = new t2Window();
+    t2WindowBase *window = new t2WindowBase();
     window->setPosition(200, 200);
     window->setResizable(true);
     window->setMode(T2_WINDOW_WINDOWED);

@@ -11,4 +11,6 @@
 //#include <TattyUI/test/cascadingDiv.h>
 
 // 正则表达式测试
-#include <TattyUI/test/cssTest.h>
+//#include <TattyUI/test/cssTest.h>
+
+#include <TattyUI/test/windowTest.h>

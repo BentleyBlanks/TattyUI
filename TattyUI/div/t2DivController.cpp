@@ -29,7 +29,7 @@ namespace TattyUI
         //    // --!未来更新为从根节点进入遍历渲染
         //    it->second->draw();
         //}
-
+        //
         //root->draw();
 
         // --!层序遍历
@@ -84,6 +84,14 @@ namespace TattyUI
         }
     }
 
+	t2Div* t2DivController::getRoot()
+	{
+		if (root)
+			return root;
+		else
+			return NULL;
+	}
+
     void t2DivController::addDiv(string id, t2Div* div)
     {
         if(!div)
@@ -123,32 +131,121 @@ namespace TattyUI
             return it->second;
     }
 
+    t2Div* t2DivController::findByClass(string className)
+    {
+        for(map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
+        {
+            if(it->second->className == className)
+                return it->second;
+        }
+        return NULL;
+    }
+
     void t2DivController::onMousePressed(int x, int y, int px, int py, int button)
     {
-        for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
+        //for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
+        //{
+        //    it->second->onMousePressed(x, y, px, py, button);
+        //}
+
+        // --!层序遍历
+        t3Queue<t2Div*> queue;
+        if(!root) return;
+        queue.push(root);
+
+        for(;;)
         {
-            it->second->onMousePressed(x, y, px, py, button);
+            t2Div* temp;
+
+            if(queue.isEmpty()) temp = NULL;
+            else temp = queue.pop();
+
+            if(temp)
+            {
+                // 只有当鼠标能够触发当前结点 且 无法触发子节点时才触发当前结点
+                if(temp->inDiv(x, y) && !temp->inChild(x, y))
+                    temp->onMousePressed(x, y, px, py, button);
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else break;
         }
     }
 
     void t2DivController::onMouseReleased(int x, int y, int px, int py, int button)
     {
-        for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
+        //for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
+        //{
+        //    it->second->onMouseReleased(x, y, px, py, button);
+        //}
+
+        // --!层序遍历
+        t3Queue<t2Div*> queue;
+        if(!root) return;
+        queue.push(root);
+
+        for(;;)
         {
-            it->second->onMouseReleased(x, y, px, py, button);
+            t2Div* temp;
+
+            if(queue.isEmpty()) temp = NULL;
+            else temp = queue.pop();
+
+            if(temp)
+            {
+                // 只有当鼠标能够触发当前结点 且 无法触发子节点时才触发当前结点
+                if(temp->inDiv(x, y) && !temp->inChild(x, y))
+                    temp->onMouseReleased(x, y, px, py, button);
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else break;
         }
     }
 
     void t2DivController::onMouseMoved(int x, int y, int px, int py)
     {
-        for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
+        //for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
+        //{
+        //    it->second->onMouseMoved(x, y, px, py);
+        //}
+
+        // --!层序遍历
+        t3Queue<t2Div*> queue;
+        if(!root) return;
+        queue.push(root);
+
+        for(;;)
         {
-            it->second->onMouseMoved(x, y, px, py);
+            t2Div* temp;
+
+            if(queue.isEmpty()) temp = NULL;
+            else temp = queue.pop();
+
+            if(temp)
+            {
+                if(temp->inDiv(x, y) || temp->inDiv(px, py))
+                {
+                    // 当前结点无子节点 且 鼠标不在子节点内移进移出
+                    if(!temp->inChild(x, y) && !temp->inChild(px, py))
+                        temp->onMouseMoved(x, y, px, py);
+                }
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else break;
         }
     }
 
     void t2DivController::onMouseScrolled(int x, int y, int px, int py)
     {
+        // --!未来更新为焦点输入
         for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
         {
             it->second->onMouseScrolled(x, y, px, py);
@@ -157,6 +254,7 @@ namespace TattyUI
 
     void t2DivController::onKeyPressed(int key)
     {
+        // --!未来更新为焦点输入
         for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
         {
             it->second->onKeyPressed(key);
@@ -165,9 +263,18 @@ namespace TattyUI
 
     void t2DivController::onKeyReleased(int key)
     {
+        // --!未来更新为焦点输入
         for(std::map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
         {
             it->second->onKeyReleased(key);
+        }
+    }
+
+    void t2DivController::print()
+    {
+        for(auto x : divTable)
+        {
+            std::cout << x.first << endl;
         }
     }
 }

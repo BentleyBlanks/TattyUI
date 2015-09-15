@@ -14,7 +14,7 @@ namespace TattyUI
 
         bool isLoaded();
 
-        bool loadImage(const char* path);
+        bool loadImage(string path);
         
         void drawInRect(int x, int y, int width, int height, int angle = 0, int alpha = 255, bool bFill = true);
 

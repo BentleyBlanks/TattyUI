@@ -10,4 +10,6 @@
 
 #include <TattyUI/div/t2DivController.h>
 
+#include <TattyUI/script/css/t2CSSController.h>
+
 #include <TattyUI/script/css/t2CSSParser.h>

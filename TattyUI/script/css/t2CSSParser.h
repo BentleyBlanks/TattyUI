@@ -45,6 +45,13 @@ namespace TattyUI
         string elementSelector;
     };
 
+    class t2IDSelector :public t2PseudoSelector
+    {
+    public:
+        // id选择器
+        string idSelector;
+    };
+
     class t2Rule
     {
     public:
@@ -53,6 +60,9 @@ namespace TattyUI
 
         // 元素选择器
         vector<t2ElementSelector*> elementSelectors;
+
+        // id选择器
+        vector<t2IDSelector*> idSelectors;
 
         vector<t2Declaration*> declarations;
     };
@@ -104,6 +114,8 @@ namespace TattyUI
         bool classSelector(string group, t2Rule *rule);
 
         bool elementSelector(string group, t2Rule *rule);
+
+        bool idSelector(string group, t2Rule *rule);
 
         // 当前遍历到的字符串位置
         long pos;

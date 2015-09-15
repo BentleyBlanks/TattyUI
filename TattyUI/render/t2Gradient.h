@@ -73,9 +73,11 @@ namespace TattyUI
         t2LinearGradient() {}
 
         // 创建渐变自(x, y) -> (ex, ey)
-        t2LinearGradient(float x, float y, float ex, float ey, t2Color icol, t2Color ocol);
+        t2LinearGradient(float x, float y, float ex, float ey, float width, float height, t2Color icol, t2Color ocol);
 
-        void set(float x, float y, float ex, float ey, t2Color icol, t2Color ocol);
+        virtual void drawInRect(bool bFill = true);
+
+        void set(float x, float y, float ex, float ey, float width, float height, t2Color icol, t2Color ocol);
     };
 
     class t2RadialGradient :public t2Gradient

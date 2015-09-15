@@ -25,9 +25,9 @@ namespace TattyUI
         
     }
 
-    bool t2Image::loadImage(const char* path)
+    bool t2Image::loadImage(string path)
     {
-        img = nvgCreateImage(t2GetContext(), path, 0);
+        img = nvgCreateImage(t2GetContext(), path.c_str(), 0);
 
         if(!img)
         {

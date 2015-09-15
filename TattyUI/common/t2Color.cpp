@@ -26,6 +26,36 @@ namespace TattyUI
 		set(color.r, color.g, color.b, color.a);
 	}
 
+    template<typename T>
+    void TattyUI::t2Color_<T>::set(const string& value)
+    {
+        // 只支持十六进制色
+        static unsigned char hexColor[7];
+        strcpy((char*) hexColor, value.c_str());
+        if(strlen((char*) hexColor) != 7 || hexColor[0] != '#')
+        {
+            t2PrintError("十六进制色定义有误, 应以#开头, 紧跟3个十六进制数, 共7位");
+            return;
+        }
+
+        int r, g, b;
+        unsigned char tempColor[2];
+        // r
+        tempColor[0] = hexColor[1];
+        tempColor[1] = hexColor[2];
+        sscanf((const char*) tempColor, "%02x", &r);
+        // g
+        tempColor[0] = hexColor[3];
+        tempColor[1] = hexColor[4];
+        sscanf((const char*) tempColor, "%02x", &g);
+        // b
+        tempColor[0] = hexColor[5];
+        tempColor[1] = hexColor[6];
+        sscanf((const char*) tempColor, "%02x", &b);
+
+        set(r, g, b, 255);
+    }
+
 	template<typename T>
 	void t2Color_<T>::set(T r, T g, T b, T a)
 	{

@@ -26,6 +26,9 @@ namespace TattyUI
 
 		void set(t2Color_<T>& color);
 
+        // 十六进制色
+        void set(const string& value);
+
 		void set(T r, T g, T b, T a = limit());
 
 		void zero();

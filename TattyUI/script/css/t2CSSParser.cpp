@@ -178,6 +178,12 @@ namespace TattyUI
         return false;
     }
 
+    bool t2CSSParser::idSelector(string group, t2Rule *rule)
+    {
+        // --!not supported
+        return true;
+    }
+
     bool t2CSSParser::selectors(t2Rule *rule)
     {
         // selector
@@ -220,6 +226,9 @@ namespace TattyUI
             
             // 元素选择器+伪类选择器
             elementSelector(allSelector, rule);
+
+            // id选择器+伪类选择器
+            idSelector(allSelector, rule);
 
             groupString = groupM.suffix().str();
         }
@@ -289,8 +298,11 @@ namespace TattyUI
                 printf("property: missing value!\n");
                 return;
             }
-
+            // --!not good
+            // 删除''与""
             declaration->value = valurM[0];
+            if(declaration->value[0] == '\''|| declaration->value[0] == '\"')
+                declaration->value = declaration->value.substr(1, declaration->value.length() - 2);
 
             // ^
             // [;\s]* 零个或多个空白符或;结尾

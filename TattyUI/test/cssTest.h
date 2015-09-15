@@ -3,7 +3,8 @@
 
 using namespace TattyUI;
 //#define T2_CPPREGEX_TEST
-#define T2_CSSPARSER_TEST
+//#define T2_CSSPARSER_TEST
+#define T2_CSSDIV_TEST
 
 int main()
 {
@@ -114,6 +115,125 @@ int main()
         cout << endl;
     }
 
+#endif
+
+#ifdef T2_CSSDIV_TEST
+    // TattyUI
+    t2WindowBase *window = new t2WindowBase();
+    window->setResizable(true);
+    window->setMode(T2_WINDOW_WINDOWED);
+    window->setup(960, 960);
+    window->setPosition(50, 50);
+    window->setTitle("TattyUI");
+    window->initCallBack();
+    window->setVeticalSync(false);
+
+    t2Div root(800, 800, "mono", "../resources/font/Roboto-Regular.ttf"),
+        div1(300, 120, "mono", "../resources/font/Roboto-Regular.ttf"),
+        div2(300, 120, "mono", "../resources/font/Roboto-Regular.ttf"),
+        div3(300, 120, "mono", "../resources/font/Roboto-Regular.ttf");
+
+    root.className = "root";
+    div1.className = "div1";
+    div2.className = "div2";
+    div3.className = "div3";
+
+    root.normal.text = "Root";
+    div1.normal.text = "Div1";
+    div2.normal.text = "Div2";
+    div3.normal.text = "Div3";
+
+	root.hover.text = "Root";
+	div1.hover.text = "Div1";
+	div2.hover.text = "Div2";
+    div3.hover.text = "Div3";
+
+	root.active.text = "Root";
+	div1.active.text = "Div1";
+	div2.active.text = "Div2";
+    div3.active.text = "Div3";
+
+    div1.parent = &root;
+    div2.parent = &root;
+    div3.parent = &root;
+
+    div1.next = &div2;
+    div2.next = &div3;
+
+    root.child = &div1;
+
+    root.mouseMovedIn = [](int x, int y, int px, int py)
+    {
+        t2Log("Root MovedIn\n");
+    };
+
+    root.mouseMovedOut = [](int x, int y, int px, int py)
+    {
+        t2Log("Root MovedOut\n");
+    };
+
+    div1.mouseMovedIn = [](int x, int y, int px, int py)
+    {
+        t2Log("Div1 MovedIn\n");
+    };
+
+    div1.mouseMovedOut = [](int x, int y, int px, int py)
+    {
+        t2Log("Div1 MovedOut\n");
+    };
+
+    div2.mouseMovedIn = [](int x, int y, int px, int py)
+    {
+        t2Log("Div2 MovedIn\n");
+    };
+
+    div2.mouseMovedOut = [](int x, int y, int px, int py)
+    {
+        t2Log("Div2 MovedOut\n");
+    };
+
+    div3.mouseMovedIn = [](int x, int y, int px, int py)
+    {
+        t2Log("Div3 MovedIn\n");
+    };
+
+    div3.mouseMovedOut = [](int x, int y, int px, int py)
+    {
+        t2Log("Div3 MovedOut\n");
+    };
+
+    t2Renderer *renderer = t2Renderer::getInstance();
+    renderer->setFont("mono");
+
+    t2DivController *divController = t2DivController::getInstance();
+    divController->addDiv("div2", &div2);
+    divController->addDiv("div1", &div1);
+    divController->addDiv("root", &root);
+    divController->addDiv("div3", &div3);
+
+    divController->setRoot("root");
+
+    t2CSSController *cssCon = t2CSSController::getInstance();
+    vector<string> files;
+    files.push_back("../bin/script/css/test2.css");
+    cssCon->loadCSS(files);
+
+    divController->init();
+
+    while(1)
+    {
+        renderer->clear(210, 210, 210);
+
+        renderer->begin();
+
+        divController->draw();
+
+        renderer->end();
+
+        window->swapBuffer();
+
+        window->processEvents();
+    }
 #endif
 
     getchar();
