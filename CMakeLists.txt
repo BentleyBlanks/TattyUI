@@ -7,6 +7,7 @@ INCLUDE_DIRECTORIES(
 	"${CMAKE_SOURCE_DIR}/dependency/glfw/include/"
 	"${CMAKE_SOURCE_DIR}/dependency/glew/include/"
 	"${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/include/"
+	"${CMAKE_SOURCE_DIR}/dependency/gumbo/include/"
 )
 
 # print
@@ -16,6 +17,7 @@ link_directories(
 	"${CMAKE_SOURCE_DIR}/dependency/glfw/lib/"
 	"${CMAKE_SOURCE_DIR}/dependency/glew/lib/"
 	"${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/lib/"
+	"${CMAKE_SOURCE_DIR}/dependency/gumbo/lib/"
 )
 
 #AUX_SOURCE_DIRECTORY(src DIR_SRCS)
@@ -84,11 +86,19 @@ SOURCE_GROUP("TattyUI\\script" FILES ${script_h})
 FILE(GLOB script_cpp "./TattyUI/script/*.cpp") 
 SOURCE_GROUP("TattyUI\\script" FILES ${script_cpp})
 
+# css
 FILE(GLOB script_h "./TattyUI/script/css/*.h") 
 SOURCE_GROUP("TattyUI\\script\\css" FILES ${script_h})
 
 FILE(GLOB script_cpp "./TattyUI/script/css/*.cpp") 
 SOURCE_GROUP("TattyUI\\script\\css" FILES ${script_cpp})
+
+# html
+FILE(GLOB html_h "./TattyUI/script/html/*.h") 
+SOURCE_GROUP("TattyUI\\script\\html" FILES ${html_h})
+
+FILE(GLOB html_cpp "./TattyUI/script/html/*.cpp") 
+SOURCE_GROUP("TattyUI\\script\\html" FILES ${html_cpp})
 
 # event
 FILE(GLOB event_h "./TattyUI/controller/event/*.h") 
@@ -120,6 +130,7 @@ ADD_EXECUTABLE(TattyUI ${MAIN}
 	${test_h} ${test_cpp}
 	${event_h} ${event_cpp}
 	${script_h} ${script_cpp}
+	${html_h} ${html_cpp}
 	${t3DataStructures_h} ${t3DataStructures_common_h} ${t3DataStructures_linearList_h})
 
 
@@ -132,3 +143,4 @@ TARGET_LINK_LIBRARIES(TattyUI glfw3)
 TARGET_LINK_LIBRARIES(TattyUI glew32s)
 TARGET_LINK_LIBRARIES(TattyUI t3DataStructures)
 TARGET_LINK_LIBRARIES(TattyUI OpenGL32)
+TARGET_LINK_LIBRARIES(TattyUI gumbo)

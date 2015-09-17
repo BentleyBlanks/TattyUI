@@ -17,6 +17,9 @@ namespace TattyUI
     class t2Div
     {
     public:
+        // --!fontName fontPath可以缺省直接由css提供
+        t2Div();
+        // 由宿主语言直接创建div
         t2Div(int width, int height, string fontName, string fontPath);
 
         // --!一定要在css内容都已经完成赋值后才可调用

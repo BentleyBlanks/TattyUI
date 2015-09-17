@@ -6,6 +6,7 @@
 
 namespace TattyUI
 {
+    class t2Renderer;
     class t2LinearGradient;
     class t2BoxGradient;
     //class t2WindowBase;
@@ -15,13 +16,13 @@ namespace TattyUI
     public:
         static t2Window* getInstance();
 
-        void init(string title, int width, int height, int positionX = 0, int positionY = 0);
+        void init(string title, string fontFamily, int width, int height, int positionX = 0, int positionY = 0);
 
         void draw();
 
-        void setTitleBar(int height);
+        void setTitleBarHeight(int height);
 
-        int getTitleBar();
+        int getTitleBarHeight();
 
         void setDrag(bool drag);
 
@@ -37,6 +38,9 @@ namespace TattyUI
 
         // 给定点是否在标题栏中
         bool inTitleBar(int x, int y);
+
+        // 窗口发生变动
+        void resized();
 
         // 实际窗口
         t2WindowBase* window;
@@ -59,10 +63,12 @@ namespace TattyUI
 
         // 最小化 最大化 关闭按钮
         class t2Button;
-        t2Button *close, *maximize, *minimize;
+        t2Button *buttons;
 
         // 标题栏高度
         int titleBarHeight;
+        // 标题字体
+        string titileFontFamily;
 
         // 窗口圆角
         int windowRadius;
@@ -73,6 +79,9 @@ namespace TattyUI
         // 标题栏
         t2LinearGradient *titleBar;
         t2BoxGradient *titleBarShadow;
+        
+        // 渲染器
+        t2Renderer *renderer;
     };
 }
 

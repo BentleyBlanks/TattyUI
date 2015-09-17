@@ -4,10 +4,18 @@
 #include <TattyUI/common/t2Math.h>
 #include <LinearList/t3Queue.h>
 
+#include <TattyUI/common/t2Window.h>
+
 #define renderer t2Renderer::getInstance()
 
 namespace TattyUI
 {
+    // 委托构造函数
+    t2Div::t2Div() :t2Div(0, 0, "", "")
+    {
+
+    }
+
     t2Div::t2Div(int width, int height, string fontName, string fontPath) :status(T2_NORMAL), parent(NULL), next(NULL), child(NULL),
         bDrawMarginAABB(false), bDrawPaddingAABB(false), bHover(false), bNormal(false), bActive(false)
     {
@@ -41,7 +49,8 @@ namespace TattyUI
         normal.minWidth = normal.width;
         normal.minHeight = normal.height;
 
-        renderer->loadFont(normal.fontName.c_str(), normal.fontFamily.c_str());
+        // 假定fontName直接与fontFamily同名
+        renderer->loadFont(normal.fontFamily.c_str(), normal.fontFamily.c_str());
 
         // hover
         hover.boxGradient.set(hover.x + hover.hBoxShadow, hover.y + hover.vBoxShadow, hover.width, hover.height,
@@ -53,7 +62,7 @@ namespace TattyUI
         hover.minWidth = hover.width;
         hover.minHeight = hover.height;
 
-        renderer->loadFont(hover.fontName.c_str(), hover.fontFamily.c_str());
+        renderer->loadFont(hover.fontFamily.c_str(), hover.fontFamily.c_str());
 
         // active
         active.boxGradient.set(active.x + active.hBoxShadow, active.y + active.vBoxShadow, active.width, active.height,
@@ -65,7 +74,7 @@ namespace TattyUI
         active.minWidth = active.width;
         active.minHeight = active.height;
 
-        renderer->loadFont(active.fontName.c_str(), active.fontFamily.c_str());
+        renderer->loadFont(active.fontFamily.c_str(), active.fontFamily.c_str());
 
         // --!可选更新为静态，也就是只会在初始化时计算其位置
         //updateContent();
@@ -111,7 +120,7 @@ namespace TattyUI
 
         // text
         renderer->setTextColor(css.textColor);
-        renderer->setFont(css.fontName.c_str());
+        renderer->setFont(css.fontFamily.c_str());
         int align, textX = css.contentSize.x + css.contentSize.width / 2, textY = css.contentSize.y + css.contentSize.height / 2;
 
         if(css.textAlign & T2_TEXT_LEFT)
@@ -167,6 +176,7 @@ namespace TattyUI
 
     void t2Div::updateContent()
     {
+        t2Window* window = t2Window::getInstance();
         // --!这里的内容可以由layoutController完成
         t2Style& css = getCSS();
 
@@ -174,10 +184,10 @@ namespace TattyUI
         if(!parent)
         {
             css.x = css.marginLeft;
-            css.y = css.marginTop;
+            css.y = css.marginTop + window->getTitleBarHeight();
 
             css.contentSize.x = css.marginLeft + css.paddingLeft;
-            css.contentSize.y = css.marginTop + css.paddingTop;
+            css.contentSize.y = css.marginTop + css.paddingTop + window->getTitleBarHeight();
 
             int tempWidth = css.width - css.paddingLeft - css.paddingRight;
             css.contentSize.width = (tempWidth > 0) ? tempWidth : 0;

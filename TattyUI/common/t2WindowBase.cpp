@@ -125,12 +125,13 @@ namespace TattyUI
                 else
                 {
                     SetWindowLong(hwnd, GWL_STYLE, WS_POPUP);
-                    SetWindowLong(hwnd, GWL_EXSTYLE, 0);
+                    //SetWindowLong(hwnd, GWL_EXSTYLE, 0);
                     //SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPED | WS_SYSMENU);
                 }
 
                 // 设置窗口圆角
                 SetWindowPos(hwnd, HWND_TOP, position.x, position.y, width, height, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+
                 HRGN hRGN1 = CreateRoundRectRgn(position.x, position.y, width, height, radius, radius);
                 SetWindowRgn(hwnd, hRGN1, TRUE);
 #endif
@@ -398,6 +399,25 @@ namespace TattyUI
 		SetWindowPos(hwnd, HWND_TOPMOST, monitorX, monitorY, fullscreenWidth, fullscreenHeight, SWP_SHOWWINDOW);
 	}
 
+    void t2WindowBase::maximize()
+    {
+#ifdef T2_PLATFORM_WINDOWS
+        static bool restore = true;
+        if(restore)
+            ShowWindow(getHwnd(), SW_MAXIMIZE);
+        else
+            ShowWindow(getHwnd(), SW_RESTORE);
+        restore = !restore;
+#endif
+    }
+
+    void t2WindowBase::minimize()
+    {
+#ifdef T2_PLATFORM_WINDOWS
+        ShowWindow(getHwnd(), SW_MINIMIZE);
+#endif
+    }
+
 	void t2WindowBase::hideCursor(bool hide)
 	{
 		if (hide)
@@ -441,6 +461,8 @@ namespace TattyUI
 	void t2WindowBase::exit()
 	{
 		glfwTerminate();
+
+        std::exit(0);
 	}
 
 	// 获得当前焦点所在的窗口的序号
@@ -496,9 +518,9 @@ namespace TattyUI
 // mouse
 void t2GetMousePos(float64 *x, float64 *y)
 {
-	//glfwGetCursorPos(glfwWindow, x, y);
-	//mouseX = *x;
-	//mouseY = *y;
+    glfwGetCursorPos(glfwWindow, x, y);
+    mouseX = *x;
+    mouseY = *y;
 }
 
 float64 t2GetMouseX()

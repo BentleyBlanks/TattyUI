@@ -62,6 +62,8 @@
 
 // 渲染平台选择
 #define T2_RENDERER_NANOVG
+// 解析器选择
+#define T2_HTMLPARSER_GUMBO
 
 // nanovg
 // 移动平台使用 gles2, 桌面平台使用gl2
@@ -353,6 +355,9 @@ struct t2Version
 		std::cout << "TattyUI版本:" << major << "." << minor << "." << revision << std::endl;
 	}
 };
+
+// 全局Div id生成器
+string getDivGlobalID();
 
 #ifdef T2_PLATFORM_WINDOWS
 // --!OSX下自带该函数 并不清楚Win32为何没有

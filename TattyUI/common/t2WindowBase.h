@@ -56,6 +56,11 @@ namespace TattyUI
 
 		void setIcon();
 
+        // 最小化 最大化操作
+        void maximize();
+
+        void minimize();
+
 		// 窗口相关属性
 		void setVeticalSync(bool verticalSync);
 

@@ -13,4 +13,8 @@
 // 正则表达式测试
 //#include <TattyUI/test/cssTest.h>
 
-#include <TattyUI/test/windowTest.h>
+// TattyUI窗口测试
+//#include <TattyUI/test/windowTest.h>
+
+// HTML解析测试
+#include <TattyUI/test/htmlTest.h>

@@ -143,8 +143,6 @@ namespace TattyUI
         int textAlign;
         // 设置单词间距
         int wordSpacing;
-        // 文本内容
-        string text;
 
         // text-shadow
         int hTextShadow, vTextShadow;
@@ -153,6 +151,9 @@ namespace TattyUI
 
         // 辅助属性
         // 其他辅助属性
+        // 文本内容
+        string text;
+
         t2BoxGradient boxGradient;
 
         string fontName;

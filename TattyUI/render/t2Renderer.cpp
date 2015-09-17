@@ -34,7 +34,7 @@ namespace TattyUI
 
         float vgStrokeWidth;
 
-        string *fontName;
+        string fontName;
     };
 
 	t2Renderer* t2Renderer::getInstance()
@@ -125,11 +125,11 @@ namespace TattyUI
 
     void t2Renderer::setFont(const char* name)
     {
-        // --!
-        if(!context->fontName)
-            delete context->fontName;
+        // --!内存泄露
+        //if(!context->fontName)
+          //  delete context->fontName;
 
-        context->fontName = new string(name);
+        context->fontName = string(name);
     }
 
     void t2Renderer::drawEllipse(float x, float y, float rx, float ry, bool bFill)
@@ -373,7 +373,7 @@ namespace TattyUI
     {
         nvgFontBlur(context->vg, blur);
         nvgFontSize(context->vg, size);
-        nvgFontFace(context->vg, context->fontName->c_str());
+        nvgFontFace(context->vg, context->fontName.c_str());
         nvgTextAlign(context->vg, align);
         nvgFillColor(context->vg, context->vgTextColor);
         nvgText(context->vg, x, y, caption.c_str(), nullptr);

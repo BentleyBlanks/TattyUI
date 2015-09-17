@@ -352,7 +352,7 @@ namespace TattyUI
         }
         // text
         // 设置文本的颜色
-        else if(!stricmp(pro.c_str(), "text-color"))
+        else if(!stricmp(pro.c_str(), "color"))
         {
             css.textColor.set(decl->value);
         }
@@ -375,11 +375,6 @@ namespace TattyUI
         else if(!stricmp(pro.c_str(), "word-spacing"))
         {
             // --! not sure
-        }
-        // 文本内容
-        else if(!stricmp(pro.c_str(), "text"))
-        {
-            css.text = decl->value;
         }
         // text-shadow
         else if(!stricmp(pro.c_str(), "hTextShadow"))

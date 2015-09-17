@@ -33,7 +33,7 @@ namespace TattyUI
         //root->draw();
 
         // --!层序遍历
-        t3Queue<t2Div*> queue;
+        static t3Queue<t2Div*> queue;
 
         if(!root) return;
 
@@ -41,8 +41,6 @@ namespace TattyUI
 
         for(;;)
         {
-            //queue.print();
-
             t2Div* temp;
 
             if(queue.isEmpty())
@@ -274,7 +272,9 @@ namespace TattyUI
     {
         for(auto x : divTable)
         {
-            std::cout << x.first << endl;
+            std::cout << "t2Div id: " << x.first;
+            std::cout << ", class: " << x.second->className;
+            std::cout << ", text: " << x.second->getCSS().text << endl;
         }
     }
 }

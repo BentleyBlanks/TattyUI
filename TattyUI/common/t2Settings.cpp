@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <strstream>
 
 // --！重大革新:小改动:BUG修复
-t2Version tattyVersion = { 0, 0, 6 };
+t2Version tattyVersion = { 0, 0, 7 };
 
 // 注意:只能在Debug模式下才能使用
 void t2Log(const char* string, ...)
@@ -35,6 +36,18 @@ int strcasecmp(const char *a, const char *b)
 }
 #endif
 
+std::string getDivGlobalID()
+{
+    static int id = 0;
+
+    std::strstream ss;
+    std::string s = "TattyUI_Global_Div_ID_", num;
+    ss << id++;
+    ss >> num;
+    s += num;
+
+    return s;
+}
 
 static int t2WindowWidth = 0, t2WindowHeight = 0;
 

@@ -13,3 +13,7 @@
 #include <TattyUI/script/css/t2CSSController.h>
 
 #include <TattyUI/script/css/t2CSSParser.h>
+
+#include <TattyUI/script/html/t2HTMLController.h>
+
+#include <TattyUI/script/html/t2HTMLParser.h>
