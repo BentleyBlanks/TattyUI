@@ -130,19 +130,30 @@ namespace TattyUI
         //    break;
         //}
 
+        
+
         // close
         switch(closeStatus)
         {
         case T2_NORMAL:
-            closeNormal.drawInRect(closePos.x, closePos.y, closeNormal.getWidth(), closeNormal.getHeight());
+            if(closeNormal.isLoaded())
+                closeNormal.drawInRect(closePos.x, closePos.y, closeNormal.getWidth(), closeNormal.getHeight());
+            else
+                t2Log("未能加载icon: closeNormal\n");
             break;
 
         case T2_HOVER:
-            closeHover.drawInRect(closePos.x, closePos.y, closeHover.getWidth(), closeHover.getHeight());
+            if(closeHover.isLoaded())
+                closeHover.drawInRect(closePos.x, closePos.y, closeHover.getWidth(), closeHover.getHeight());
+            else
+                t2Log("未能加载icon: closeHover\n");
             break;
 
         case T2_ACTIVE:
-            closePressed.drawInRect(closePos.x, closePos.y, closePressed.getWidth(), closePressed.getHeight());
+            if(closePressed.isLoaded())
+                closePressed.drawInRect(closePos.x, closePos.y, closePressed.getWidth(), closePressed.getHeight());
+            else
+                t2Log("未能加载icon: closePressed\n");
             break;
         }
 
@@ -150,15 +161,24 @@ namespace TattyUI
         switch(maximizeStatus)
         {
         case T2_NORMAL:
-            maximizeNormal.drawInRect(maximizePos.x, maximizePos.y, maximizeNormal.getWidth(), maximizeNormal.getHeight());
+            if(maximizeNormal.isLoaded())
+                maximizeNormal.drawInRect(maximizePos.x, maximizePos.y, maximizeNormal.getWidth(), maximizeNormal.getHeight());
+            else
+                t2Log("未能加载icon: maximizeNormal\n");
             break;
 
         case T2_HOVER:
-            maximizeHover.drawInRect(maximizePos.x, maximizePos.y, maximizeHover.getWidth(), maximizeHover.getHeight());
+            if(maximizeHover.isLoaded())
+                maximizeHover.drawInRect(maximizePos.x, maximizePos.y, maximizeHover.getWidth(), maximizeHover.getHeight());
+            else
+                t2Log("未能加载icon: maximizeHover\n");
             break;
 
         case T2_ACTIVE:
-            maximizePressed.drawInRect(maximizePos.x, maximizePos.y, maximizePressed.getWidth(), maximizePressed.getHeight());
+            if(maximizePressed.isLoaded())
+                maximizePressed.drawInRect(maximizePos.x, maximizePos.y, maximizePressed.getWidth(), maximizePressed.getHeight());
+            else
+                t2Log("未能加载icon: maximizePressed\n");
             break;
         }
 
@@ -166,15 +186,24 @@ namespace TattyUI
         switch(minimizeStatus)
         {
         case T2_NORMAL:
-            minimizeNormal.drawInRect(minimizePos.x, minimizePos.y, minimizeNormal.getWidth(), minimizeNormal.getHeight());
+            if(minimizeNormal.isLoaded())
+                minimizeNormal.drawInRect(minimizePos.x, minimizePos.y, minimizeNormal.getWidth(), minimizeNormal.getHeight());
+            else
+                t2Log("未能加载icon: minimizeNormal\n");
             break;
 
         case T2_HOVER:
-            minimizeHover.drawInRect(minimizePos.x, minimizePos.y, minimizeHover.getWidth(), minimizeHover.getHeight());
+            if(minimizeNormal.isLoaded())
+                minimizeHover.drawInRect(minimizePos.x, minimizePos.y, minimizeHover.getWidth(), minimizeHover.getHeight());
+            else
+                t2Log("未能加载icon: minimizeHover\n");
             break;
 
         case T2_ACTIVE:
-            minimizePressed.drawInRect(minimizePos.x, minimizePos.y, minimizePressed.getWidth(), minimizePressed.getHeight());
+            if(minimizePressed.isLoaded())
+                minimizePressed.drawInRect(minimizePos.x, minimizePos.y, minimizePressed.getWidth(), minimizePressed.getHeight());
+            else
+                t2Log("未能加载icon: minimizePressed\n");
             break;
         }
     }

@@ -168,7 +168,6 @@ int main()
     htmlController->parse();
 
     t2DivController* divController = t2DivController::getInstance();
-    divController->print();
     divController->init();
 
     t2Renderer *renderer = t2Renderer::getInstance();
