@@ -1,0 +1,84 @@
+.div1{
+	background-color: #0000CD;
+	border-radius: 10;
+	width: 400;
+	height: 120;
+	margin-left: 30;
+	margin-top: 30;
+	margin-bottom: 30;
+	margin-right: 30;
+}
+
+.div1:hover{
+	background-color: #0000FF;
+}
+
+.div1:active{
+	background-color: #00008B;
+}
+
+.div2, .div3{
+	/*background-image: "../resources/image/2.jpeg";*/
+	color: #000000;
+	background-color: #F5DEB3;
+	border-radius: 10;
+	width: 500;
+	height: 120;
+	margin-left: 30;
+	margin-top: 30;
+	margin-bottom: 30;
+	margin-right: 30;
+}
+
+.div2:hover, .div3:hover{
+	background-color: #F5F5F5;
+	/*background-image: "../resources/image/2.jpeg";*/
+}
+
+.div2:active, .div3:active{
+	background-color: #F4A460;
+	/*background-image: "../resources/image/2.jpeg";*/
+}
+
+/*******
+********
+Comment Test
+*******
+********/
+
+.root{
+	font-family: "../resources/font/mono.ttf";
+	background-color: #DDDDDD;
+	font-size: 25;
+	width: 1250;
+	height: 400;
+}
+
+.root:hover{
+	/*background-color: #00BFFF;*/
+}
+
+.root:active{
+	/*background-color: #00FA9A;*/
+}
+
+.div4{
+	font-family: "../resources/font/mono.ttf";
+	font-size: 25;
+	background-color: #0000CD;
+	border-radius: 10;
+	width: 400;
+	height: 120;
+	margin-left: 30;
+	margin-top: 30;
+	margin-bottom: 30;
+	margin-right: 30;
+}
+
+.div4:hover{
+	background-color: #0000FF;
+}
+
+.div4:active{
+	background-color: #00008B;
+}

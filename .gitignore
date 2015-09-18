@@ -19,7 +19,7 @@ README~
 #*.png
 *.psess
 *.vsp
-bin
+#bin
 build
 framework
 resources

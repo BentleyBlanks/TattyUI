@@ -1,0 +1,40 @@
+/*World*/
+body, head:active, button:focus, .button{
+	/****
+ 	* Common multi-line comment style.
+ 	****/
+	/****
+ 	* Another common multi-line comment style.
+ 	*/
+	background-color: #d0e4fe;
+	font-family: Hello, Hi;
+	font-size: 20;
+}
+
+h1, h2, h3{
+	color: orange;
+	/*Whos*/
+	text-align: center;
+}
+
+p{
+	font-family: "Times New Roman";
+	font-size: 20px;
+}
+
+body{
+
+	background-color: #d0e4fe;
+}
+
+h1{
+	color: orange;
+
+	text-align: center;
+}
+
+#p{
+	font-family: "Times New Roman";
+	
+	font-size: 20px;
+}
