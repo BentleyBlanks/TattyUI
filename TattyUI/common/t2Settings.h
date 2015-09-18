@@ -359,6 +359,8 @@ struct t2Version
 // 全局Div id生成器
 string getDivGlobalID();
 
+string getRootDivGlobalID();
+
 #ifdef T2_PLATFORM_WINDOWS
 // --!OSX下自带该函数 并不清楚Win32为何没有
 int strcasecmp(const char *a, const char *b);

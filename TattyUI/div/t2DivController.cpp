@@ -34,9 +34,7 @@ namespace TattyUI
 
         // --!层序遍历
         static t3Queue<t2Div*> queue;
-
         if(!root) return;
-
         queue.push(root);
 
         for(;;)
@@ -64,7 +62,8 @@ namespace TattyUI
     void t2DivController::init()
     {
         for(auto it : divTable)
-            it.second->init();
+            if(it.first != getRootDivGlobalID())
+                it.second->init();
     }
 
     bool t2DivController::setRoot(string rootName)
@@ -276,5 +275,29 @@ namespace TattyUI
             std::cout << ", class: " << x.second->className;
             std::cout << ", text: " << x.second->getCSS().text << endl;
         }
+
+        static t3Queue<t2Div*> queue;
+        if(!root) return;
+        queue.push(root);
+        for(;;)
+        {
+            t2Div* temp;
+
+            if(queue.isEmpty()) temp = NULL;
+            else temp = queue.pop();
+
+            if(temp)
+            {
+                std::cout << "class: " << temp->className;
+                std::cout << ", text: " << temp->getCSS().text << endl;
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else
+                break;
+        }
+
     }
 }

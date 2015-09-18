@@ -12,6 +12,18 @@
 
 namespace TattyUI
 {
+    class t2Element
+    {
+    public:
+        t2Element(GumboNode* node) :node(node)
+        {
+            div = new t2Div();
+        }
+
+        GumboNode* node;
+        t2Div* div;
+    };
+
     class t2HTMLParser::t2LabelParser
     {
     public:
@@ -108,20 +120,32 @@ namespace TattyUI
 
     void t2HTMLParser::t2LabelParser::body(GumboNode *b)
     {
-        static t3Queue<GumboNode*> queue;
-        queue.push(b);
+        static t3Queue<t2Element*> queue;
+        t2Element* element = new t2Element(b);
+
+        // --!这里body下有一个隐藏的div，长宽与窗口一致
+        string rootID = getRootDivGlobalID();
+        t2DivController::getInstance()->addDiv(rootID, element->div);
+        t2DivController::getInstance()->setRoot(rootID);
+        element->div->normal.width = t2GetWindowWidth();
+        element->div->normal.height = t2GetWindowHeight();
+        element->div->hover = element->div->normal;
+        element->div->active = element->div->normal;
+
+        queue.push(element);
         for(;;)
         {
-            GumboNode* child;
-            if(queue.isEmpty()) child = NULL;
-            else child = queue.pop();
+            t2Element* e;
+            if(queue.isEmpty()) e = NULL;
+            else e = queue.pop();
 
-            if(child)
+            if(e)
             {
+                GumboNode* child = e->node;
                 // find div
                 if(child->type == GUMBO_NODE_ELEMENT && child->v.element.tag == GUMBO_TAG_DIV)
                 {
-                    t2Div *div = new t2Div();
+                    t2Div *div = e->div;
 
                     // find className
                     GumboAttribute *className = gumbo_get_attribute(&child->v.element.attributes, "class");
@@ -149,12 +173,33 @@ namespace TattyUI
                     t2DivController::getInstance()->addDiv(id, div);
                 }
 
+                t2Div *brother = NULL;
                 // 将所有兄弟结点入队列
                 for(int i = 0; i < child->v.element.children.length; i++)
                 {
-                    GumboNode *c = (GumboNode *)child->v.element.children.data[i];
+                    GumboNode *c = (GumboNode *) child->v.element.children.data[i];
                     if(c->type == GUMBO_NODE_ELEMENT && c->v.element.tag == GUMBO_TAG_DIV)
-                        queue.push(c);
+                    {
+                        // 多叉树的复制
+                        t2Element* element = new t2Element(c);
+                        // 第一个兄弟结点
+                        if(!brother)
+                        {
+                            // 子节点
+                            e->div->child = element->div;
+                            element->div->parent = e->div;
+                        }
+                        else
+                        {
+                            // 父节点
+                            element->div->parent = e->div;
+                            brother->next = element->div;
+                        }
+
+                        // 更新兄弟结点
+                        brother = element->div;
+                        queue.push(element);
+                    }
                 }
             }
             else
@@ -202,6 +247,10 @@ namespace TattyUI
             t2PrintError("html文件未被加载, 无法解析");
 
         parser->parse(html.c_str());
+
+        // --!设计失误 拷贝css地址
+        for(auto p : parser->cssFilePaths)
+            cssFilePaths.push_back(p);
     }
 
     void t2HTMLParser::set(string& html)

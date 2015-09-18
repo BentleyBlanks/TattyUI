@@ -49,6 +49,11 @@ std::string getDivGlobalID()
     return s;
 }
 
+std::string getRootDivGlobalID()
+{
+    return string("TattyUI_Global_Div_ID_ROOT");
+}
+
 static int t2WindowWidth = 0, t2WindowHeight = 0;
 
 void t2SetWindowWidth(int width)

@@ -1,5 +1,6 @@
 #include <TattyUI/script/html/t2HTMLController.h>
 #include <TattyUI/script/html/t2HTMLParser.h>
+#include <TattyUI/script/css/t2CSSController.h>
 
 namespace TattyUI
 {
@@ -28,5 +29,9 @@ namespace TattyUI
     {
         for(auto p : parser)
             p->parse();
+
+        // 所有html初始化完毕后 初始化css
+        for(auto a : parser)
+            t2CSSController::getInstance()->loadCSS(a->cssFilePaths);
     }
 }

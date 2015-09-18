@@ -466,6 +466,12 @@ namespace TattyUI
 
     void t2Renderer::loadFont(const char* name, const char* filename)
     {
+        if(!strcmp(name, "") || !strcmp(filename, ""))
+        {
+            t2PrintError("无法创建空字体\n");
+            return;
+        }
+
         if(-1 == nvgCreateFont(context->vg, name, filename))
         {
             t2PrintError("创建字体失败\n");
