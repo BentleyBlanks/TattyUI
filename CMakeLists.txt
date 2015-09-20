@@ -8,6 +8,7 @@ INCLUDE_DIRECTORIES(
 	"${CMAKE_SOURCE_DIR}/dependency/glew/include/"
 	"${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/include/"
 	"${CMAKE_SOURCE_DIR}/dependency/gumbo/include/"
+	"${CMAKE_SOURCE_DIR}/dependency/nanovg/include/src"
 )
 
 # print
@@ -28,13 +29,13 @@ link_directories(
 #add file to ide
 # t3DataStructures
 FILE(GLOB t3DataStructures_h "${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/include/LinearList/*.h") 
-SOURCE_GROUP("t3DataStructures\\LinearList" FILES ${t3DataStructures_h})
+SOURCE_GROUP("ThirdParty\\t3DataStructures\\LinearList" FILES ${t3DataStructures_h})
 
 FILE(GLOB t3DataStructures_common_h "${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/include/Common/*.h") 
-SOURCE_GROUP("t3DataStructures\\Common" FILES ${t3DataStructures_common_h})
+SOURCE_GROUP("ThirdParty\\t3DataStructures\\Common" FILES ${t3DataStructures_common_h})
 
 FILE(GLOB t3DataStructures_linearList_h "${CMAKE_SOURCE_DIR}/dependency/t3DataStructures/include/LinearList/*.h") 
-SOURCE_GROUP("t3DataStructures\\LinearList" FILES ${t3DataStructures_linearList_h})
+SOURCE_GROUP("ThirdParty\\t3DataStructures\\LinearList" FILES ${t3DataStructures_linearList_h})
 
 # entrance
 FILE(GLOB MAIN "./TattyUI/*.h") 
@@ -63,14 +64,26 @@ FILE(GLOB t2_render_cpp "./TattyUI/render/*.cpp")
 SOURCE_GROUP("TattyUI\\render" FILES ${t2_render_cpp})
 
 # nanovg
-FILE(GLOB render_h "./TattyUI/render/nanovg/src/*.h" ) 
-SOURCE_GROUP("TattyUI\\render\\nanovg" FILES ${render_h})
+FILE(GLOB render_h "${CMAKE_SOURCE_DIR}/dependency/nanovg/include/src/*.h" ) 
+SOURCE_GROUP("ThirdParty\\nanovg" FILES ${render_h})
 
-FILE(GLOB renderer_cpp "./TattyUI/render/nanovg/src/*.cpp") 
-SOURCE_GROUP("TattyUI\\render\\nanovg" FILES ${render_cpp})
+FILE(GLOB renderer_cpp "${CMAKE_SOURCE_DIR}/dependency/nanovg/include/src/*.cpp") 
+SOURCE_GROUP("ThirdParty\\nanovg" FILES ${render_cpp})
 
-FILE(GLOB render_c "./TattyUI/render/nanovg/src/*.c") 
-SOURCE_GROUP("TattyUI\\render\\nanovg" FILES ${render_c})
+FILE(GLOB render_c "${CMAKE_SOURCE_DIR}/dependency/nanovg/include/src/*.c") 
+SOURCE_GROUP("ThirdParty\\nanovg" FILES ${render_c})
+
+# glfw
+FILE(GLOB glfw_h "${CMAKE_SOURCE_DIR}/dependency/glfw/include/*.h" ) 
+SOURCE_GROUP("ThirdParty\\glfw" FILES ${glfw_h})
+
+# glew
+FILE(GLOB glew_h "${CMAKE_SOURCE_DIR}/dependency/glew/include/*.h" ) 
+SOURCE_GROUP("ThirdParty\\glew" FILES ${glew_h})
+
+# gumbo
+FILE(GLOB gumbo_h "${CMAKE_SOURCE_DIR}/dependency/gumbo/include/*.h" ) 
+SOURCE_GROUP("ThirdParty\\gumbo" FILES ${gumbo_h})
 
 # widget
 #FILE(GLOB widget_h "./TattyUI/widget/*.h") 
@@ -116,16 +129,16 @@ SOURCE_GROUP("TattyUI\\controller\\event" FILES ${event_cpp})
 
 # main and test
 FILE(GLOB test_h "./TattyUI/test/*.h") 
-SOURCE_GROUP("test" FILES ${test_h})
+SOURCE_GROUP("Test" FILES ${test_h})
 
 FILE(GLOB test_cpp "./TattyUI/test/*.cpp") 
-SOURCE_GROUP("test" FILES ${test_cpp})
+SOURCE_GROUP("Test" FILES ${test_cpp})
 
 #add executable file
 ADD_EXECUTABLE(TattyUI ${MAIN} 
 	${div_h} ${div_cpp}
 	${common_h} ${common_cpp} 
-	${render_h} ${render_cpp} ${render_c}
+	${render_h} ${render_cpp} ${render_c} ${glfw_h} ${glew_h} ${gumbo_h} 
 	${t2_render_h} ${t2_render_cpp}
 	${test_h} ${test_cpp}
 	${event_h} ${event_cpp}

@@ -2,7 +2,7 @@
 
 #ifdef T2_RENDERER_NANOVG
 // 矢量图形库
-#include <TattyUI/render/nanovg/src/nanovg.h>
+#include <nanovg.h>
 #endif
 
 #include <TattyUI/render/t2Renderer.h>

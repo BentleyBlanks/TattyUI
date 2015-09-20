@@ -1,6 +1,6 @@
 /*TattyUI中语句结尾必须有;*/
 .div1{
-	background-color: MediumBlue;
+	background-color: red;
 	border-radius: 10;
 	width: 400;
 	height: 120;
@@ -8,6 +8,9 @@
 	margin-top: 30;
 	margin-bottom: 30;
 	margin-right: 30;
+	/*顺时针 上右下左*/
+	margin: 10, 20, 30, 40;
+	padding: 10, 20, 30, 40;
 }
 
 .div1:hover{
@@ -57,8 +60,8 @@ Comment Test
 	
 	/*与CSS标准不同的是 这里务必要加上,分隔符*/
 	/*最后两个参数分别代表阴影的起始和结束颜色*/
-	box-shadow: 0, 0, 10, #000000, #222222;
-	opacity: 0.5;
+	box-shadow: 0, 0, 10, #000000;
+	/*opacity: 0.5;*/
 }
 
 .root:hover{

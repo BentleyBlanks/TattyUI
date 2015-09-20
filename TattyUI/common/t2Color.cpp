@@ -8,7 +8,7 @@ namespace TattyUI
     static std::map<string, string> colorTable;
 
 	template<typename T>
-	t2Color_<T>::t2Color_<T>() : r(0), g(0), b(0), a(0)
+    t2Color_<T>::t2Color_<T>() : r(255), g(255), b(255), a(255)
 	{
         initColorTable();
 	}
@@ -117,16 +117,11 @@ namespace TattyUI
     template<typename T>
     string t2Color_<T>::find(string colorName)
     {
-        std::map<string, string>::iterator it = colorTable.find(colorName);
-
-        if(it != colorTable.end())
+        // 不区分大小写
+        for(auto c : colorTable)
         {
-            return it->second;
-        }
-        else
-        {
-            t2PrintError("指定颜色名未在CSS支持颜色名表中找到");
-            return "";
+            if(!strcasecmp(c.first.c_str(), colorName.c_str()))
+                return c.second;
         }
     }
 

@@ -18,15 +18,15 @@ namespace TattyUI
         return &temp;
     }
 
-	bool t2CSSController::findByClass(vector<t2ClassSelector*> names, const string& className)
-	{
-		for (auto s : names)
-		{
-			if (s->classSelector == className)
-				return true;
-		}
-		return false;
-	}
+    bool t2CSSController::findByClass(vector<t2ClassSelector*> names, const string& className)
+    {
+        for(auto s : names)
+        {
+            if(s->classSelector == className)
+                return true;
+        }
+        return false;
+    }
 
     void t2CSSController::loadCSS(vector<string> filePaths)
     {
@@ -40,77 +40,77 @@ namespace TattyUI
             parsers.push_back(parser);
         }
 
-		// loop all child 
-		// find if it's style is defined
-		t3Queue<t2Div*> queue;
-		t2Div* root = controller->getRoot();
-		if (!root)
-		{
-			t2PrintError("Please set root first!");
-			return;
-		}
+        // loop all child 
+        // find if it's style is defined
+        t3Queue<t2Div*> queue;
+        t2Div* root = controller->getRoot();
+        if(!root)
+        {
+            t2PrintError("Please set root first!");
+            return;
+        }
 
-		queue.push(root);
-		for (;;)
-		{
-			t2Div* div;
-			if (queue.isEmpty()) div = NULL;
-			else div = queue.pop();
+        queue.push(root);
+        for(;;)
+        {
+            t2Div* div;
+            if(queue.isEmpty()) div = NULL;
+            else div = queue.pop();
 
-			if (div)
-			{
-				toDiv(div);
+            if(div)
+            {
+                toDiv(div);
 
-				// 将所有兄弟结点入队列
-				for (t2Div* c = div->child; c != NULL; c = c->next)
-					queue.push(c);
-			}
-			else
-				break;
-		}
+                // 将所有兄弟结点入队列
+                for(t2Div* c = div->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else
+                break;
+        }
 
     }
 
-	void t2CSSController::toDiv(t2Div* div)
-	{
-		// div挂钩css
-		for (auto parser : parsers)
-		{
-			for (auto rule : parser->ruleList)
-			{
-				for (auto selector : rule->classSelectors)
-				{
-					// 类选择器
-					string classSelector = selector->classSelector;
+    void t2CSSController::toDiv(t2Div* div)
+    {
+        // div挂钩css
+        for(auto parser : parsers)
+        {
+            for(auto rule : parser->ruleList)
+            {
+                for(auto selector : rule->classSelectors)
+                {
+                    // 类选择器
+                    string classSelector = selector->classSelector;
 
-					// 伪类
-					string pseudo = selector->pseudoSelector;
+                    // 伪类
+                    string pseudo = selector->pseudoSelector;
 
-					if (!findByClass(rule->classSelectors, div->className))
-						continue;
+                    if(!findByClass(rule->classSelectors, div->className))
+                        continue;
 
-					if (!stricmp(pseudo.c_str(), "active"))
-						div->setStatus(T2_ACTIVE);
-					else if (!stricmp(pseudo.c_str(), "hover"))
-						div->setStatus(T2_HOVER);
+                    if(!stricmp(pseudo.c_str(), "active"))
+                        div->setStatus(T2_ACTIVE);
+                    else if(!stricmp(pseudo.c_str(), "hover"))
+                        div->setStatus(T2_HOVER);
 
-					// 属性赋值
-					t2Style& css = div->getCSS();
-					for (auto decl : rule->declarations)
-					{
-						// 应用样式至css
-						toStyle(decl, css);
+                    // 属性赋值
+                    t2Style& css = div->getCSS();
+                    for(auto decl : rule->declarations)
+                    {
+                        // 应用样式至css
+                        toStyle(decl, css);
 
-						// 将样式应用至还未赋值的状态样式
-						toStatus(decl, div);
+                        // 将样式应用至还未赋值的状态样式
+                        toStatus(decl, div);
 
-						// 应用样式至所有子节点
-						toChild(decl, div);
-					}
-				}
-			}
-		}
-	}
+                        // 应用样式至所有子节点
+                        toChild(decl, div);
+                    }
+                }
+            }
+        }
+    }
 
     void t2CSSController::toChild(t2Declaration* decl, t2Div* div)
     {
@@ -126,22 +126,22 @@ namespace TattyUI
         {
             t2Div* temp;
 
-			if (queue.isEmpty()) temp = NULL;
+            if(queue.isEmpty()) temp = NULL;
             else temp = queue.pop();
             if(temp)
             {
-				if (temp != root)
-				{
-					// 根据当前状态赋值
-					toStyle(decl, temp->normal);
-					toStyle(decl, temp->hover);
-					toStyle(decl, temp->active);
-				}
+                if(temp != root)
+                {
+                    // 根据当前状态赋值
+                    toStyle(decl, temp->normal);
+                    toStyle(decl, temp->hover);
+                    toStyle(decl, temp->active);
+                }
 
 
                 // 将所有兄弟结点入队列
-				for (t2Div* c = temp->child; c != NULL; c = c->next)
-					queue.push(c);
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
             }
             else
                 break;
@@ -150,24 +150,24 @@ namespace TattyUI
 
     void t2CSSController::toStatus(t2Declaration* decl, t2Div* div)
     {
-		// 覆盖当前特性至其余状态
-		switch (div->getStatus())
-		{
-		case T2_NORMAL:
-			toStyle(decl, div->active);
-			toStyle(decl, div->hover);
-			break;
+        // 覆盖当前特性至其余状态
+        switch(div->getStatus())
+        {
+        case T2_NORMAL:
+            toStyle(decl, div->active);
+            toStyle(decl, div->hover);
+            break;
 
-		case T2_ACTIVE:
-			//toStyle(decl, div->normal);
-			//toStyle(decl, div->hover);
-			break;
+        case T2_ACTIVE:
+            //toStyle(decl, div->normal);
+            //toStyle(decl, div->hover);
+            break;
 
-		case T2_HOVER:
-			toStyle(decl, div->active);
-			//toStyle(decl, div->normal);
-			break;
-		}
+        case T2_HOVER:
+            toStyle(decl, div->active);
+            //toStyle(decl, div->normal);
+            break;
+        }
         //// --!need test
         //for(auto element : controller->divTable)
         //{
@@ -239,7 +239,7 @@ namespace TattyUI
                 // not good
                 // 删除最后一个元素前的,
                 if(str.substr(0, 1) == ",")
-                    str = str.substr(1, str.length()-1);
+                    str = str.substr(1, str.length() - 1);
 
                 switch(index)
                 {
@@ -256,10 +256,10 @@ namespace TattyUI
                     css.boxShadowInColor.set(str);
                     css.boxShadowInColor.a = 125;
                     break;
-                case 4:
-                    css.boxShadowOutColor.set(str);
-                    css.boxShadowOutColor.a = 0;
-                    break;
+                    //case 4:
+                    //css.boxShadowOutColor.set(str);
+                    //css.boxShadowOutColor.a = 0;
+                    //break;
                 default:
                     t2Log("box-shadow中参数过多\n");
                     break;
@@ -345,6 +345,47 @@ namespace TattyUI
             css.fontWeight = atoi(decl->value.c_str());
         }
         // margin
+        else if(!stricmp(pro.c_str(), "margin"))
+        {
+            // 顺时针 上右下左
+            // 解析后部所有字符串内容
+            int index = 0;
+            // [^,]+        匹配除,外任何字符 可出现一次或多次
+            // (?=,|;)         后接,;
+            static const regex re(R"raw(([^,]+(?=,))|(,[^,]+))raw");
+            smatch marginM;
+            string marginStr = decl->value;
+            while(regex_search(marginStr, marginM, re))
+            {
+                string str = marginM[0];
+                // not good
+                // 删除最后一个元素前的,
+                if(str.substr(0, 1) == ",")
+                    str = str.substr(1, str.length() - 1);
+
+                switch(index)
+                {
+                case 0:
+                    css.marginTop = atoi(str.c_str());
+                    break;
+                case 1:
+                    css.marginRight = atoi(str.c_str());
+                    break;
+                case 2:
+                    css.marginBottom = atoi(str.c_str());
+                    break;
+                case 3:
+                    css.marginLeft = atoi(str.c_str());
+                    break;
+                default:
+                    t2Log("margin中参数过多\n");
+                    break;
+                }
+
+                index++;
+                marginStr = marginM.suffix().str();
+            }
+        }
         else if(!stricmp(pro.c_str(), "margin-bottom"))
         {
             css.marginBottom = atoi(decl->value.c_str());
@@ -362,6 +403,47 @@ namespace TattyUI
             css.marginTop = atoi(decl->value.c_str());
         }
         // padding
+        else if(!stricmp(pro.c_str(), "padding"))
+        {
+            // 顺时针 上右下左
+            // 解析后部所有字符串内容
+            int index = 0;
+            // [^,]+        匹配除,外任何字符 可出现一次或多次
+            // (?=,|;)         后接,;
+            static const regex re(R"raw(([^,]+(?=,))|(,[^,]+))raw");
+            smatch paddingM;
+            string paddingStr = decl->value;
+            while(regex_search(paddingStr, paddingM, re))
+            {
+                string str = paddingM[0];
+                // not good
+                // 删除最后一个元素前的,
+                if(str.substr(0, 1) == ",")
+                    str = str.substr(1, str.length() - 1);
+
+                switch(index)
+                {
+                case 0:
+                    css.paddingTop = atoi(str.c_str());
+                    break;
+                case 1:
+                    css.paddingRight = atoi(str.c_str());
+                    break;
+                case 2:
+                    css.paddingBottom = atoi(str.c_str());
+                    break;
+                case 3:
+                    css.paddingLeft = atoi(str.c_str());
+                    break;
+                default:
+                    t2Log("padding中参数过多\n");
+                    break;
+                }
+
+                index++;
+                paddingStr = paddingM.suffix().str();
+            }
+        }
         else if(!stricmp(pro.c_str(), "padding-bottom"))
         {
             css.paddingBottom = atoi(decl->value.c_str());

@@ -3,9 +3,9 @@
 
 #ifdef T2_RENDERER_NANOVG
 // 矢量图形库
-#include <TattyUI/render/nanovg/src/nanovg.h>
-#include <TattyUI/render/nanovg/src/nanovg_gl.h>
-#include <TattyUI/render/nanovg/src/nanovg_gl_utils.h>
+#include <nanovg.h>
+#include <nanovg_gl.h>
+#include <nanovg_gl_utils.h>
 #endif
 
 namespace TattyUI
