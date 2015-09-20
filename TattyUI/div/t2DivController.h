@@ -16,7 +16,7 @@ namespace TattyUI
 
         void init();
 
-        //void update();
+        void update();
 
         void draw();
 

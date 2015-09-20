@@ -38,46 +38,32 @@ namespace TattyUI
 
     void t2Div::init()
     {
-        // normal
-        // 渐变阴影
-        normal.boxGradient.set(normal.x + normal.hBoxShadow, normal.y + normal.vBoxShadow, normal.width, normal.height,
-                        normal.borderRadius, normal.boxShadowBlur,
-                        normal.boxShadowInColor, normal.boxShadowOutColor);
-        // dimension 
-        normal.maxWidth = normal.width;
-        normal.maxHeight = normal.height;
-        normal.minWidth = normal.width;
-        normal.minHeight = normal.height;
+        t2Window* window = t2Window::getInstance();
 
-        // 假定fontName直接与fontFamily同名
-        renderer->loadFont(normal.fontFamily.c_str(), normal.fontFamily.c_str());
+        for(int i = T2_NORMAL; i <= T2_ACTIVE; i++)
+        {
+            setStatus(i);
+            updateContent();
+            t2Style& css = getCSS();
 
-        // hover
-        hover.boxGradient.set(hover.x + hover.hBoxShadow, hover.y + hover.vBoxShadow, hover.width, hover.height,
-                        hover.borderRadius, hover.boxShadowBlur,
-                        hover.boxShadowInColor, normal.boxShadowInColor);
+            // normal
+            // 渐变阴影
+            css.boxGradient.set(css.contentSize.x + css.hBoxShadow,
+                                css.contentSize.y + css.vBoxShadow + window->getTitleBarHeight(),
+                                css.contentSize.width, css.contentSize.height,
+                                css.borderRadius,
+                                css.boxShadowBlur,
+                                css.boxShadowInColor, css.boxShadowOutColor);
+            // dimension 
+            css.maxWidth = css.contentSize.width;
+            css.maxHeight = css.contentSize.height;
+            css.minWidth = css.contentSize.width;
+            css.minHeight = css.contentSize.height;
 
-        hover.maxWidth = hover.width;
-        hover.maxHeight = hover.height;
-        hover.minWidth = hover.width;
-        hover.minHeight = hover.height;
+            // 假定fontName直接与fontFamily同名
+            renderer->loadFont(css.fontFamily.c_str(), css.fontFamily.c_str());
+        }
 
-        renderer->loadFont(hover.fontFamily.c_str(), hover.fontFamily.c_str());
-
-        // active
-        active.boxGradient.set(active.x + active.hBoxShadow, active.y + active.vBoxShadow, active.width, active.height,
-                        active.borderRadius, active.boxShadowBlur,
-                        active.boxShadowInColor, normal.boxShadowInColor);
-
-        active.maxWidth = active.width;
-        active.maxHeight = active.height;
-        active.minWidth = active.width;
-        active.minHeight = active.height;
-
-        renderer->loadFont(active.fontFamily.c_str(), active.fontFamily.c_str());
-
-        // --!可选更新为静态，也就是只会在初始化时计算其位置
-        //updateContent();
         setStatus(T2_NORMAL);
     }
 
@@ -207,6 +193,9 @@ namespace TattyUI
         // content-width = div-width - paddingLeft - paddingRight
         // content-height = div-height - paddingTop - paddingBottom
         
+        // 列表布局
+
+        // 通用布局 
         t2Style& parentCSS = parent->getCSS();
 
         int allChildWidth = 0, allChildHeight = 0;

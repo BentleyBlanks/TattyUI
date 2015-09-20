@@ -53,7 +53,8 @@ namespace TattyUI
         tempColor[1] = hexColor[6];
         sscanf((const char*) tempColor, "%02x", &b);
 
-        set(r, g, b, 255);
+        // 十六进制色不包含透明度，因此直接保持alpha不变
+        set(r, g, b, a);
     }
 
 	template<typename T>

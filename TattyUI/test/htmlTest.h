@@ -168,11 +168,11 @@ int main()
     htmlController->parse();
 
     t2DivController* divController = t2DivController::getInstance();
+
     divController->init();
 
     t2Renderer *renderer = t2Renderer::getInstance();
 
-    int i = 0;
     while(1)
     {
         renderer->clear(238, 238, 238);

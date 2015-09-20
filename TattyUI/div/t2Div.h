@@ -10,8 +10,8 @@ namespace TattyUI
     enum t2DivStatus
     {
         T2_NORMAL,
-        T2_ACTIVE,
-        T2_HOVER
+        T2_HOVER,
+        T2_ACTIVE
     };
 
     class t2Div

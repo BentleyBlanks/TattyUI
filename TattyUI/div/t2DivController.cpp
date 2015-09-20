@@ -9,12 +9,41 @@ namespace TattyUI
         return &temp;
     }
 
-    //void t2DivController::update()
-    //{
-    //    for(auto it : divTable)
-    //        // --!未来更新为从根节点进入遍历渲染
-    //        it.second->update();
-    //}
+    void t2DivController::update()
+    {
+        if(!root)
+        {
+            t2PrintError("未指定根节点，根节点为空");
+            return;
+        }
+
+        // --!层序遍历
+        static t3Queue<t2Div*> queue;
+        if(!root) return;
+        queue.push(root);
+
+        for(;;)
+        {
+            t2Div* temp;
+
+            if(queue.isEmpty())
+                temp = NULL;
+            else
+                temp = queue.pop();
+
+            if(temp)
+            {
+                temp->updateContent();
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else
+                break;
+        }
+
+    }
 
     void t2DivController::draw()
     {

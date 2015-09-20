@@ -178,7 +178,8 @@ namespace TattyUI
                 for(int i = 0; i < child->v.element.children.length; i++)
                 {
                     GumboNode *c = (GumboNode *) child->v.element.children.data[i];
-                    if(c->type == GUMBO_NODE_ELEMENT && c->v.element.tag == GUMBO_TAG_DIV)
+                    if(c->type == GUMBO_NODE_ELEMENT && 
+                        c->v.element.tag == GUMBO_TAG_DIV)
                     {
                         // ¶à²æÊ÷µÄ¸´ÖÆ
                         t2Element* element = new t2Element(c);

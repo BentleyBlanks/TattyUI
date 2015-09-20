@@ -189,7 +189,7 @@ namespace TattyUI
         // display
         if(!stricmp(pro.c_str(), "display"))
         {
-            if(!stricmp(pro.c_str(), "none"))
+            if(!stricmp(decl->value.c_str(), "none"))
                 css.display = T2_DISPLAY_NONE;
             else if(!stricmp(pro.c_str(), "block"))
                 css.display = T2_DISPLAY_BLOCK;
@@ -222,35 +222,69 @@ namespace TattyUI
         {
             css.borderRadius = atoi(decl->value.c_str());
         }
-        // 水平/垂直阴影的位置
-        else if(!stricmp(pro.c_str(), "hBoxShadow"))
+        else if(!stricmp(pro.c_str(), "box-shadow"))
         {
-            css.hBoxShadow = atoi(decl->value.c_str());
-        }
-        // 水平/垂直阴影的位置
-        else if(!stricmp(pro.c_str(), "vBoxShadow"))
-        {
-            css.vBoxShadow = atoi(decl->value.c_str());
-        }
-        // 模糊距离
-        else if(!stricmp(pro.c_str(), "boxShadowBlur"))
-        {
-            css.boxShadowBlur = atoi(decl->value.c_str());
-        }
-        // 阴影的颜色
-        else if(!stricmp(pro.c_str(), "boxShadowInColor"))
-        {
-            css.boxShadowInColor.set(decl->value);
-        }
-        else if(!stricmp(pro.c_str(), "boxShadowOutColor"))
-        {
-            css.boxShadowOutColor.set(decl->value);
+            css.displayShadow = true;
+
+            // 解析后部所有字符串内容
+            int index = 0;
+            // [^,]+        匹配除,外任何字符 可出现一次或多次
+            // (?=,|;)         后接,;
+            static const regex re(R"raw(([^,]+(?=,))|(,[^,]+))raw");
+            smatch shadowM;
+            string shadowStr = decl->value;
+            while(regex_search(shadowStr, shadowM, re))
+            {
+                string str = shadowM[0];
+                // not good
+                // 删除最后一个元素前的,
+                if(str.substr(0, 1) == ",")
+                    str = str.substr(1, str.length()-1);
+
+                switch(index)
+                {
+                case 0:
+                    css.hBoxShadow = atoi(str.c_str());
+                    break;
+                case 1:
+                    css.vBoxShadow = atoi(str.c_str());
+                    break;
+                case 2:
+                    css.boxShadowBlur = atoi(str.c_str());
+                    break;
+                case 3:
+                    css.boxShadowInColor.set(str);
+                    css.boxShadowInColor.a = 125;
+                    break;
+                case 4:
+                    css.boxShadowOutColor.set(str);
+                    css.boxShadowOutColor.a = 0;
+                    break;
+                default:
+                    t2Log("box-shadow中参数过多\n");
+                    break;
+                }
+
+                index++;
+                shadowStr = shadowM.suffix().str();
+            }
         }
         // color
         // 规定书签的透明度[0.0f, 1.0f]
         else if(!stricmp(pro.c_str(), "opacity"))
         {
+            // 作用于image及color
             css.opacity = atof(decl->value.c_str());
+
+            css.backgroundColor.a = css.opacity * 255;
+
+            css.textColor.a = css.opacity * 255;
+
+            css.textShadowColor.a = css.opacity * 255;
+
+            //css.boxShadowInColor.a = css.opacity * 255;
+
+            //css.boxShadowOutColor.a = css.opacity * 255;
         }
         // dimension
         else if(!stricmp(pro.c_str(), "width"))
