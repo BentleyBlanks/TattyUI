@@ -27,17 +27,22 @@ namespace TattyUI
 		void set(t2Color_<T>& color);
 
         // 十六进制色
-        void set(const string& value);
+        void set(string value);
 
 		void set(T r, T g, T b, T a = limit());
 
 		void zero();
+
+        string find(string colorName);
 
 		void print();
 
 		static float limit();
 
 		T r, g, b, a;
+
+    private:
+        void initColorTable();
 	};
 
 	//A typedef representing an 8-bit RGBA color.

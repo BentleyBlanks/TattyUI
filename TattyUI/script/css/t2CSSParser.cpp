@@ -1,6 +1,6 @@
 ﻿#include <TattyUI/script/css/t2CSSParser.h>
 #include <TattyUI/common/t2Settings.h>
-#include<fstream>
+#include <fstream>
 
 namespace TattyUI
 {
@@ -26,11 +26,7 @@ namespace TattyUI
 
         string s;
         while(getline(fin, s))
-        {
             css += s;
-        }
-
-        //cout << css << endl;
 
         bLoaded = true;
         return true;
