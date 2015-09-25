@@ -11,6 +11,7 @@
 
 namespace TattyUI
 {
+
     enum t2BackgroundPosition
     {
         T2_TOP_LEFT = 0,

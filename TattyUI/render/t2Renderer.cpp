@@ -468,7 +468,7 @@ namespace TattyUI
     {
         if(!strcmp(name, "") || !strcmp(filename, ""))
         {
-            t2PrintError("无法创建空字体\n");
+            //t2PrintError("无法创建空字体\n");
             return;
         }
 

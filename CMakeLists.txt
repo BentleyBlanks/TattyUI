@@ -120,12 +120,12 @@ SOURCE_GROUP("TattyUI\\controller\\event" FILES ${event_h})
 FILE(GLOB event_cpp "./TattyUI/controller/event/*.cpp") 
 SOURCE_GROUP("TattyUI\\controller\\event" FILES ${event_cpp})
 
-# # layout
-# FILE(GLOB layout_h "./TattyUI/layout/*.h") 
-# SOURCE_GROUP("layout" FILES ${layout_h})
+# layout
+FILE(GLOB layout_h "./TattyUI/controller/layout/*.h") 
+SOURCE_GROUP("TattyUI\\controller\\layout" FILES ${layout_h})
 
-# FILE(GLOB layout_cpp "./TattyUI/layout/*.cpp") 
-# SOURCE_GROUP("layout" FILES ${layout_cpp})
+FILE(GLOB layout_cpp "./TattyUI/controller/layout/*.cpp") 
+SOURCE_GROUP("TattyUI\\controller\\layout" FILES ${layout_cpp})
 
 # main and test
 FILE(GLOB test_h "./TattyUI/test/*.h") 
@@ -144,7 +144,8 @@ ADD_EXECUTABLE(TattyUI ${MAIN}
 	${event_h} ${event_cpp}
 	${script_h} ${script_cpp}
 	${html_h} ${html_cpp}
-	${t3DataStructures_h} ${t3DataStructures_common_h} ${t3DataStructures_linearList_h})
+	${t3DataStructures_h} ${t3DataStructures_common_h} ${t3DataStructures_linearList_h}
+	${layout_h} ${layout_cpp})
 
 
 	# ${layout_h} ${layout_cpp}

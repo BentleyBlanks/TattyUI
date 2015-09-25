@@ -16,7 +16,7 @@ namespace TattyUI
 
         void init();
 
-        void update();
+        //void update();
 
         void draw();
 
@@ -52,6 +52,8 @@ namespace TattyUI
 
     private:		
         friend class t2CSSController;
+
+        friend class t2LayoutController;
 
         // 非常严格的单例模式
         t2DivController();

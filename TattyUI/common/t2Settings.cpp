@@ -8,7 +8,7 @@
 #include <strstream>
 
 // --！重大革新:小改动:BUG修复
-t2Version tattyVersion = { 0, 0, 7 };
+t2Version tattyVersion = { 0, 0, 8 };
 
 // 注意:只能在Debug模式下才能使用
 void t2Log(const char* string, ...)

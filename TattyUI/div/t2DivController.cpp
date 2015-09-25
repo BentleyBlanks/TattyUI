@@ -1,4 +1,5 @@
 ﻿#include <TattyUI/div/t2DivController.h>
+#include <TattyUI/controller/layout/t2LayoutController.h>
 #include <LinearList/t3Queue.h>
 
 namespace TattyUI
@@ -9,41 +10,17 @@ namespace TattyUI
         return &temp;
     }
 
-    void t2DivController::update()
-    {
-        if(!root)
-        {
-            t2PrintError("未指定根节点，根节点为空");
-            return;
-        }
+    //void t2DivController::update()
+    //{        
+    //    // 更新各自布局
+    //    if(!root)
+    //    {
+    //        t2PrintError("未指定根节点，根节点为空");
+    //        return;
+    //    }
 
-        // --!层序遍历
-        static t3Queue<t2Div*> queue;
-        if(!root) return;
-        queue.push(root);
-
-        for(;;)
-        {
-            t2Div* temp;
-
-            if(queue.isEmpty())
-                temp = NULL;
-            else
-                temp = queue.pop();
-
-            if(temp)
-            {
-                temp->updateContent();
-
-                // 将所有兄弟结点入队列
-                for(t2Div* c = temp->child; c != NULL; c = c->next)
-                    queue.push(c);
-            }
-            else
-                break;
-        }
-
-    }
+    //    // not finished
+    //}
 
     void t2DivController::draw()
     {
@@ -90,9 +67,36 @@ namespace TattyUI
 
     void t2DivController::init()
     {
-        for(auto it : divTable)
-            if(it.first != getRootDivGlobalID())
-                it.second->init();
+        //for(auto it : divTable)
+        //    if(it.first != getRootDivGlobalID())
+        //        it.second->init();
+
+        // --!层序遍历
+        static t3Queue<t2Div*> queue;
+        if(!root) return;
+        queue.push(root);
+
+        for(;;)
+        {
+            t2Div* temp;
+
+            if(queue.isEmpty())
+                temp = NULL;
+            else
+                temp = queue.pop();
+
+            if(temp)
+            {
+                if(temp != root)
+                    temp->init();
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else
+                break;
+        }
     }
 
     bool t2DivController::setRoot(string rootName)

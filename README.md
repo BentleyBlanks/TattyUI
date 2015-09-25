@@ -1,6 +1,6 @@
 # TattyUI
 
-![screenshot](https://github.com/BentleyBlanks/TattyUI/blob/master/screenshots/1.png)
+![screenshot](https://github.com/BentleyBlanks/TattyUI/blob/master/screenshots/1.jpg)
 
 本UI框架底层渲染框架采用[nanovg](https://github.com/memononen/nanovg),采用类似浏览器WebKit的做法，将UI的样式与业务逻辑分离。
 

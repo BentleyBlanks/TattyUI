@@ -156,28 +156,34 @@ int main(int argc, const char** argv)
 
 int main()
 {
+    // window
     t2Window *w = t2Window::getInstance();
     w->setWindowRadius(7);
     w->setTitleBarHeight(48);
     w->init("TattyUI", "../resources/font/Roboto-Regular.ttf", 1280, 800, 200, 200);
 
+    // controller
+    // renderer layout html(css) div
+    t2Renderer *renderer = t2Renderer::getInstance();
+    t2LayoutController* layoutController = t2LayoutController::getInstance();
     t2HTMLController* htmlController = t2HTMLController::getInstance();
+    t2DivController* divController = t2DivController::getInstance();
+
     vector<string> htmlPaths;
     htmlPaths.push_back("../bin/script/html/index.html");
     htmlController->loadHTML(htmlPaths);
     htmlController->parse();
 
-    t2DivController* divController = t2DivController::getInstance();
+    layoutController->updateAll();
 
     divController->init();
-
-    t2Renderer *renderer = t2Renderer::getInstance();
-
     while(1)
     {
         renderer->clear(238, 238, 238);
 
         renderer->begin();
+
+        layoutController->update();
 
         divController->draw();
 

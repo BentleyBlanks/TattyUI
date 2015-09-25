@@ -78,7 +78,7 @@ namespace TattyUI
          std::function<void(int key)> keyReleased;
     private:
         // 根据兄弟结点 父节点位置更新自身实际渲染位置
-        void updateContent();
+        //void updateContent();
 
         virtual void onMousePressed(int x, int y, int px, int py, int button);
 
@@ -96,10 +96,15 @@ namespace TattyUI
 
         friend class t2CSSController;
 
+        friend class t2LayoutController;
+
         int status;
 
         // 是否有被赋值
         bool bNormal, bActive, bHover;
+
+        // 布局方式
+        int layout;
     };
 }
 

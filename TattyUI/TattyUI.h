@@ -17,3 +17,5 @@
 #include <TattyUI/script/html/t2HTMLController.h>
 
 #include <TattyUI/script/html/t2HTMLParser.h>
+
+#include <TattyUI/controller/layout/t2LayoutController.h>
