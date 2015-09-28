@@ -27,8 +27,8 @@ namespace TattyUI
         window = t2Window::getInstance();
     }
 
-	void t2EventController::t2RegistrantList::notifyMouseEvent(int x, int y, int px, int py, int button, t2EventType type)
-	{
+    void t2EventController::t2RegistrantList::notifyMouseEvent(int x, int y, int px, int py, int button, t2EventType type)
+    {
         switch(type)
         {
         case T2_EVENT_MOUSE_MOVED:

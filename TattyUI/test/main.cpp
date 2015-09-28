@@ -20,4 +20,4 @@
 //#include <TattyUI/test/htmlTest.h>
 
 // 方寸测试题
-#include <TattyUI/test/fangcun.h>
+#include <TattyUI/test/fangcun/fangcun.h>
