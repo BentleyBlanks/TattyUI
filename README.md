@@ -19,25 +19,58 @@ TattyUI第一个较为成熟的production级的产品将会是为 [WIP2D](https:
 
 5.[nanovg](https://github.com/memononen/nanovg)
 
-> 依赖项已附带至Git，也可以根据需要自行更换
+> 依赖项已全部附带至Git，也可以根据需要自行更换
+> 目前依赖项静态库为直接给出，可以根据平台需要以及Debug/Release模式的不同自行更换
 
 #构建说明
-1.TattyUI采用CMake做跨平台搭建工作,支持Windows,OSX等
+1.TattyUI采用CMake做跨平台搭建工作,支持Windows,OSX(OSX下的静态库配置仍需手动完成)等
 
 2.假设您构建在新文件夹build中，那么仅需在IDE中设置包含```../TattyUI```即可
 
 3.可自行构建```resources```文件夹用于放置资源
 
-#使用说明
-1.脚本说明 CSS目前支持的属性已在```t2Style.cpp```声明，可自行查阅
+4.给出的文件夹```bin/graph```中包含了[Graphviz](www.graphviz.org/)生成的脚本与渲染出的可视AST，也可根据需要自行更换生成。
 
-2.C++通过和t2DivController交互即可获取全局```<div>```列表,所有C++代码都会与全局表```divTable```进行交互，详情可见example。
+#使用说明
+1.CSS目前支持的属性已在```t2Style.cpp```声明，可自行查阅。
+
+2.C++通过和t2DivController交互即可获取想要的```<div>```列表，所有C++代码都会直接或者间接的与全局表```divTable```进行交互。
+> 例如
+
+```cpp
+// 两种方式获取指定名称的div作用都是相同的
+t2Div *div1 = divController->find("div1");
+t2Div *div2 = divController["div2"];
+```
+> 详情可见example
 
 3.TattyUI较大的采用C++11标准，在回调函数的选择上使用```std::fucntion```从而支持成员函数，函数指针，Lambda表达式等，以最大的可能模拟浏览器的样式但采用本地矢量渲染。
+> 例如
 
-4.支持CSS类选择器，伪类选择器，元素选择器。元素选择器将会在未来全面支持CSS3步骤中添加。即将封装完毕t2CSSParser,转而新建为一个独立分支。
+```cpp
+// 以下回调函数都使用C++11支持的标准Lambda表达式
+    root.mouseMovedIn = [](int x, int y, int px, int py)
+    {
+        t2Log("Root MovedIn\n");
+    };
 
-5.支持大部分CSS2.0语法，部分未支持的语法规则已在[t2CSSParser](https://github.com/BentleyBlanks/t2CSSPareser)简介中给出
+    root.mouseMovedOut = [](int x, int y, int px, int py)
+    {
+        t2Log("Root MovedOut\n");
+    };
+
+    div1.mouseMovedIn = [](int x, int y, int px, int py)
+    {
+        t2Log("Div1 MovedIn\n");
+    };
+
+    div1.mouseMovedOut = [](int x, int y, int px, int py)
+    {
+        t2Log("Div1 MovedOut\n");
+    };
+```
+
+4.CSS解析部分支持大部分CSS2.0语法，部分未支持的语法规则已在[t2CSSParser](https://github.com/BentleyBlanks/t2CSSPareser)简介中给出
 
 #版本说明
 TattyUI ver 0.0.7 中感谢[ccss](https://github.com/jdeng/ccss)给我提供了非常好的使用正则表达式解析CSS的案例。
