@@ -5,6 +5,15 @@
 
 namespace TattyUI
 {
+    // 删除给定字符串前后的""和''
+    string deleteQuotationMarks(string str)
+    {
+        if(str[0] == '\'' || str[0] == '\"')
+            return str.substr(1, str.length() - 2);
+        else
+            return "";
+    }
+
     t2DivController *controller = t2DivController::getInstance();
 
     t2CSSController::t2CSSController()
@@ -18,16 +27,6 @@ namespace TattyUI
         return &temp;
     }
 
-    bool t2CSSController::findByClass(vector<t2ClassSelector*> names, const string& className)
-    {
-        for(auto s : names)
-        {
-            if(s->classSelector == className)
-                return true;
-        }
-        return false;
-    }
-
     void t2CSSController::loadCSS(vector<string> filePaths)
     {
         // 加载所有css文件
@@ -36,6 +35,10 @@ namespace TattyUI
             t2CSSParser *parser = new t2CSSParser(file);
 
             parser->parse();
+
+            // optional
+            if(parser->ast)
+                parser->ast->saveAsDot();
 
             parsers.push_back(parser);
         }
@@ -59,7 +62,9 @@ namespace TattyUI
 
             if(div)
             {
-                toDiv(div);
+                // 预先完成Normal状态初始化 后接剩余状态初始化
+                toNormal(div);
+                toOther(div);
 
                 // 将所有兄弟结点入队列
                 for(t2Div* c = div->child; c != NULL; c = c->next)
@@ -69,34 +74,35 @@ namespace TattyUI
                 break;
         }
 
+        // 完成所有三套基本状态初始化之后进行conditionStatus的样式初始化
     }
 
-    void t2CSSController::toDiv(t2Div* div)
+
+    void t2CSSController::toNormal(t2Div* div)
     {
         // div挂钩css
         for(auto parser : parsers)
         {
-            for(auto rule : parser->ruleList)
+            // 遍历AST 能够保证specifierList->pseudo+class / specifierList->class
+            vector<t2CSSSDList*> sdList = parser->findByClass(div->className);
+            for(auto sd : sdList)
             {
-                for(auto selector : rule->classSelectors)
+                t2CSSNodeSpecifierList* specifierList = sd->specifierList;
+                t2CSSDeclarationList* declarationList = sd->declarationList;
+
+                div->setStatus(T2_NORMAL);
+
+                // 存在伪类选择器
+                if(specifierList->specifier->type == T2CSS_PSEUDO)
+                    continue;
+
+                // 样式应用
+                t2Style& css = div->getCSS();
+                while(declarationList)
                 {
-                    // 类选择器
-                    string classSelector = selector->classSelector;
-
-                    // 伪类
-                    string pseudo = selector->pseudoSelector;
-
-                    if(!findByClass(rule->classSelectors, div->className))
-                        continue;
-
-                    if(!stricmp(pseudo.c_str(), "active"))
-                        div->setStatus(T2_ACTIVE);
-                    else if(!stricmp(pseudo.c_str(), "hover"))
-                        div->setStatus(T2_HOVER);
-
-                    // 属性赋值
-                    t2Style& css = div->getCSS();
-                    for(auto decl : rule->declarations)
+                    t2CSSDeclaration* decl;
+                    // 此声明需存在 且 无不支持的语法存在
+                    if((decl = declarationList->declaration) && parser->checkDeclaration(decl))
                     {
                         // 应用样式至css
                         toStyle(decl, css);
@@ -107,12 +113,62 @@ namespace TattyUI
                         // 应用样式至所有子节点
                         toChild(decl, div);
                     }
+
+                    declarationList = declarationList->declarationList;
                 }
             }
         }
     }
 
-    void t2CSSController::toChild(t2Declaration* decl, t2Div* div)
+    void t2CSSController::toOther(t2Div* div)
+    {
+        // div挂钩css
+        for(auto parser : parsers)
+        {
+            // 遍历AST 能够保证specifierList->pseudo+class / specifierList->class
+            vector<t2CSSSDList*> sdList = parser->findByClass(div->className);
+            for(auto sd : sdList)
+            {
+                t2CSSNodeSpecifierList* specifierList = sd->specifierList;
+                t2CSSDeclarationList* declarationList = sd->declarationList;
+
+                // 存在伪类选择器
+                if(specifierList->specifier->type == T2CSS_PSEUDO)
+                {
+                    t2CSSNodeSpecifier* pseudo = specifierList->specifier;
+                    if(pseudo->selectorName == "active")
+                        div->setStatus(T2_ACTIVE);
+                    else if(pseudo->selectorName == "hover")
+                        div->setStatus(T2_HOVER);
+                }
+                else
+                    continue;
+
+                // 样式应用
+                t2Style& css = div->getCSS();
+                while(declarationList)
+                {
+                    t2CSSDeclaration* decl;
+                    // 此声明需存在 且 无不支持的语法存在
+                    if((decl = declarationList->declaration) && parser->checkDeclaration(decl))
+                    {
+                        // 应用样式至css
+                        toStyle(decl, css);
+
+                        // 将样式应用至还未赋值的状态样式
+                        toStatus(decl, div);
+
+                        // 应用样式至所有子节点
+                        toChild(decl, div);
+                    }
+
+                    declarationList = declarationList->declarationList;
+                }
+            }
+        }
+    }
+
+    void t2CSSController::toChild(t2CSSDeclaration* decl, t2Div* div)
     {
         // 覆盖其所有子类型内容
         // --!层序遍历
@@ -138,7 +194,6 @@ namespace TattyUI
                     toStyle(decl, temp->active);
                 }
 
-
                 // 将所有兄弟结点入队列
                 for(t2Div* c = temp->child; c != NULL; c = c->next)
                     queue.push(c);
@@ -148,7 +203,7 @@ namespace TattyUI
         }
     }
 
-    void t2CSSController::toStatus(t2Declaration* decl, t2Div* div)
+    void t2CSSController::toStatus(t2CSSDeclaration* decl, t2Div* div)
     {
         // 覆盖当前特性至其余状态
         switch(div->getStatus())
@@ -164,7 +219,7 @@ namespace TattyUI
             break;
 
         case T2_HOVER:
-            toStyle(decl, div->active);
+            //toStyle(decl, div->active);
             //toStyle(decl, div->normal);
             break;
         }
@@ -183,27 +238,41 @@ namespace TattyUI
         //}
     }
 
-    void t2CSSController::toStyle(t2Declaration* decl, t2Style& css)
+    void t2CSSController::toStyle(t2CSSDeclaration* decl, t2Style& css)
     {
-        string pro = decl->attribute;
+        string pro = decl->property;
+        t2CSSExpression* expr = decl->expression;
+        // 通用的expr首个value指针
+        t2CSSTerm *term = expr->term;
         // display
         if(!stricmp(pro.c_str(), "display"))
         {
-            if(!stricmp(decl->value.c_str(), "none"))
-                css.display = T2_DISPLAY_NONE;
-            else if(!stricmp(pro.c_str(), "block"))
-                css.display = T2_DISPLAY_BLOCK;
+            // 只取第一个表达式
+            if(term->isKeyword())
+            {
+                if(term->termName == "none")
+                    css.display = T2_DISPLAY_NONE;
+                else if(term->termName == "block")
+                    css.display = T2_DISPLAY_BLOCK;
+            }
         }
         // background
+        else if(!stricmp(pro.c_str(), "background"))
+        {
+            // --!unsupported
+        }
         // 设置元素的背景颜色
         else if(!stricmp(pro.c_str(), "background-color"))
         {
-            css.backgroundColor.set(decl->value);
+            // 颜色名 / 十六进制色 / rgb()暂不支持
+            if(term->isColor())
+                css.backgroundColor.set(term->termName);
         }
         // 设置元素的背景图像
         else if(!stricmp(pro.c_str(), "background-image"))
         {
-            css.backgroundImage.loadImage(decl->value);
+            if(term->isString())
+                css.backgroundImage.loadImage(deleteQuotationMarks(term->termName));
         }
         // --!目前为全局填充
         // 设置背景图像的开始位置
@@ -220,61 +289,56 @@ namespace TattyUI
         // 设置所有四个 border-*-radius 属性
         else if(!stricmp(pro.c_str(), "border-radius"))
         {
-            css.borderRadius = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.borderRadius = term->value;
         }
         else if(!stricmp(pro.c_str(), "box-shadow"))
         {
             css.displayShadow = true;
 
-            // 解析后部所有字符串内容
+            // 只取expression列表中前四个参数
             int index = 0;
-            // [^,]+        匹配除,外任何字符 可出现一次或多次
-            // (?=,|;)         后接,;
-            static const regex re(R"raw(([^,]+(?=,))|(,[^,]+))raw");
-            smatch shadowM;
-            string shadowStr = decl->value;
-            while(regex_search(shadowStr, shadowM, re))
-            {
-                string str = shadowM[0];
-                // not good
-                // 删除最后一个元素前的,
-                if(str.substr(0, 1) == ",")
-                    str = str.substr(1, str.length() - 1);
+            while(expr)
+            { 
+                term = expr->term;
 
                 switch(index)
                 {
-                case 0:
-                    css.hBoxShadow = atoi(str.c_str());
-                    break;
-                case 1:
-                    css.vBoxShadow = atoi(str.c_str());
+                case 3:
+                    if(term->isNumber())
+                        css.hBoxShadow = term->value;
                     break;
                 case 2:
-                    css.boxShadowBlur = atoi(str.c_str());
+                    if(term->isNumber())
+                        css.vBoxShadow = term->value;
                     break;
-                case 3:
-                    css.boxShadowInColor.set(str);
-                    css.boxShadowInColor.a = 125;
+                case 1:
+                    if(term->isNumber())
+                        css.boxShadowBlur = term->value;
                     break;
-                    //case 4:
-                    //css.boxShadowOutColor.set(str);
-                    //css.boxShadowOutColor.a = 0;
-                    //break;
+                case 0:
+                    if(term->isColor())
+                    {
+                        css.boxShadowInColor.set(term->termName);
+                        css.boxShadowInColor.a = 125;
+                    }
+                    break;
                 default:
                     t2Log("box-shadow中参数过多\n");
                     break;
                 }
 
                 index++;
-                shadowStr = shadowM.suffix().str();
+                expr = expr->expression;
             }
         }
         // color
         // 规定书签的透明度[0.0f, 1.0f]
         else if(!stricmp(pro.c_str(), "opacity"))
         {
-            // 作用于image及color
-            css.opacity = atof(decl->value.c_str());
+            if(term->isNumber())
+                // 作用于image及color
+                css.opacity = term->value;
 
             css.backgroundColor.a = css.opacity * 255;
 
@@ -289,28 +353,34 @@ namespace TattyUI
         // dimension
         else if(!stricmp(pro.c_str(), "width"))
         {
-            css.width = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.width = term->value;
         }
         else if(!stricmp(pro.c_str(), "height"))
         {
-            css.height = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.height = term->value;
         }
         // --!maxHeight不起作用
         else if(!stricmp(pro.c_str(), "max-height"))
         {
-            css.maxHeight = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.maxHeight = term->value;
         }
         else if(!stricmp(pro.c_str(), "max-width"))
         {
-            css.maxWidth = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.maxWidth = term->value;
         }
         else if(!stricmp(pro.c_str(), "min-height"))
         {
-            css.minHeight = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.minHeight = term->value;
         }
         else if(!stricmp(pro.c_str(), "min-width"))
         {
-            css.minWidth = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.minWidth = term->value;
         }
         // flexible box
         // 规定如何对齐框的子元素
@@ -332,50 +402,61 @@ namespace TattyUI
         // 规定文本的字体系列
         else if(!stricmp(pro.c_str(), "font-family"))
         {
-            css.fontFamily = decl->value;
+            while(expr)
+            {
+                term = expr->term;
+
+                // 目前不支持关键字形式
+                if(term->isString())
+                    // 删除前后双引号赋值
+                    css.fontFamily = deleteQuotationMarks(term->termName);
+                else if(term->isKeyword())
+                    t2Log("Unsupported: font-family属性后不支持非字符串的语法");
+                else
+                    t2PrintError("font-family属性后紧跟未知语法");
+
+                expr = expr->expression;
+            }
         }
         // 规定文本的字体尺寸
         else if(!stricmp(pro.c_str(), "font-size"))
         {
-            css.fontSize = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.fontSize = term->value;
         }
         // 规定字体的粗细
         else if(!stricmp(pro.c_str(), "font-weight"))
         {
-            css.fontWeight = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.fontWeight = term->value;
         }
         // margin
         else if(!stricmp(pro.c_str(), "margin"))
         {
             // 顺时针 上右下左
-            // 解析后部所有字符串内容
+            // 只取expression列表中前四个参数(倒序)
             int index = 0;
-            // [^,]+        匹配除,外任何字符 可出现一次或多次
-            // (?=,|;)         后接,;
-            static const regex re(R"raw(([^,]+(?=,))|(,[^,]+))raw");
-            smatch marginM;
-            string marginStr = decl->value;
-            while(regex_search(marginStr, marginM, re))
+            while(expr)
             {
-                string str = marginM[0];
-                // not good
-                // 删除最后一个元素前的,
-                if(str.substr(0, 1) == ",")
-                    str = str.substr(1, str.length() - 1);
+                term = expr->term;
 
                 switch(index)
                 {
-                case 0:
-                    css.marginTop = atoi(str.c_str());
-                    break;
-                case 1:
-                    css.marginRight = atoi(str.c_str());
+                case 3:
+                    if(term->isNumber())
+                        css.marginTop = term->value;
                     break;
                 case 2:
-                    css.marginBottom = atoi(str.c_str());
+                    if(term->isNumber())
+                        css.marginRight = term->value;
                     break;
-                case 3:
-                    css.marginLeft = atoi(str.c_str());
+                case 1:
+                    if(term->isNumber())
+                        css.marginBottom = term->value;
+                    break;
+                case 0:
+                    if(term->isNumber())
+                        css.marginLeft = term->value;
                     break;
                 default:
                     t2Log("margin中参数过多\n");
@@ -383,82 +464,84 @@ namespace TattyUI
                 }
 
                 index++;
-                marginStr = marginM.suffix().str();
+                expr = expr->expression;
             }
         }
         else if(!stricmp(pro.c_str(), "margin-bottom"))
         {
-            css.marginBottom = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.marginBottom = term->value;
         }
         else if(!stricmp(pro.c_str(), "margin-left"))
         {
-            css.marginLeft = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.marginLeft = term->value;
         }
         else if(!stricmp(pro.c_str(), "margin-right"))
         {
-            css.marginRight = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.marginRight = term->value;
         }
         else if(!stricmp(pro.c_str(), "margin-top"))
         {
-            css.marginTop = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.marginTop = term->value;
         }
         // padding
         else if(!stricmp(pro.c_str(), "padding"))
         {
             // 顺时针 上右下左
-            // 解析后部所有字符串内容
             int index = 0;
-            // [^,]+        匹配除,外任何字符 可出现一次或多次
-            // (?=,|;)         后接,;
-            static const regex re(R"raw(([^,]+(?=,))|(,[^,]+))raw");
-            smatch paddingM;
-            string paddingStr = decl->value;
-            while(regex_search(paddingStr, paddingM, re))
+            while(expr)
             {
-                string str = paddingM[0];
-                // not good
-                // 删除最后一个元素前的,
-                if(str.substr(0, 1) == ",")
-                    str = str.substr(1, str.length() - 1);
+                term = expr->term;
 
                 switch(index)
                 {
-                case 0:
-                    css.paddingTop = atoi(str.c_str());
-                    break;
-                case 1:
-                    css.paddingRight = atoi(str.c_str());
+                case 3:
+                    if(term->isNumber())
+                        css.paddingTop = term->value;
                     break;
                 case 2:
-                    css.paddingBottom = atoi(str.c_str());
+                    if(term->isNumber())
+                        css.paddingRight = term->value;
                     break;
-                case 3:
-                    css.paddingLeft = atoi(str.c_str());
+                case 1:
+                    if(term->isNumber())
+                        css.paddingBottom = term->value;
+                    break;
+                case 0:
+                    if(term->isNumber())
+                        css.paddingLeft = term->value;
                     break;
                 default:
-                    t2Log("padding中参数过多\n");
+                    t2Log("margin中参数过多\n");
                     break;
                 }
 
                 index++;
-                paddingStr = paddingM.suffix().str();
+                expr = expr->expression;
             }
         }
         else if(!stricmp(pro.c_str(), "padding-bottom"))
         {
-            css.paddingBottom = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.paddingBottom = term->value;
         }
         else if(!stricmp(pro.c_str(), "padding-left"))
         {
-            css.paddingLeft = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.paddingLeft = term->value;
         }
         else if(!stricmp(pro.c_str(), "padding-right"))
         {
-            css.paddingRight = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.paddingRight = term->value;
         }
         else if(!stricmp(pro.c_str(), "padding-top"))
         {
-            css.paddingTop = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.paddingTop = term->value;
         }
         // position
         // --!暂不支持
@@ -470,7 +553,9 @@ namespace TattyUI
         // 设置文本的颜色
         else if(!stricmp(pro.c_str(), "color"))
         {
-            css.textColor.set(decl->value);
+            // 颜色名 / 十六进制色 / rgb()暂不支持
+            if(term->isColor())
+                css.textColor.set(term->termName);
         }
         // 设置字符间距
         else if(!stricmp(pro.c_str(), "letter-spacing"))
@@ -495,20 +580,25 @@ namespace TattyUI
         // text-shadow
         else if(!stricmp(pro.c_str(), "hTextShadow"))
         {
-            css.hTextShadow = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.hTextShadow = term->value;
         }
         else if(!stricmp(pro.c_str(), "vTextShadow"))
         {
-            css.vTextShadow = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.vTextShadow = term->value;
         }
         else if(!stricmp(pro.c_str(), "textShadowBlur"))
         {
-            css.textShadowBlur = atoi(decl->value.c_str());
+            if(term->isNumber())
+                css.textShadowBlur = term->value;
         }
         else if(!stricmp(pro.c_str(), "textShadowColor"))
         {
             // --!not supported
-            css.textShadowColor.set(decl->value);
+            // 颜色名 / 十六进制色 / rgb()暂不支持
+            if(term->isColor())
+                css.textShadowColor.set(term->termName);
         }
     }
 }

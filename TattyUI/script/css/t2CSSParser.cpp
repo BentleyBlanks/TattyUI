@@ -1,411 +1,183 @@
 ﻿#include <TattyUI/script/css/t2CSSParser.h>
 #include <TattyUI/common/t2Settings.h>
 #include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <TattyUI/script/css/t2CSSBison.hpp>
+#include <TattyUI/script/css/t2CSSLex.h>
+
+extern int yyparse(t2CSSAST* ast);
 
 namespace TattyUI
 {
-    t2CSSParser::t2CSSParser() :pos(0), bLoaded(false)
+    t2CSSParser::t2CSSParser() :bLoaded(false)
     {
+        ast = new t2CSSAST();
 
+        if(yylex_init_extra(ast, &ast->scaninfo))
+            t2PrintError("Inti alloc failed");
     }
 
-    t2CSSParser::t2CSSParser(const string& cssPath) : pos(0), bLoaded(false)
+    // 委托构造函数
+    t2CSSParser::t2CSSParser(const string& cssPath) :t2CSSParser()
     {
         openFile(cssPath);
     }
 
     bool t2CSSParser::openFile(const string& cssPath)
     {
-        ifstream fin(cssPath);
-        if(!fin)
+        FILE *f = fopen(cssPath.c_str(), "r");
+        if(!f)
         {
-            printf("open file.css failed!\n");
+            printf("Error: open file %s failed!\n", cssPath.c_str());
             bLoaded = false;
             return false;
         }
 
-        string s;
-        while(getline(fin, s))
-            css += s;
+        yyset_in(f, ast->scaninfo);
 
         bLoaded = true;
         return true;
     }
 
-    long t2CSSParser::length() const
-    {
-        return css.length() > pos ? css.length() - pos : 0;
-    }
-
-    bool t2CSSParser::open()
-    {
-        // ^    字符串开始处
-        // \s*  任意数量的空白符
-        // 跳过任意长空格
-        static const regex re(R"raw(^\{\s*)raw");
-
-        return search(re);
-    }
-
-    // ^    字符串开始处
-    // \}   找到一个}
-    bool t2CSSParser::close()
-    {
-        static const regex re(R"raw(^\})raw");
-
-        return search(re);
-    }
-
-    int t2CSSParser::parse()
+    void t2CSSParser::parse()
     {
         if(!bLoaded)
         {
             t2PrintError("file.css haven't loaded yet, can't parse!\n");
-            return 0;
+            return;
         }
 
-        comments();
+        yyparse(ast);
 
-        rules();
-
-        return ruleList.size();
+        preprocessAST();
     }
 
-    void t2CSSParser::set(const string& css)
+    void t2CSSParser::preprocessAST()
     {
-        this->css = css;
-    }
-
-    void t2CSSParser::whitespace()
-    {
-        // 删除空格 删除回车
-        static const regex ws(R"raw(\s*)raw"), enter(R"raw([\r\n]*)raw");
-
-        css = regex_replace(css, ws, "");
-
-        css = regex_replace(css, enter, "");
-    }
-
-    bool t2CSSParser::search(const regex& re)
-    {
-        smatch m;
-        return search(m, re);
-    }
-
-    // 在已匹配完的剩余字符串中正则搜索
-    bool t2CSSParser::search(smatch& m, const regex& re)
-    {
-       // --!抄袭自CCSSLib->css.h->line:252
-       std::string::const_iterator first = css.begin() + pos, last = css.end();
-       bool found = std::regex_search(first, last, m, re);
-       if(found)
-       {
-           const std::string& s = m[0];
-           // 递进已匹配字符长度
-           pos += s.length();
-       }
-
-       return found;
-    }
-
-    bool t2CSSParser::classSelector(string group, t2Rule *rule)
-    {
-        // 筛选类选择器(.开头) 伪类选择器(除头尾以外中间有:) 元素选择器(都无)
-        static const regex classSelectorRE(R"raw(^\.([^:]+))raw"), pseudoSelectorRE(R"raw(:\w+)raw");
-        smatch classSelectorM, pseudoSelectorM;
-        // 类选择器
-        if(regex_search(group, classSelectorM, classSelectorRE))
+        if(!ast)
         {
-            t2ClassSelector *classSelector = new t2ClassSelector();
-            // --!not good!
-            string className = classSelectorM[0];
-            // delete the '.' 
-            className = className.substr(1, className.length());
-
-            classSelector->classSelector = className;
-
-            if(regex_search(group, pseudoSelectorM, pseudoSelectorRE))
-            {
-                // --!not good!
-                string pseudoName = pseudoSelectorM[0];
-
-                pseudoName = pseudoName.substr(1, pseudoName.length());
-
-                // delete the ':' 
-                classSelector->pseudoSelector = pseudoName;
-            }
-
-            rule->classSelectors.push_back(classSelector);
-
-            return true;
+            t2PrintError("Parsing file.css failed.\n");
+            return;
         }
- 
-        return false;
-    }
 
-    bool t2CSSParser::elementSelector(string group, t2Rule *rule)
-    {
-        static const regex pseudoSelectorRE(R"raw(:\w+)raw"), elementSelectorRE(R"raw(^([^:]+))raw");
-        smatch pseudoSelectorM, elementSelectorM;
+        // 完成Node RTTI的初始化工作
+        ast->traversal();
 
-        // 元素选择器
-        if(regex_search(group, elementSelectorM, elementSelectorRE))
+        if(ast->root && ast->root->nodeName == "RuleList")
         {
-            t2ElementSelector *elementSelector = new t2ElementSelector();
-
-            elementSelector->elementSelector = elementSelectorM[0];
-
-            if(regex_search(group, pseudoSelectorM, pseudoSelectorRE))
+            t2CSSRuleList* root = (t2CSSRuleList*) (ast->root);
+            while(root)
             {
-                // --!not good!
-                string pseudoName = pseudoSelectorM[0];
+                if(root->ruleset)
+                    ruleSets.push_back(root->ruleset);
 
-                pseudoName = pseudoName.substr(1, pseudoName.length());
-
-                // delete the ':' 
-                elementSelector->pseudoSelector = pseudoName;
+                root = root->ruleList;
             }
-
-            rule->elementSelectors.push_back(elementSelector);
-
-            return true;
         }
-        
-        return false;
+        else
+            t2Log("Warning: 解析完毕出的AST为空");
     }
 
-    bool t2CSSParser::idSelector(string group, t2Rule *rule)
+    vector<t2CSSSDList*> t2CSSParser::findByClass(const string& className)
     {
-        // --!not supported
+        // 根据指定类选择器名查找到的规则集
+        vector<t2CSSSDList*> temp;
+
+        for(auto ruleset : ruleSets)
+        {
+            // selectorList支线
+            t2CSSSelectorList* selectorList = ruleset->selectorList;
+            while(selectorList)
+            {
+                // selector支线
+                t2CSSSelector* selector = selectorList->selector;
+                // .class {}的写法是不被允许的--ver 0.0.8
+                // 这里只查找非conditionStatus样式控制下的div 即selector下无第二个selector结点的情况
+                if(selector && !selector->selector && selector->simpleSelector)
+                {
+                    // specifierList支线
+                    // 此处不需要使用到simpleSelector中的elementName 目前不支持id选择器
+                    // 这里认定选择器书写类型为 .class(:pseudo)->secondPart(:firstPart)
+                    // 规定specifierList最多不超过两个子对象 且不支持如下语法 .a.b.c
+                    t2CSSNodeSpecifierList *specifierList = NULL;
+                    t2CSSNodeSpecifier *slFirstPart = NULL, *slSecondPart = NULL;
+
+                    if(specifierList = selector->simpleSelector->specifierList)
+                        slFirstPart = specifierList->specifier;
+                    else
+                    {
+                        t2PrintError("选择器为空的写法存在语法错误");
+                        continue;
+                    }
+
+                    if(slFirstPart)
+                    {
+                        if(specifierList = specifierList->specifierList)
+                        {
+                            if(slSecondPart = specifierList->specifier)
+                            {
+                                // 保证返回的ruleset中不会包含任何错误语法出现
+                                if((slFirstPart->type == T2CSS_CLASS) && (slSecondPart->type == T2CSS_CLASS))
+                                {
+                                    t2Log("Unsupported: <div class = \"a \"b>中的空格是不允许的\n");
+                                    continue;
+                                }
+                                else if((slFirstPart->type == T2CSS_PSEUDO) && (slSecondPart->type == T2CSS_PSEUDO))
+                                {
+                                    t2PrintError("\":pseudoA:pseudoB\"的写法存在语法错误");
+                                    continue;
+                                }
+                                else if((slFirstPart->type == T2CSS_CLASS) && (slSecondPart->type == T2CSS_PSEUDO))
+                                {
+                                    t2PrintError("\":pseudoA.classB\"的写法存在语法错误");
+                                    continue;
+                                }
+                                else
+                                {
+                                    if(className == slSecondPart->selectorName)
+                                        // 标准.class:pseudo{}模式
+                                        temp.push_back(new t2CSSSDList(selector->simpleSelector->specifierList, ruleset->declarationList));
+                                }
+                            }
+                            else
+                            {
+                                t2Log("Unsupported: 未知的语法\n");
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            // 缺省伪类选择器部分
+                            if(slFirstPart->type == T2CSS_CLASS)
+                            {
+                                // 标准.class{}模式
+                                if(className == slFirstPart->selectorName)
+                                    temp.push_back(new t2CSSSDList(selector->simpleSelector->specifierList, ruleset->declarationList));
+                            }
+                            else
+                                t2Log("Unsupported: 未知的语法\n");
+                        }
+                    }
+                    else
+                    {
+                        t2PrintError("选择器为空的写法存在语法错误");
+                        continue;
+                    }
+
+                    //selector = selector->selector;
+                }
+
+                selectorList = selectorList->selectorList;
+            }
+        }
+
+        return temp;
+    }
+
+    bool t2CSSParser::checkDeclaration(t2CSSDeclaration* decl)
+    {
         return true;
     }
 
-    bool t2CSSParser::selectors(t2Rule *rule)
-    {
-        // selector
-        // ^        字符串开始处
-        // (
-        //      [^\{]+   除{以外其他的一个或者多个字符
-        // )
-        // \{   结尾补上开头
-        // 选择器名
-        // 案例 
-        // .body {}
-        // #body {}
-        // [body] {}
-        // li strong {}
-        string temp = css.substr(pos, css.length());
-
-        static const regex selectorRE(R"raw(^([^\{])+\{)raw");
-        smatch selectorM;
-
-        // 确认selector存在且规范
-        if(!regex_search(temp, selectorM, selectorRE))
-        {
-            printf("missing selector!\n");
-            return false;
-        }
-
-        // 将其中的分组选择器筛选出
-        // [^,]+        匹配除,外任何字符 可出现一次或多次
-        // (?=,|\{)         后接,或者{
-        // h1,h2:active,.button,.button:focus{}
-        static const regex groupRE(R"raw([^,]+(?=,|\{))raw");
-        smatch groupM;
-        string groupString = selectorM[0];
-        while(regex_search(groupString, groupM, groupRE))
-        {
-            string allSelector = groupM[0];
-
-            // 类选择器+伪类选择器
-            classSelector(allSelector, rule);
-            
-            // 元素选择器+伪类选择器
-            elementSelector(allSelector, rule);
-
-            // id选择器+伪类选择器
-            idSelector(allSelector, rule);
-
-            groupString = groupM.suffix().str();
-        }
-
-        return true;
-    }
-
-    void t2CSSParser::declaration(t2Rule *rule)
-    {
-        while(1)
-        {
-            t2Declaration *declaration = new t2Declaration();
-            // declaration
-            // property
-            // ^(\*?[-#/\*\w]+(\[[0-9a-z_-]+\])?)\s*
-            // ^                    字符串开始
-            // (
-            //   \*?                  可选的*号
-            //   [-#/\*\w]+           "-""#""\""*""字母数字下划线或汉字"出现一次或多次
-            //   (
-            //      \[[0-9a-z_-]+\]    "["+0~9|a~z|_~空格+"]"
-            //   )?    可选的
-            // )
-            // \s*                  任意多空格
-            static const regex propertyRE(R"raw(^(\*?[-#/\*\w]+(\[[0-9a-z_-]+\])?)\s*)raw");
-            smatch propertyM;
-
-            if(!search(propertyM, propertyRE))
-                // 该选择器无任何属性
-                return;
-
-            // :筛选
-            // ^:\s*
-            // ^    字符串开始处
-            // :    冒号
-            // \s*  零次或者多次出现的空格
-            static const regex colonRE(R"raw(^:\s*)raw");
-            smatch colonM;
-            if(!search(colonM, colonRE))
-            {
-                printf("property: missing':'\n");
-                return;
-            }
-
-            declaration->attribute = propertyM[0];
-
-            // value筛选
-            // ^((?:'(?:\\'|.)*?'|\"(?:\\\"|.)*?\"|\([^\)]*?\)|[^\};])+)
-            // ^
-            // (
-            //    (
-            //        ?:            后面的制作匹配不做捕捉
-            //        '(?:\\'|.)*?'             单引号围起来的内容或者任意字符 若前方有'，那么需要以'结尾
-            //        |
-            //        \"(?:\\\"|.)*?\"          双引号围起来的内容或者任意字符 若前方有"，那么需要以"结尾
-            //        |
-            //        \([^\)]*?\)               (开始 匹配除了)以外的任意字符 字符可以出现零次或者多次[^x] 可选的)
-            //        |
-            //        [^\};]                    匹配除了} ;以外的任意字符
-            //    )
-            //    +                 可以有零个或者多个上述值出现
-            // )
-            static const regex valueRE(R"raw(^((?:'(?:\\'|.)*?'|\"(?:\\\"|.)*?\"|\([^\)]*?\)|[^\};])+))raw");
-            smatch valurM;
-            if(!search(valurM, valueRE))
-            {
-                printf("property: missing value!\n");
-                return;
-            }
-            // --!not good
-            // 删除''与""
-            declaration->value = valurM[0];
-            if(declaration->value[0] == '\''|| declaration->value[0] == '\"')
-                declaration->value = declaration->value.substr(1, declaration->value.length() - 2);
-
-            // ^
-            // [;\s]* 零个或多个空白符或;结尾
-            static const regex semicolonRE(R"raw([;\s]*)raw");
-            // ;存在与否不重要 可选
-            search(semicolonRE);
-
-            rule->declarations.push_back(declaration);
-        }
-     }
-
-    void t2CSSParser::rules()
-    {
-        // 剩余字符串长度 > 0
-        while(length() > 0)
-        {
-            t2Rule *rule = new t2Rule();
-
-            selectors(rule);
-
-            // --!此处有重复 可更进
-            // selector
-            // ^        字符串开始处
-            // (
-            //      [^\{]+   除{以外其他的一个或者多个字符
-            // )+
-            // 选择器名
-            // 案例 
-            // .body {}
-            // #body {}
-            // [body] {}
-            // li strong {}
-            static const regex selectorRE(R"raw(^([^\{])+)raw");
-            smatch selectorM;
-            // 实际匹配处
-            if(!search(selectorM, selectorRE))
-            {
-                printf("missing selector!\n");
-                return;
-            }
-
-            //cout << selectorM[0] << endl;
-
-            if(!open())
-            {
-                printf("missing '{'!\n");
-                return;
-            }
-
-            declaration(rule);
-
-            if(!close())
-            {
-                printf("missing '}'!\n");
-                return;
-            }
-
-            ruleList.push_back(rule);
-        }
-    }
-
-    void t2CSSParser::comments()
-    {
-        // 注释正则表达式
-        // --!http://blog.ostermiller.org/find-comment
-        // /\*([\n\r]|[^*]|(\*+([\n\r]|[^*/])))*\*+/
-        // /\*
-        // (
-        // 	[\n\r]
-        // 	|
-        // 	[^*]    除*以外
-        // 	|
-        // 	(
-        // 		\*+    一个或多个*
-        // 		(
-        // 			[\n\r]
-        // 			|
-        // 			[^*/]    除了*/以外
-        // 		)
-        // 	)
-        // )*
-        // \*+      一个或多个*
-        // /        /
-        static const regex re(R"raw(/\*([\n\r]|[^*]|(\*+([\n\r]|[^*/])))*\*+/)raw");
-        
-        smatch m;
-
-        string temp = css;
-        // 遍历注释
-        while(regex_search(temp, m, re))
-        {
-            t2Comment *c = new t2Comment();
-
-            c->text = m[0];
-
-            commentList.push_back(c);
-
-            // 取后缀继续 相当于逐行下潜
-            temp = m.suffix().str();
-        }
-
-        // 删除注释
-        css = regex_replace(css, re, "");
-
-        // 删除空格 删除回车
-        whitespace();
-    }
 }
-
-

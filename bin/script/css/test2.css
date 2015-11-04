@@ -13,10 +13,6 @@
 	padding: 10, 20, 30, 40;
 }
 
-.div1:hover{
-	background-color: #0000FF;
-}
-
 .div1:active{
 	background-color: #00008B;
 }
@@ -65,11 +61,11 @@ Comment Test
 }
 
 .root:hover{
-	/*background-color: #00BFFF;*/
+	background-color: #00BFFF;
 }
 
 .root:active{
-	/*background-color: #00FA9A;*/
+	background-color: #00FA9A;
 }
 
 .div4{
@@ -84,6 +80,10 @@ Comment Test
 	margin-bottom: 30;
 	margin-right: 30;
 }
+
+/*.root:hover .div4{
+	background-color: #00BFFF;
+}*/
 
 .div4:hover{
 	background-color: #0000FF;

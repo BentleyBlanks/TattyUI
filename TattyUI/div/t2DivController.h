@@ -29,12 +29,12 @@ namespace TattyUI
         void deleteDiv(string id);
 
         // 确定id的div已被创建
-        t2Div* operator[](string id);
+        t2Div* operator[](const string& divName);
 
         // 查询是否存在
-        t2Div* find(string id);
+        t2Div* findByID(string id);
 
-        t2Div* findByClass(string className);
+        t2Div* find(string divName);
 
         void onMousePressed(int x, int y, int px, int py, int button);
 
@@ -50,6 +50,9 @@ namespace TattyUI
 
         void print();
 
+        // string代表id id可以为手动指定也可以是系统指定
+        // 外部无法获取非手动指定的div
+        std::map<string, t2Div*> divTable;
     private:		
         friend class t2CSSController;
 
@@ -61,9 +64,6 @@ namespace TattyUI
         ~t2DivController() {}
         t2DivController& operator=(const t2DivController& event) const {}
 
-        // string代表id id可以为手动指定也可以是系统指定
-        // 外部无法获取非手动指定的div
-        std::map<string, t2Div*> divTable;
 
         // 所有实际遍历开始位置
         t2Div* root;

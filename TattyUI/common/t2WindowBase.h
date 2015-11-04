@@ -18,7 +18,7 @@ namespace TattyUI
 		// --!get
 		t2Point2i getSize();
 
-		t2Point2i getPosition();
+		t2Point2i getPosition(); 
 
 		int getHeight();
 

@@ -17,7 +17,7 @@
 //#include <TattyUI/test/windowTest.h>
 
 // HTML解析测试
-//#include <TattyUI/test/htmlTest.h>
+#include <TattyUI/test/htmlTest.h>
 
-// 方寸测试题
-#include <TattyUI/test/fangcun/fangcun.h>
+// AST解析测试
+//#include <TattyUI/test/astTest.h>

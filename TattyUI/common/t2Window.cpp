@@ -445,15 +445,17 @@ namespace TattyUI
         ty = y - 30;
         bPressed = true;
 
-        buttons->onMousePressed(x, y, px, py, button);
+        if(buttons)
+            buttons->onMousePressed(x, y, px, py, button);
     }
 
     void t2Window::onMouseReleased(int x, int y, int px, int py, int button)
     {
         bPressed = false;
-
-        // --!可更正为windowResized
-        buttons->onMouseReleased(x, y, px, py, button);
+        
+        if(buttons)
+            // --!可更正为windowResized
+            buttons->onMouseReleased(x, y, px, py, button);
     }
 
     void t2Window::onMouseMoved(int x, int y, int px, int py)
@@ -463,7 +465,8 @@ namespace TattyUI
             if(bPressed)
                 window->setPosition(t2GetMouseAbsoluteX() - tx, t2GetMouseAbsoluteY() - ty);
 
-            buttons->onMouseMoved(x, y, px, py);
+            if(buttons)
+                buttons->onMouseMoved(x, y, px, py);
         }
     }
 }

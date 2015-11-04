@@ -1,6 +1,6 @@
 #include <TattyUI/script/html/t2HTMLParser.h>
 #include <TattyUI/div/t2DivController.h>
-#include <TattyUI/script/css/t2CSSController.h>
+//#include <TattyUI/script/css/t2CSSController.h>
 #include <TattyUI/common/t2Window.h>
 
 #include <LinearList/t3Queue.h>

@@ -119,14 +119,18 @@ int main()
 
 #ifdef T2_CSSDIV_TEST
     // TattyUI
-    t2WindowBase *window = new t2WindowBase();
-    window->setResizable(true);
-    window->setMode(T2_WINDOW_WINDOWED);
-    window->setup(960, 960);
-    window->setPosition(50, 50);
-    window->setTitle("TattyUI");
-    window->initCallBack();
-    window->setVeticalSync(false);
+    //t2WindowBase *window = new t2WindowBase();
+    //window->setResizable(true);
+    //window->setMode(T2_WINDOW_WINDOWED);
+    //window->setup(960, 960);
+    //window->setPosition(50, 50);
+    //window->setTitle("TattyUI");
+    //window->initCallBack();
+    //window->setVeticalSync(false);
+    t2Window *w = t2Window::getInstance();
+    w->setWindowRadius(7);
+    w->setTitleBarHeight(48);
+    w->init("TattyUI", "../resources/font/Roboto-Regular.ttf", 1280, 800, 200, 200);
 
     t2Div root(800, 800, "mono", "../resources/font/Roboto-Regular.ttf"),
         div1(300, 120, "mono", "../resources/font/Roboto-Regular.ttf"),
@@ -228,11 +232,13 @@ int main()
 
         divController->draw();
 
+        w->draw();
+
         renderer->end();
 
-        window->swapBuffer();
+        w->window->swapBuffer();
 
-        window->processEvents();
+        w->window->processEvents();
     }
 #endif
 

@@ -177,6 +177,17 @@ int main()
     layoutController->updateAll();
 
     divController->init();
+    
+    divController->find("div1")->mouseMovedIn = [](int x, int y, int px, int py)
+    {
+        t2Log("Root MovedIn\n");
+    };
+
+    (*divController)["div1"]->mouseMovedOut = [](int x, int y, int px, int py)
+    {
+        t2Log("Root MovedOut\n");
+    };
+
     while(1)
     {
         renderer->clear(238, 238, 238);

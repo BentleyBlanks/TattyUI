@@ -341,6 +341,8 @@ enum t2FontSpacing
 #define T2_MOUSE_BUTTON_RIGHT     T2_MOUSE_BUTTON_2
 #define T2_MOUSE_BUTTON_MIDDLE    T2_MOUSE_BUTTON_3
 
+// 已弃用版本
+#define T2_DEPRECATED
 
 // TattyUI版本信息
 // --!来自box2d http://en.wikipedia.org/wiki/Software_versioning

@@ -18,7 +18,7 @@ namespace TattyUI
     }
 
     t2Div::t2Div(int width, int height, string fontName, string fontPath) :status(T2_NORMAL), parent(NULL), next(NULL), child(NULL),
-        bDrawMarginAABB(false), bDrawPaddingAABB(false), bHover(false), bNormal(false), bActive(false), layout(T2_LINEAR_LAYOUT)
+        bDrawMarginAABB(false), bDrawPaddingAABB(false), bHover(false), bNormal(false), bActive(false), /*bCondition(false),*/ layout(T2_LINEAR_LAYOUT)
     {
         // 3状态
         normal.width = width;
@@ -35,6 +35,11 @@ namespace TattyUI
         hover.height = height;
         hover.fontFamily = fontPath;
         hover.fontName = fontName;
+
+        //condition.width = width;
+        //condition.height = height;
+        //condition.fontFamily = fontPath;
+        //condition.fontName = fontName;
     }
 
     void t2Div::init()

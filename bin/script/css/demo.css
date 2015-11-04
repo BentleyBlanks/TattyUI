@@ -1,0 +1,35 @@
+/* 存在可能为class = "font-face a" */
+.a .b:hover, .div2{
+	background: #00FF00;
+	src: 222;
+} 
+
+.root{
+	font-family: 'Raleway', Arial, sans-serif;
+	/*text-rendering: optimizeLegibility;*/
+	margin: 1, 2, 3, 4;
+}
+
+.root .root1:hover .div1{
+	color: #7b8d92;
+}
+
+.root:hover{
+	background-color: #00BFFF;
+}
+
+/*.demo-4 a:hover,
+.demo-4 a:focus {
+	color: #7b8d92;
+}
+
+.media .screen{
+	display: none;
+	font-size: 80;
+}
+
+.foo.bar, .baz {
+    left: 10;
+    width: 100;
+    background-color: red;
+} */

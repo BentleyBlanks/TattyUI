@@ -143,12 +143,12 @@ namespace TattyUI
 
     }
 
-    t2Div* t2DivController::operator[](string id)
+    t2Div* t2DivController::operator[](const string& divName)
     {
-        return divTable[id];
+        return find(divName);
     }
 
-    t2Div* t2DivController::find(string id)
+    t2Div* t2DivController::findByID(string id)
     {
         std::map<string, t2Div*>::iterator it = divTable.find(id);
 
@@ -161,11 +161,11 @@ namespace TattyUI
             return it->second;
     }
 
-    t2Div* t2DivController::findByClass(string className)
+    t2Div* t2DivController::find(string divName)
     {
         for(map<string, t2Div*>::iterator it = divTable.begin(); it != divTable.end(); it++)
         {
-            if(it->second->className == className)
+            if(it->second->className == divName)
                 return it->second;
         }
         return NULL;

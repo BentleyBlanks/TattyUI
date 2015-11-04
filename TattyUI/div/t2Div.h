@@ -52,6 +52,9 @@ namespace TattyUI
 
         t2Style normal, active, hover;
 
+        // 依附于三种基本状态存在的条件状态
+        //t2Style condition;
+
         // 父节点 / 兄弟节点 / 第一个孩子节点
         t2Div* parent, *next, *child;
 
@@ -102,6 +105,7 @@ namespace TattyUI
 
         // 是否有被赋值
         bool bNormal, bActive, bHover;
+        //bool bCondition;
 
         // 布局方式
         int layout;
