@@ -2,7 +2,7 @@
 
 ![screenshot](https://raw.githubusercontent.com/BentleyBlanks/TattyUI/master/screenshots/1.png)
 
-对比Chrome
+对比Chrome(本质上是TattyUI做的近似CSS实现)
 ![screenshot](https://raw.githubusercontent.com/BentleyBlanks/TattyUI/master/screenshots/2.png)
 
 本UI框架底层渲染框架采用[nanovg](https://github.com/memononen/nanovg),采用类似浏览器WebKit的做法，将UI的样式与业务逻辑分离。本质上是一个简易的浏览器内核实现。
