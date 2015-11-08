@@ -6,6 +6,7 @@
 
 using namespace TattyUI;
 
+//#define CUSTOM_WINDOW
 #define HTMPPARSER_T2HTML_TEST
 //#define HTMLPARSER_GETTITLE_TEST
 //#define HTMLPARSER_POSITIONSOFCLASS_TEST
@@ -156,21 +157,22 @@ int main(int argc, const char** argv)
 
 int main()
 {
+#ifdef CUSTOM_WINDOW
     // window
     t2Window *w = t2Window::getInstance();
     w->setWindowRadius(7);
     w->setTitleBarHeight(48);
     w->init("TattyUI", "../resources/font/Roboto-Regular.ttf", 1280, 800, 200, 200);
-
-    //t2WindowBase *window = new t2WindowBase();
-    //window->setResizable(true);
-    //window->setMode(T2_WINDOW_WINDOWED);
-    //window->setup(1280, 720);
-    //window->setPosition(50, 50);
-    //window->setTitle("TattyUI");
-    //window->initCallBack();
-    //window->setVeticalSync(false);
-
+#else
+    t2WindowBase *window = new t2WindowBase();
+    window->setResizable(true);
+    window->setMode(T2_WINDOW_WINDOWED);
+    window->setup(1280, 720);
+    window->setPosition(50, 50);
+    window->setTitle("TattyUI");
+    window->initCallBack();
+    window->setVeticalSync(false);
+#endif
     // controller
     // renderer layout html(css) div
     t2Renderer *renderer = t2Renderer::getInstance();
@@ -207,13 +209,20 @@ int main()
 
         divController->draw();
 
+#ifdef CUSTOM_WINDOW
         w->draw();
-
+#endif
         renderer->end();
 
+#ifdef CUSTOM_WINDOW
         w->window->swapBuffer();
 
         w->window->processEvents();
+#else
+        window->swapBuffer();
+
+        window->processEvents();
+#endif
     }
 
     getchar();
