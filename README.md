@@ -1,6 +1,9 @@
 # TattyUI
 
-![screenshot](https://github.com/BentleyBlanks/TattyUI/blob/master/screenshots/1.png?raw=true)
+![screenshot](https://raw.githubusercontent.com/BentleyBlanks/TattyUI/master/screenshots/1.png)
+
+对比Chrome
+![screenshot](https://raw.githubusercontent.com/BentleyBlanks/TattyUI/master/screenshots/2.png)
 
 本UI框架底层渲染框架采用[nanovg](https://github.com/memononen/nanovg),采用类似浏览器WebKit的做法，将UI的样式与业务逻辑分离。本质上是一个简易的浏览器内核实现。
 
@@ -71,6 +74,32 @@ t2Div *div2 = divController["div2"];
 ```
 
 4.CSS解析部分支持大部分CSS2.0语法，部分未支持的语法规则已在[t2CSSParser](https://github.com/BentleyBlanks/t2CSSPareser)简介中给出
+
+#已知BUG
+1.html中不给出```class```标签直接崩溃的错误
+
+2.新解析器不支持类似```function```写法的错误，如下
+
+``` css 
+/* unsupported */
+color: rgba();
+/* supported */
+color: #ffffff;
+/* supported */
+color: red;
+```
+
+3.#fff这样的位数不足六位写法解析出粗错，如下
+```css
+/* 解析器直接崩溃的错误 */
+color: #fff;
+/* 位数严格需要是六位 */
+color: #ffffff;
+```
+
+4.```text-align```无法使用，TattyUI区别于普通浏览器的新增关键字目前并不支持，因此模拟```<h><p>```等标签就需要手工运算距离较麻烦
+
+5.margin负数时未考虑，会直接忽略这种情况而重置为0。
 
 #版本说明
 TattyUI ver 0.0.7 中感谢[ccss](https://github.com/jdeng/ccss)给我提供了非常好的使用正则表达式解析CSS的案例。
