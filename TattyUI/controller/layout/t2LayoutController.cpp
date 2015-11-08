@@ -1,7 +1,6 @@
 #include <TattyUI/controller/layout/t2LayoutController.h>
 #include <TattyUI/div/t2DivController.h>
 #include <LinearList/t3Queue.h>
-#include <TattyUI/common/t2Window.h>
 #include <TattyUI/render/t2Renderer.h>
 
 namespace TattyUI
@@ -29,7 +28,7 @@ namespace TattyUI
 
         for(auto it : divController->divTable)
         {
-            if(it.second->getCSS().display != T2_DISPLAY_NONE)
+            if(it.second->getSuitCSS().display != T2_DISPLAY_NONE)
                 updateDiv(it.second);
         }
     }
@@ -44,24 +43,27 @@ namespace TattyUI
             for(int i = T2_NORMAL; i <= T2_ACTIVE; i++)
             {
                 it.second->setStatus(i);
-                updateDiv(it.second);
+                updateDiv(it.second, false);
+
+                if(it.second->hasCondition())
+                    updateDiv(it.second, true);
             }
 
             it.second->setStatus(T2_NORMAL);
         }
     }
 
-    void t2LayoutController::updateDiv(t2Div* div)
+    void t2LayoutController::updateDiv(t2Div* div, bool bCondition)
     {
         if(div->parent)
         {
             switch(div->parent->layout)
             {
             case T2_LINEAR_LAYOUT:
-                linearLayout(div);
+                linearLayout(div, bCondition);
                 break;
             case T2_LIST_LAYOUT:
-                listLayout(div);
+                listLayout(div, bCondition);
                 break;
 
             default:
@@ -74,20 +76,20 @@ namespace TattyUI
             linearLayout(div);
     }
 
-    void t2LayoutController::linearLayout(t2Div* div)
+    void t2LayoutController::linearLayout(t2Div* div, bool bCondition)
     {
-        t2Window* window = t2Window::getInstance();
         t2Div *parent = div->parent;
 
-        t2Style& css = div->getCSS();
+        t2Style& css = bCondition ? div->getConditionCSS() : div->getCSS();
+
         // 根节点
         if(!parent)
         {
             css.x = css.marginLeft;
-            css.y = css.marginTop + window->getTitleBarHeight();
+            css.y = css.marginTop + t2GetWindowTitleBarHeight();
 
             css.contentSize.x = css.marginLeft + css.paddingLeft;
-            css.contentSize.y = css.marginTop + css.paddingTop + window->getTitleBarHeight();
+            css.contentSize.y = css.marginTop + css.paddingTop + t2GetWindowTitleBarHeight();
 
             int tempWidth = css.width - css.paddingLeft - css.paddingRight;
             css.contentSize.width = (tempWidth > 0) ? tempWidth : 0;
@@ -99,7 +101,7 @@ namespace TattyUI
         }
 
         // 通用布局 
-        t2Style& parentCSS = parent->getCSS();
+        t2Style& parentCSS = bCondition ? parent->getConditionCSS() : parent->getCSS();
 
         int allChildWidth = 0, allChildHeight = 0;
         int nowChildWidth = 0, nowChildHeight = 0, nowMaxHeight = 0;
@@ -107,7 +109,7 @@ namespace TattyUI
         // 从头遍历所有自身之前的所有兄弟结点
         for(t2Div* childptr = parent->child; childptr != div; childptr = childptr->next)
         {
-            t2Style& childCSS = childptr->getCSS();
+            t2Style& childCSS = bCondition ? childptr->getConditionCSS() : childptr->getCSS();
 
             // x
             nowChildWidth = childCSS.marginLeft + childCSS.width + childCSS.marginRight;
@@ -124,7 +126,7 @@ namespace TattyUI
             // 超出父节点可容纳的最大显示宽度(去除内边距)自动换行
             if(childptr->next != div)
             {
-                t2Style& x = childptr->next->getCSS();
+                t2Style& x = bCondition ? childptr->next->getConditionCSS() : childptr->next->getCSS();
                 if(allChildWidth + x.width + x.marginLeft + x.marginRight > parentCSS.width - parentCSS.paddingLeft - parentCSS.paddingRight)
                 {
                     allChildWidth = 0;
@@ -177,7 +179,7 @@ namespace TattyUI
     }
 
     // 根据div父节点类型将div更新为列表布局方式排列
-    void t2LayoutController::listLayout(t2Div* div)
+    void t2LayoutController::listLayout(t2Div* div, bool bCondition)
     {
 
     }

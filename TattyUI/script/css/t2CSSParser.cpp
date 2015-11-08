@@ -79,11 +79,171 @@ namespace TattyUI
             t2Log("Warning: 解析完毕出的AST为空");
     }
 
-    vector<t2CSSSDList*> t2CSSParser::findByClass(const string& className)
+    //vector<t2CSSSSDList*> t2CSSParser::findByClass(const string& className)
+    //{
+    //    // 根据指定类选择器名查找到的规则集
+    //    vector<t2CSSSSDList*> temp;
+
+    //    for(auto ruleset : ruleSets)
+    //    {
+    //        // selectorList支线
+    //        t2CSSSelectorList* selectorList = ruleset->selectorList;
+    //        while(selectorList)
+    //        {
+    //            // selector支线
+    //            t2CSSSelector* selector = selectorList->selector;
+    //            // .class {}的写法是不被允许的--ver 0.0.8
+    //            // 这里只查找非conditionStatus样式控制下的div 即selector下无第二个selector结点的情况
+    //            if(selector && !selector->selector && selector->simpleSelector)
+    //            {
+    //                // specifierList支线
+    //                // 此处不需要使用到simpleSelector中的elementName 目前不支持id选择器
+    //                // 这里认定选择器书写类型为 .class(:pseudo)->secondPart(:firstPart)
+    //                // 规定specifierList最多不超过两个子对象 且不支持如下语法 .a.b.c
+    //                t2CSSNodeSpecifierList *specifierList = NULL;
+    //                t2CSSNodeSpecifier *slFirstPart = NULL, *slSecondPart = NULL;
+
+    //                if(specifierList = selector->simpleSelector->specifierList)
+    //                    slFirstPart = specifierList->specifier;
+    //                else
+    //                {
+    //                    t2PrintError("选择器为空的写法存在语法错误");
+    //                    continue;
+    //                }
+
+    //                if(slFirstPart)
+    //                {
+    //                    if(specifierList = specifierList->specifierList)
+    //                    {
+    //                        if(slSecondPart = specifierList->specifier)
+    //                        {
+    //                            // 保证返回的ruleset中不会包含任何错误语法出现
+    //                            if((slFirstPart->type == T2CSS_CLASS) && (slSecondPart->type == T2CSS_CLASS))
+    //                            {
+    //                                t2Log("Unsupported: <div class = \"a \"b>中的空格是不允许的\n");
+    //                                continue;
+    //                            }
+    //                            else if((slFirstPart->type == T2CSS_PSEUDO) && (slSecondPart->type == T2CSS_PSEUDO))
+    //                            {
+    //                                t2PrintError("\":pseudoA:pseudoB\"的写法存在语法错误");
+    //                                continue;
+    //                            }
+    //                            else if((slFirstPart->type == T2CSS_CLASS) && (slSecondPart->type == T2CSS_PSEUDO))
+    //                            {
+    //                                t2PrintError("\":pseudoA.classB\"的写法存在语法错误");
+    //                                continue;
+    //                            }
+    //                            else
+    //                            {
+    //                                if(className == slSecondPart->selectorName)
+    //                                    // 标准.class:pseudo{}模式
+    //                                    temp.push_back(new t2CSSSSDList(selector->simpleSelector->specifierList, ruleset->declarationList));
+    //                            }
+    //                        }
+    //                        else
+    //                        {
+    //                            t2Log("Unsupported: 未知的语法\n");
+    //                            continue;
+    //                        }
+    //                    }
+    //                    else
+    //                    {
+    //                        // 缺省伪类选择器部分
+    //                        if(slFirstPart->type == T2CSS_CLASS)
+    //                        {
+    //                            // 标准.class{}模式
+    //                            if(className == slFirstPart->selectorName)
+    //                                temp.push_back(new t2CSSSSDList(selector->simpleSelector->specifierList, ruleset->declarationList));
+    //                        }
+    //                        else
+    //                            t2Log("Unsupported: 未知的语法\n");
+    //                    }
+    //                }
+    //                else
+    //                {
+    //                    t2PrintError("选择器为空的写法存在语法错误");
+    //                    continue;
+    //                }
+
+    //                //selector = selector->selector;
+    //            }
+
+    //            selectorList = selectorList->selectorList;
+    //        }
+    //    }
+
+    //    return temp;
+    //}
+
+    bool t2CSSParser::checkDeclaration(t2CSSDeclaration* decl)
+    {
+        return true;
+    }
+
+    bool t2CSSParser::checkSpecifierList(t2CSSNodeSpecifierList* specifierList, t2CSSNodeSpecifier** firstPart, t2CSSNodeSpecifier** secondPart)
+    {
+        if(!specifierList)
+            return false;
+
+        t2CSSNodeSpecifier *slFirstPart = specifierList->specifier, *slSecondPart = NULL;
+
+        if(slFirstPart)
+        {
+            if(specifierList = specifierList->specifierList)
+            {
+                if(slSecondPart = specifierList->specifier)
+                {
+                    // 保证返回的ruleset中不会包含任何错误语法出现
+                    if((slFirstPart->type == T2CSS_CLASS) && (slSecondPart->type == T2CSS_CLASS))
+                    {
+                        t2Log("Unsupported: <div class = \"a \"b>中的空格是不允许的\n");
+                        return false;
+                    }
+                    else if((slFirstPart->type == T2CSS_PSEUDO) && (slSecondPart->type == T2CSS_PSEUDO))
+                    {
+                        t2PrintError("\":pseudoA:pseudoB\"的写法存在语法错误");
+                        return false;
+                    }
+                    else if((slFirstPart->type == T2CSS_CLASS) && (slSecondPart->type == T2CSS_PSEUDO))
+                    {
+                        t2PrintError("\":pseudoA.classB\"的写法存在语法错误");
+                        return false;
+                    }
+                    else
+                    {
+                        *firstPart = slFirstPart;
+                        *secondPart = slSecondPart;
+                        return true;
+                    }
+                }
+                else
+                {
+                    t2Log("Unsupported: 未知的语法\n");
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            // 缺省伪类选择器部分
+            if(slFirstPart->type == T2CSS_CLASS)
+            {
+                *firstPart = slFirstPart;
+                return true;
+            }
+            else
+            {
+                t2Log("Unsupported: 未知的语法\n");
+                return false;
+            }
+        }
+    }
+
+    vector<t2CSSSSDList*> t2CSSParser::findByClass(const string& className)
     {
         // 根据指定类选择器名查找到的规则集
-        vector<t2CSSSDList*> temp;
-
+        vector<t2CSSSSDList*> temp;
+    
         for(auto ruleset : ruleSets)
         {
             // selectorList支线
@@ -93,8 +253,8 @@ namespace TattyUI
                 // selector支线
                 t2CSSSelector* selector = selectorList->selector;
                 // .class {}的写法是不被允许的--ver 0.0.8
-                // 这里只查找非conditionStatus样式控制下的div 即selector下无第二个selector结点的情况
-                if(selector && !selector->selector && selector->simpleSelector)
+                // 因为条件写法样式控制对象就是第一个selector支线因此只需要控制循环一次 这与非条件选择器列表一致
+                if(selector && selector->simpleSelector)
                 {
                     // specifierList支线
                     // 此处不需要使用到simpleSelector中的elementName 目前不支持id选择器
@@ -102,7 +262,7 @@ namespace TattyUI
                     // 规定specifierList最多不超过两个子对象 且不支持如下语法 .a.b.c
                     t2CSSNodeSpecifierList *specifierList = NULL;
                     t2CSSNodeSpecifier *slFirstPart = NULL, *slSecondPart = NULL;
-
+    
                     if(specifierList = selector->simpleSelector->specifierList)
                         slFirstPart = specifierList->specifier;
                     else
@@ -110,7 +270,7 @@ namespace TattyUI
                         t2PrintError("选择器为空的写法存在语法错误");
                         continue;
                     }
-
+    
                     if(slFirstPart)
                     {
                         if(specifierList = specifierList->specifierList)
@@ -137,7 +297,7 @@ namespace TattyUI
                                 {
                                     if(className == slSecondPart->selectorName)
                                         // 标准.class:pseudo{}模式
-                                        temp.push_back(new t2CSSSDList(selector->simpleSelector->specifierList, ruleset->declarationList));
+                                        temp.push_back(new t2CSSSSDList(selector, selector->simpleSelector->specifierList, ruleset->declarationList));
                                 }
                             }
                             else
@@ -153,7 +313,7 @@ namespace TattyUI
                             {
                                 // 标准.class{}模式
                                 if(className == slFirstPart->selectorName)
-                                    temp.push_back(new t2CSSSDList(selector->simpleSelector->specifierList, ruleset->declarationList));
+                                    temp.push_back(new t2CSSSSDList(selector, selector->simpleSelector->specifierList, ruleset->declarationList));
                             }
                             else
                                 t2Log("Unsupported: 未知的语法\n");
@@ -164,20 +324,16 @@ namespace TattyUI
                         t2PrintError("选择器为空的写法存在语法错误");
                         continue;
                     }
-
+    
                     //selector = selector->selector;
                 }
-
+    
                 selectorList = selectorList->selectorList;
             }
         }
-
+    
         return temp;
     }
 
-    bool t2CSSParser::checkDeclaration(t2CSSDeclaration* decl)
-    {
-        return true;
-    }
 
 }

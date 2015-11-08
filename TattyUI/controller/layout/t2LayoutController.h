@@ -26,13 +26,13 @@ namespace TattyUI
 
     private:
         // 更新指定div的状态数量
-        void updateDiv(t2Div* div);
+        void updateDiv(t2Div* div, bool bCondition = false);
 
         // 根据div父节点类型将div更新为线性布局方式排列
-        void linearLayout(t2Div* div);
+        void linearLayout(t2Div* div, bool bCondition = false);
 
         // 根据div父节点类型将div更新为列表布局方式排列
-        void listLayout(t2Div* div);
+        void listLayout(t2Div* div, bool bCondition = false);
 
         // 不可删除 不可复制 不可自己创建实例
         t2LayoutController();

@@ -69,8 +69,6 @@ Comment Test
 }
 
 .div4{
-	font-family: "../resources/font/mono.ttf";
-	font-size: 25;
 	background-color: #0000CD;
 	border-radius: 10;
 	width: 400;
@@ -81,13 +79,21 @@ Comment Test
 	margin-right: 30;
 }
 
-/*.root:hover .div4{
-	background-color: #00BFFF;
-}*/
-
-.div4:hover{
-	background-color: #0000FF;
+.root:hover .div4{
+	background-color: yellow;
 }
+
+.div5{
+	color: black;
+	font-size: 20;
+	border-radius: 2;
+	height: 50;
+	width: 200;
+}
+
+/*.div4:hover{
+	background-color: #0000FF;
+}*/
 
 .div4:active{
 	background-color: #00008B;

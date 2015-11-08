@@ -43,8 +43,15 @@ namespace TattyUI
             parsers.push_back(parser);
         }
 
-        // loop all child 
-        // find if it's style is defined
+        // 正常三种状态的css初始化
+        toDiv();
+
+        // 在完成正常三种状态下的样式初始化之后才开始condition状态初始化
+        //toDivCondition();
+    }
+
+    void t2CSSController::toDiv()
+    {
         t3Queue<t2Div*> queue;
         t2Div* root = controller->getRoot();
         if(!root)
@@ -63,8 +70,11 @@ namespace TattyUI
             if(div)
             {
                 // 预先完成Normal状态初始化 后接剩余状态初始化
-                toNormal(div);
-                toOther(div);
+                normalStyle(div, true);
+                conditionStyle(div, true);
+
+                normalStyle(div, false);
+                conditionStyle(div, false);
 
                 // 将所有兄弟结点入队列
                 for(t2Div* c = div->child; c != NULL; c = c->next)
@@ -73,67 +83,63 @@ namespace TattyUI
             else
                 break;
         }
-
-        // 完成所有三套基本状态初始化之后进行conditionStatus的样式初始化
     }
 
-
-    void t2CSSController::toNormal(t2Div* div)
+    void t2CSSController::toDivCondition()
     {
-        // div挂钩css
-        for(auto parser : parsers)
+        t3Queue<t2Div*> queue;
+        t2Div* root = controller->getRoot();
+        if(!root)
         {
-            // 遍历AST 能够保证specifierList->pseudo+class / specifierList->class
-            vector<t2CSSSDList*> sdList = parser->findByClass(div->className);
-            for(auto sd : sdList)
+            t2PrintError("Please set root first!");
+            return;
+        }
+
+        queue.push(root);
+        for(;;)
+        {
+            t2Div* div;
+            if(queue.isEmpty()) div = NULL;
+            else div = queue.pop();
+
+            if(div)
             {
-                t2CSSNodeSpecifierList* specifierList = sd->specifierList;
-                t2CSSDeclarationList* declarationList = sd->declarationList;
+                // 预先完成Normal状态初始化 后接剩余状态初始化
+                conditionStyle(div, true);
+                conditionStyle(div, false);
 
-                div->setStatus(T2_NORMAL);
-
-                // 存在伪类选择器
-                if(specifierList->specifier->type == T2CSS_PSEUDO)
-                    continue;
-
-                // 样式应用
-                t2Style& css = div->getCSS();
-                while(declarationList)
-                {
-                    t2CSSDeclaration* decl;
-                    // 此声明需存在 且 无不支持的语法存在
-                    if((decl = declarationList->declaration) && parser->checkDeclaration(decl))
-                    {
-                        // 应用样式至css
-                        toStyle(decl, css);
-
-                        // 将样式应用至还未赋值的状态样式
-                        toStatus(decl, div);
-
-                        // 应用样式至所有子节点
-                        toChild(decl, div);
-                    }
-
-                    declarationList = declarationList->declarationList;
-                }
+                // 将所有兄弟结点入队列
+                for(t2Div* c = div->child; c != NULL; c = c->next)
+                    queue.push(c);
             }
+            else
+                break;
         }
     }
 
-    void t2CSSController::toOther(t2Div* div)
+    // 不解析conditionStyle
+    void t2CSSController::normalStyle(t2Div* div, bool isNormal)
     {
         // div挂钩css
         for(auto parser : parsers)
         {
             // 遍历AST 能够保证specifierList->pseudo+class / specifierList->class
-            vector<t2CSSSDList*> sdList = parser->findByClass(div->className);
+            vector<t2CSSSSDList*> sdList = parser->findByClass(div->className);
             for(auto sd : sdList)
             {
+                t2CSSSelector* selector = sd->selector;
                 t2CSSNodeSpecifierList* specifierList = sd->specifierList;
                 t2CSSDeclarationList* declarationList = sd->declarationList;
 
+                // 跳过条件选择器列表
+                if(selector->selector)
+                    continue;
+
+                // 条件选择器依赖于当前div状态选项
+                div->setStatus(T2_NORMAL);
+
                 // 存在伪类选择器
-                if(specifierList->specifier->type == T2CSS_PSEUDO)
+                if(specifierList->specifier->type == T2CSS_PSEUDO && !isNormal)
                 {
                     t2CSSNodeSpecifier* pseudo = specifierList->specifier;
                     if(pseudo->selectorName == "active")
@@ -141,8 +147,11 @@ namespace TattyUI
                     else if(pseudo->selectorName == "hover")
                         div->setStatus(T2_HOVER);
                 }
+                else if(specifierList->specifier->type == T2CSS_CLASS && isNormal)
+                    div->setStatus(T2_NORMAL);
                 else
                     continue;
+
 
                 // 样式应用
                 t2Style& css = div->getCSS();
@@ -168,8 +177,220 @@ namespace TattyUI
         }
     }
 
-    void t2CSSController::toChild(t2CSSDeclaration* decl, t2Div* div)
+    // 不解析normalStyle
+    void t2CSSController::conditionStyle(t2Div* div, bool isNormal)
     {
+        // div挂钩css
+        for(auto parser : parsers)
+        {
+            // 遍历AST 能够保证specifierList->pseudo+class / specifierList->class
+            vector<t2CSSSSDList*> sdList = parser->findByClass(div->className);
+            for(auto sd : sdList)
+            {
+                t2CSSSelector* selector = sd->selector;
+                t2CSSNodeSpecifierList* specifierList = sd->specifierList;
+                t2CSSDeclarationList* declarationList = sd->declarationList;
+
+                // 只解析条件选择器列表
+                if(!selector->selector)
+                    continue;
+
+                // 条件选择器依赖于当前div状态选项
+                div->setStatus(T2_NORMAL);
+
+                // 存在伪类选择器
+                if(specifierList->specifier->type == T2CSS_PSEUDO && !isNormal)
+                {
+                    t2CSSNodeSpecifier* pseudo = specifierList->specifier;
+                    if(pseudo->selectorName == "active")
+                        div->setStatus(T2_ACTIVE);
+                    else if(pseudo->selectorName == "hover")
+                        div->setStatus(T2_HOVER);
+                }
+                else if(specifierList->specifier->type == T2CSS_CLASS && isNormal)
+                    div->setStatus(T2_NORMAL);
+                else
+                    continue;
+
+                // 条件选择器列表 单一选择器直接跳过完成下一步初始化
+                while((selector = selector->selector) && (specifierList = selector->simpleSelector->specifierList))
+                {
+                    t2Div* temp = NULL;
+                    t2CSSNodeSpecifier *slFirstPart = specifierList->specifier, *slSecondPart = NULL;
+
+                    // 置空当前div条件表
+                    if(div->hasCondition())
+                        div->deleteCondition();
+
+                    if(!parser->checkSpecifierList(specifierList, &slFirstPart, &slSecondPart))
+                        continue;
+
+                    // 通过语法检测 因此slFirstPart必定为非空
+                    if(slFirstPart && slSecondPart)
+                    {
+                        if(temp = t2DivController::getInstance()->find(slSecondPart->selectorName))
+                        {
+                            if(slFirstPart->selectorName == "hover")
+                                div->addCondition(temp, T2_HOVER);
+                            else if(slFirstPart->selectorName == "active")
+                                div->addCondition(temp, T2_ACTIVE);
+                        }
+                    }
+                    else
+                    {
+                        if(temp = t2DivController::getInstance()->find(slFirstPart->selectorName))
+                            div->addCondition(temp, T2_NORMAL);
+                    }
+                }
+
+                // 样式应用
+                t2Style& css = div->getConditionCSS();
+                while(declarationList)
+                {
+                    t2CSSDeclaration* decl;
+                    // 此声明需存在 且 无不支持的语法存在
+                    if((decl = declarationList->declaration) && parser->checkDeclaration(decl))
+                    {
+                        // 应用样式至css
+                        toStyle(decl, css);
+
+                        // 应用condition样式至还未赋值的状态样式
+                        toStatus(decl, div, true);
+
+                        // 应用condition样式至所有子节点
+                        toChild(decl, div, true);
+                    }
+
+                    declarationList = declarationList->declarationList;
+                }
+            }
+        }
+    }
+
+
+    //void t2CSSController::toOther(t2Div* div)
+    //{
+    //    // div挂钩css
+    //    for(auto parser : parsers)
+    //    {
+    //        // 遍历AST 能够保证specifierList->pseudo+class / specifierList->class
+    //        vector<t2CSSSSDList*> sdList = parser->findByClass(div->className);
+    //        for(auto sd : sdList)
+    //        {
+    //            t2CSSSelector* selector = sd->selector;
+    //            t2CSSNodeSpecifierList* specifierList = sd->specifierList;
+    //            t2CSSDeclarationList* declarationList = sd->declarationList;
+    //
+    //            // 存在伪类选择器
+    //            if(specifierList->specifier->type == T2CSS_PSEUDO)
+    //            {
+    //                t2CSSNodeSpecifier* pseudo = specifierList->specifier;
+    //                if(pseudo->selectorName == "active")
+    //                    div->setStatus(T2_ACTIVE);
+    //                else if(pseudo->selectorName == "hover")
+    //                    div->setStatus(T2_HOVER);
+    //            }
+    //            else
+    //                continue;
+    //
+    //
+    //
+    //            // 样式应用
+    //            t2Style& css = div->getCSS();
+    //            while(declarationList)
+    //            {
+    //                t2CSSDeclaration* decl;
+    //                // 此声明需存在 且 无不支持的语法存在
+    //                if((decl = declarationList->declaration) && parser->checkDeclaration(decl))
+    //                {
+    //                    // 应用样式至css
+    //                    toStyle(decl, css);
+    //
+    //                    // 将样式应用至还未赋值的状态样式
+    //                    toStatus(decl, div);
+    //
+    //                    // 应用样式至所有子节点
+    //                    toChild(decl, div);
+    //                }
+    //
+    //                declarationList = declarationList->declarationList;
+    //            }
+    //        }
+    //    }
+    //}
+
+    //void t2CSSController::toCondition(t2Div* div)
+    //{
+    //    // div挂钩css
+    //    for(auto parser : parsers)
+    //    {
+    //        // 查找selector后接非空selector的根selector
+    //        vector<t2CSSSDList*> sdList = parser->findSDByClass(div->className);
+    //
+    //        // condition样式初始化
+    //
+    //        // 事件注册
+    //
+    //        for(auto sd : sdList)
+    //        {
+    //            // 因条件样式只控制最后面的选择器 因此选取AST支线中Selector的第一个SpecifierList即可
+    //            t2CSSSelector* selector = sd->selector;
+    //            // 下列三项当中任意一项为空都无需进行样式解析
+    //            if(!selector || !selector->simpleSelector || !selector->simpleSelector->specifierList)
+    //                continue;
+    //
+    //            // 条件样式中最后一个选择器
+    //            // 例如.a .b .c中的.c
+    //            t2CSSNodeSpecifierList* specifierList = selector->simpleSelector->specifierList;
+    //            t2CSSDeclarationList* declarationList = sd->declarationList;
+    //
+    //            // 存在伪类选择器 就根据指定状态初始化conditionStatus
+    //            // 事件注册中被控制者的状态
+    //            if(specifierList->specifier->type == T2CSS_PSEUDO)
+    //            {
+    //                t2CSSNodeSpecifier* pseudo = specifierList->specifier;
+    //                if(pseudo->selectorName == "active")
+    //                {
+    //                    
+    //                   
+    //                }
+    //                else if(pseudo->selectorName == "hover")
+    //                {
+    //                    
+    //                }
+    //            }
+    //            else
+    //            {
+    //                
+    //            }
+    //
+    //            // 解析整个选择器剩余部分 注册至事件驱动器中
+    //
+    //            // 样式应用
+    //            div->setStatus(T2_CONDITION);
+    //            t2Style& css = div->getCSS();
+    //            while(declarationList)
+    //            {
+    //                t2CSSDeclaration* decl;
+    //                // 此声明需存在 且 无不支持的语法存在
+    //                if((decl = declarationList->declaration) && parser->checkDeclaration(decl))
+    //                {
+    //                    // 应用样式至css
+    //                    toStyle(decl, css);
+    //
+    //                    // 应用condition样式至所有子节点的condition上
+    //                    toChild(decl, div, true);
+    //                }
+    //
+    //                declarationList = declarationList->declarationList;
+    //            }
+    //        }
+    //
+    //    }
+    //}
+
+void t2CSSController::toChild(t2CSSDeclaration* decl, t2Div* div, bool isCondition)
+{
         // 覆盖其所有子类型内容
         // --!层序遍历
         t2Div* root = div;
@@ -188,10 +409,37 @@ namespace TattyUI
             {
                 if(temp != root)
                 {
-                    // 根据当前状态赋值
-                    toStyle(decl, temp->normal);
-                    toStyle(decl, temp->hover);
-                    toStyle(decl, temp->active);
+                    if(!isCondition)
+                    {
+                        switch(div->getStatus())
+                        {
+                        case T2_NORMAL:
+                            // 根据当前状态赋值
+                            toStyle(decl, temp->normal);
+                            toStyle(decl, temp->hover);
+                            toStyle(decl, temp->active);
+
+                            toStyle(decl, temp->normalCondition);
+                            toStyle(decl, temp->hoverCondition);
+                            toStyle(decl, temp->activeCondition);
+                            break;
+
+                        case T2_HOVER:
+                            toStyle(decl, temp->hover);
+                            toStyle(decl, temp->hoverCondition);
+                            break;
+
+                        case T2_ACTIVE:
+                            toStyle(decl, temp->active);
+                            toStyle(decl, temp->activeCondition);
+                        }
+                    }
+                    else
+                    {
+                        toStyle(decl, temp->normalCondition);
+                        toStyle(decl, temp->hoverCondition);
+                        toStyle(decl, temp->activeCondition);
+                    }
                 }
 
                 // 将所有兄弟结点入队列
@@ -203,39 +451,56 @@ namespace TattyUI
         }
     }
 
-    void t2CSSController::toStatus(t2CSSDeclaration* decl, t2Div* div)
+    void t2CSSController::toStatus(t2CSSDeclaration* decl, t2Div* div, bool isCondition)
     {
-        // 覆盖当前特性至其余状态
-        switch(div->getStatus())
+        if(!isCondition)
         {
-        case T2_NORMAL:
-            toStyle(decl, div->active);
-            toStyle(decl, div->hover);
-            break;
+            // 覆盖当前特性至其余状态
+            switch(div->getStatus())
+            {
+            case T2_NORMAL:
+                toStyle(decl, div->active);
+                toStyle(decl, div->hover);
 
-        case T2_ACTIVE:
-            //toStyle(decl, div->normal);
-            //toStyle(decl, div->hover);
-            break;
+                toStyle(decl, div->normalCondition);
+                toStyle(decl, div->activeCondition);
+                toStyle(decl, div->hoverCondition);
+                break;
 
-        case T2_HOVER:
-            //toStyle(decl, div->active);
-            //toStyle(decl, div->normal);
-            break;
+            case T2_ACTIVE:
+                //toStyle(decl, div->normal);
+                //toStyle(decl, div->hover);
+                toStyle(decl, div->activeCondition);
+                break;
+
+            case T2_HOVER:
+                toStyle(decl, div->hoverCondition);
+                //toStyle(decl, div->active);
+                //toStyle(decl, div->normal);
+                break;
+            }
         }
-        //// --!need test
-        //for(auto element : controller->divTable)
-        //{
-        //    t2Div* div = element.second;
-        //    if(!div->bActive)
-        //    {
-        //        div->active = div->normal;
-        //    }
-        //    if(!div->bHover)
-        //    {
-        //        div->hover = div->normal;
-        //    }
-        //}
+        else
+        {
+            // 覆盖当前特性至其余状态
+            switch(div->getStatus())
+            {
+            case T2_NORMAL:
+                toStyle(decl, div->activeCondition);
+                toStyle(decl, div->hoverCondition);
+                break;
+
+            case T2_ACTIVE:
+                //toStyle(decl, div->normal);
+                //toStyle(decl, div->hover);
+                break;
+
+            case T2_HOVER:
+                //toStyle(decl, div->active);
+                //toStyle(decl, div->normal);
+                break;
+            }
+        }
     }
 
     void t2CSSController::toStyle(t2CSSDeclaration* decl, t2Style& css)

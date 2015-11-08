@@ -11,6 +11,17 @@
 
 namespace TattyUI
 {
+    class t2Div::t2DivCondition
+    {
+    public:
+        t2DivCondition() :div(NULL), status(T2_NORMAL){}
+        t2DivCondition(t2Div* div, t2DivStatus status):div(div), status(status) {}
+
+        // 条件div对应状态及指针
+        t2Div* div;
+        t2DivStatus status;
+    };
+
     // 委托构造函数
     t2Div::t2Div() :t2Div(0, 0, "", "")
     {
@@ -18,9 +29,10 @@ namespace TattyUI
     }
 
     t2Div::t2Div(int width, int height, string fontName, string fontPath) :status(T2_NORMAL), parent(NULL), next(NULL), child(NULL),
-        bDrawMarginAABB(false), bDrawPaddingAABB(false), bHover(false), bNormal(false), bActive(false), /*bCondition(false),*/ layout(T2_LINEAR_LAYOUT)
+        bDrawMarginAABB(false), bDrawPaddingAABB(false), bHover(false), bNormal(false), bActive(false)/*, bCondition(false)*/, layout(T2_LINEAR_LAYOUT),
+        normalConditionList(NULL), hoverConditionList(NULL), activeConditionList(NULL)
     {
-        // 3状态
+        // normal
         normal.width = width;
         normal.height = height;
         normal.fontFamily = fontPath;
@@ -36,10 +48,21 @@ namespace TattyUI
         hover.fontFamily = fontPath;
         hover.fontName = fontName;
 
-        //condition.width = width;
-        //condition.height = height;
-        //condition.fontFamily = fontPath;
-        //condition.fontName = fontName;
+        // condition
+        normalCondition.width = width;
+        normalCondition.height = height;
+        normalCondition.fontFamily = fontPath;
+        normalCondition.fontName = fontName;
+
+        activeCondition.width = width;
+        activeCondition.height = height;
+        activeCondition.fontFamily = fontPath;
+        activeCondition.fontName = fontName;
+
+        hoverCondition.width = width;
+        hoverCondition.height = height;
+        hoverCondition.fontFamily = fontPath;
+        hoverCondition.fontName = fontName;
     }
 
     void t2Div::init()
@@ -49,28 +72,57 @@ namespace TattyUI
         for(int i = T2_NORMAL; i <= T2_ACTIVE; i++)
         {
             setStatus(i);
-            //updateContent();
-            t2Style& css = getCSS();
+            // 分步完成normal+condition的css初始化
+            t2Style* css = &getCSS();
 
-            // normal
-            // 渐变阴影
-            css.boxGradient.set(css.contentSize.x + css.hBoxShadow,
-                                css.contentSize.y + css.vBoxShadow + window->getTitleBarHeight(),
-                                css.contentSize.width, css.contentSize.height,
-                                css.borderRadius,
-                                css.boxShadowBlur,
-                                css.boxShadowInColor, css.boxShadowOutColor);
-            // dimension 
-            css.maxWidth = css.contentSize.width;
-            css.maxHeight = css.contentSize.height;
-            css.minWidth = css.contentSize.width;
-            css.minHeight = css.contentSize.height;
+            initCSS(*css);
 
-            // 假定fontName直接与fontFamily同名
-            renderer->loadFont(css.fontFamily.c_str(), css.fontFamily.c_str());
+            t2Style* cssCondition = &getConditionCSS();
+
+            initCSS(*cssCondition);
         }
 
         setStatus(T2_NORMAL);
+    }
+
+    void t2Div::initCSS(t2Style& css)
+    {
+        t2Window* window = t2Window::getInstance();
+
+        // normal
+        // 渐变阴影
+        css.boxGradient.set(css.contentSize.x + css.hBoxShadow,
+                            css.contentSize.y + css.vBoxShadow + window->getTitleBarHeight(),
+                            css.contentSize.width, css.contentSize.height,
+                            css.borderRadius,
+                            css.boxShadowBlur,
+                            css.boxShadowInColor, css.boxShadowOutColor);
+        // dimension 
+        css.maxWidth = css.contentSize.width;
+        css.maxHeight = css.contentSize.height;
+        css.minWidth = css.contentSize.width;
+        css.minHeight = css.contentSize.height;
+
+        // 假定fontName直接与fontFamily同名
+        renderer->loadFont(css.fontFamily.c_str(), css.fontFamily.c_str());
+    }
+
+    t2Style& t2Div::getConditionCSS()
+    {
+        switch (status)
+        {
+        case T2_NORMAL:
+            return normalCondition;
+
+        case T2_HOVER:
+            return hoverCondition;
+
+        case T2_ACTIVE:
+            return activeCondition;
+
+        default:
+            return normalCondition;
+        }
     }
 
     t2Style& t2Div::getCSS()
@@ -85,12 +137,41 @@ namespace TattyUI
 
         case T2_HOVER:
             return hover;
+
+        default:
+            return normal;
         }
+    }
+
+    t2Style& t2Div::getSuitCSS()
+    {
+        t2Style* css = &getCSS();
+
+        // 是否满足条件约束
+        if(hasCondition())
+        {
+            bool bMatch = true;
+            // 获取当前状态下的状态表
+            for(auto v : getCondition(status))
+            {
+                if(v->div->getStatus() != v->status)
+                {
+                    bMatch = false;
+                    break;
+                }
+            }
+
+            if(bMatch)
+                // 重置渲染目标css为对应condition样式
+                css = &getConditionCSS();
+        }
+
+        return *css;
     }
 
     void t2Div::draw()
     {
-        t2Style& css = getCSS();
+        t2Style& css = getSuitCSS();
 
         if(css.display == T2_DISPLAY_NONE)
             return;
@@ -277,12 +358,80 @@ namespace TattyUI
 
     void t2Div::setStatus(int status)
     {
-        this->status = status;
+        if(status <= T2_ACTIVE && status >= T2_NORMAL)
+            this->status = (t2DivStatus)status;
     }
 
     int t2Div::getStatus()
     {
         return status;
+    }
+
+    vector<t2Div::t2DivCondition*>& t2Div::getCondition(t2DivStatus status)
+    {
+        switch(status)
+        {
+        case T2_NORMAL:
+            return normalConditionList;
+
+        case T2_HOVER:
+            return hoverConditionList;
+
+        case T2_ACTIVE:
+            return activeConditionList;
+
+        default:
+            t2PrintError("参数中status越界");
+            return normalConditionList;
+        }
+    }
+
+    void t2Div::addCondition(t2Div* div, t2DivStatus status)
+    {
+        if(!div)
+        {
+            t2PrintError("参数中div不能为空");
+            return;
+        }
+
+        // --!内部函数未做严格安全检查
+        getCondition(this->status).push_back(new t2DivCondition(div, status));
+
+        t2Div* root = this;
+        t3Queue<t2Div*> queue;
+        if(!root) return;
+
+        queue.push(root);
+        for(;;)
+        {
+            t2Div* temp;
+
+            if(queue.isEmpty()) temp = NULL;
+            else temp = queue.pop();
+            if(temp)
+            {
+                if(temp != root)
+                    temp->getCondition(this->status).push_back(new t2DivCondition(div, status));
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else
+                break;
+        }
+
+    }
+
+    void t2Div::deleteCondition()
+    {
+        // 浅删除
+        getCondition(this->status).clear();
+    }
+
+    bool t2Div::hasCondition()
+    {
+        return (getCondition(this->status).size() != 0);
     }
 
     void t2Div::onMousePressed(int x, int y, int px, int py, int button)
@@ -412,5 +561,4 @@ namespace TattyUI
 
         return false;
     }
-
 }

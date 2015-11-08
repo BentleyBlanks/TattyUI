@@ -12,14 +12,17 @@ namespace TattyUI
 {
     using namespace std;
 
-    // t2CSSNodeSpecifierList* + t2CSSDeclarationList*
-    class t2CSSSDList
+    // t2CSSSelector* + t2CSSNodeSpecifierList* + t2CSSDeclarationList*
+    class t2CSSSSDList
     {
     public:
-        t2CSSSDList() :specifierList(NULL), declarationList(NULL){}
-        t2CSSSDList(t2CSSNodeSpecifierList* sl, t2CSSDeclarationList* dl) :specifierList(sl), declarationList(dl) {}
+        t2CSSSSDList() :selector(NULL), specifierList(NULL), declarationList(NULL){}
+        t2CSSSSDList(t2CSSSelector* selector, t2CSSNodeSpecifierList* sl, t2CSSDeclarationList* dl) :selector(selector), specifierList(sl), declarationList(dl) {}
 
+        // selector后有结点时 specifierList指向使用空格隔开的选择器列表中的最后一个选择器
+        t2CSSSelector* selector;
         t2CSSNodeSpecifierList* specifierList;
+
         t2CSSDeclarationList* declarationList;
     };
 
@@ -34,8 +37,11 @@ namespace TattyUI
 
         void parse();
 
-        // 查找非conditionStatus下的div样式控制
-        vector<t2CSSSDList*> findByClass(const string& className);
+        // 查找所有css控制的指定className的AST枝干
+        vector<t2CSSSSDList*> findByClass(const string& className);
+        
+        // 检查给定specifierList语法错误 并完成firstPart:secondPart部分初始化工作
+        bool checkSpecifierList(t2CSSNodeSpecifierList* specifierList, t2CSSNodeSpecifier** firstPart, t2CSSNodeSpecifier** secondPart);
 
         // 检查给定声明是否有语法错误
         bool checkDeclaration(t2CSSDeclaration* decl);

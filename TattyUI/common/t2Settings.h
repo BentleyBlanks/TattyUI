@@ -369,6 +369,11 @@ int strcasecmp(const char *a, const char *b);
 #endif
 
 // 公共API
+// 是否使用自定义窗口(其标题栏高度)
+void t2SetWindowTitleBarHeight(int height = 48);
+
+int t2GetWindowTitleBarHeight();
+
 void t2SetWindowWidth(int width);
 
 void t2SetWindowHeight(int height);

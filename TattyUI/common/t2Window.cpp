@@ -328,7 +328,7 @@ namespace TattyUI
         return &temp;
     }
 
-    t2Window::t2Window() :titleBarHeight(48), bDoubleClick(false), bDrag(false), windowRadius(7), bPressed(false)//, bReleased(false)
+    t2Window::t2Window() :titleBarHeight(0), bDoubleClick(false), bDrag(false), windowRadius(7), bPressed(false)//, bReleased(false)
     {
         window = new t2WindowBase();
 
@@ -348,6 +348,9 @@ namespace TattyUI
         window->setTitle(title);
         window->initCallBack();
         window->setVeticalSync(false);
+
+        // 此处初始化防止与基本窗口冲突
+        titleBarHeight = 48;
 
         renderer = t2Renderer::getInstance();
         titileFontFamily = fontFamily;

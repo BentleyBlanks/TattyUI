@@ -12,6 +12,7 @@ namespace TattyUI
         T2_NORMAL,
         T2_HOVER,
         T2_ACTIVE
+        //T2_CONDITION
     };
 
     class t2Div
@@ -37,6 +38,11 @@ namespace TattyUI
         // 获取当前状态的样式表
         t2Style& getCSS();
 
+        // 在condition与正常状态css下选择返回
+        t2Style& getSuitCSS();
+
+        t2Style& getConditionCSS();
+
         // 给定位置是否在div内部
         bool inDiv(int x, int y);
 
@@ -52,8 +58,8 @@ namespace TattyUI
 
         t2Style normal, active, hover;
 
-        // 依附于三种基本状态存在的条件状态
-        //t2Style condition;
+        // 条件状态样式
+        t2Style normalCondition, activeCondition, hoverCondition;
 
         // 父节点 / 兄弟节点 / 第一个孩子节点
         t2Div* parent, *next, *child;
@@ -80,6 +86,25 @@ namespace TattyUI
 
          std::function<void(int key)> keyReleased;
     private:
+        // 对给定css进行内部初始化
+        void initCSS(t2Style& css);
+
+        // 指向
+        class t2DivCondition;
+        vector<t2DivCondition*> normalConditionList, hoverConditionList, activeConditionList;
+
+        // 当且仅当满足表达式时才启动对应CSS样式渲染
+        void addCondition(t2Div* div, t2DivStatus status);
+
+        // 清空指定状态下的条件表
+        void deleteCondition();
+
+        // 查询指定状态下是否已有状态表存在
+        bool hasCondition();
+
+        // 内部函数直接返回引用 采用pimple因此外界无法正常获取使用
+        vector<t2DivCondition*>& getCondition(t2DivStatus status);
+
         // 根据兄弟结点 父节点位置更新自身实际渲染位置
         //void updateContent();
 
@@ -101,12 +126,11 @@ namespace TattyUI
 
         friend class t2LayoutController;
 
-        int status;
+        t2DivStatus status;
 
         // 是否有被赋值
         bool bNormal, bActive, bHover;
-        //bool bCondition;
-
+        
         // 布局方式
         int layout;
     };

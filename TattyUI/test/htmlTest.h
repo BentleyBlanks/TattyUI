@@ -162,6 +162,15 @@ int main()
     w->setTitleBarHeight(48);
     w->init("TattyUI", "../resources/font/Roboto-Regular.ttf", 1280, 800, 200, 200);
 
+    //t2WindowBase *window = new t2WindowBase();
+    //window->setResizable(true);
+    //window->setMode(T2_WINDOW_WINDOWED);
+    //window->setup(1280, 720);
+    //window->setPosition(50, 50);
+    //window->setTitle("TattyUI");
+    //window->initCallBack();
+    //window->setVeticalSync(false);
+
     // controller
     // renderer layout html(css) div
     t2Renderer *renderer = t2Renderer::getInstance();
@@ -178,15 +187,15 @@ int main()
 
     divController->init();
     
-    divController->find("div1")->mouseMovedIn = [](int x, int y, int px, int py)
-    {
-        t2Log("Root MovedIn\n");
-    };
+    //divController->find("div1")->mouseMovedIn = [](int x, int y, int px, int py)
+    //{
+    //    t2Log("Root MovedIn\n");
+    //};
 
-    (*divController)["div1"]->mouseMovedOut = [](int x, int y, int px, int py)
-    {
-        t2Log("Root MovedOut\n");
-    };
+    //(*divController)["div1"]->mouseMovedOut = [](int x, int y, int px, int py)
+    //{
+    //    t2Log("Root MovedOut\n");
+    //};
 
     while(1)
     {

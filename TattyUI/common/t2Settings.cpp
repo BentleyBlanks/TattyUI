@@ -6,9 +6,11 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <strstream>
+// titleBar支持
+#include <TattyUI/common/t2Window.h>
 
 // --！重大革新:小改动:BUG修复
-t2Version tattyVersion = { 0, 0, 8 };
+t2Version tattyVersion = { 0, 0, 9 };
 
 // 注意:只能在Debug模式下才能使用
 void t2Log(const char* string, ...)
@@ -96,4 +98,14 @@ void t2SetGLVersionMajor(int major)
 void t2SetGLVersionMinor(int minor) 
 {
     glVersionMinor = minor;
+}
+
+void t2SetWindowTitleBarHeight(int height)
+{
+    TattyUI::t2Window::getInstance()->setTitleBarHeight(height);
+}
+
+int t2GetWindowTitleBarHeight()
+{
+    return TattyUI::t2Window::getInstance()->getTitleBarHeight();
 }

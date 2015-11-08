@@ -158,6 +158,10 @@ namespace TattyUI
                         div->normal.text = content->v.text.text;
                         div->hover.text = content->v.text.text;
                         div->active.text = content->v.text.text;
+
+                        div->normalCondition.text = content->v.text.text;
+                        div->hoverCondition.text = content->v.text.text;
+                        div->activeCondition.text = content->v.text.text;
                     }
                     
                     // find id
