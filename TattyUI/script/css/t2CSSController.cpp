@@ -71,9 +71,9 @@ namespace TattyUI
             {
                 // 预先完成Normal状态初始化 后接剩余状态初始化
                 normalStyle(div, true);
-                conditionStyle(div, true);
-
                 normalStyle(div, false);
+
+                conditionStyle(div, true);
                 conditionStyle(div, false);
 
                 // 将所有兄弟结点入队列

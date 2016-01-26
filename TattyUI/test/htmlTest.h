@@ -189,10 +189,37 @@ int main()
 
     divController->init();
     
-    //divController->find("div1")->mouseMovedIn = [](int x, int y, int px, int py)
-    //{
-    //    t2Log("Root MovedIn\n");
-    //};
+    t2Div* menu = divController->findByID("menu_button_1");
+    if(menu)
+    {
+        menu->mouseReleased = [divController](int x, int y, int px, int py, int button)
+        {
+            divController->findByID("1")->getCSS().display = !divController->findByID("1")->getCSS().display;
+            divController->findByID("2")->getCSS().display = !divController->findByID("2")->getCSS().display;
+            divController->findByID("3")->getCSS().display = !divController->findByID("3")->getCSS().display;
+            divController->findByID("4")->getCSS().display = !divController->findByID("4")->getCSS().display;
+            divController->findByID("5")->getCSS().display = !divController->findByID("5")->getCSS().display;
+            divController->findByID("6")->getCSS().display = !divController->findByID("6")->getCSS().display;
+            divController->findByID("7")->getCSS().display = !divController->findByID("7")->getCSS().display;
+
+            t2Log("Menu mouse released\n");
+        };
+    }
+    
+    t2Div* menu1 = divController->findByID("menu_button_2");
+    if(menu1)
+    {
+        menu1->mouseReleased = [divController](int x, int y, int px, int py, int button)
+        {
+            divController->findByID("8")->getCSS().display = !divController->findByID("8")->getCSS().display;
+            divController->findByID("9")->getCSS().display = !divController->findByID("9")->getCSS().display;
+            divController->findByID("10")->getCSS().display = !divController->findByID("10")->getCSS().display;
+            divController->findByID("11")->getCSS().display = !divController->findByID("11")->getCSS().display;
+            divController->findByID("12")->getCSS().display = !divController->findByID("12")->getCSS().display;
+
+            t2Log("Menu mouse released\n");
+        };
+    }
 
     //(*divController)["div1"]->mouseMovedOut = [](int x, int y, int px, int py)
     //{

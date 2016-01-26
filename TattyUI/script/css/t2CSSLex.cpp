@@ -1905,9 +1905,10 @@ static yyconst flex_int16_t yy_chk[5656] =
     /* int yylex(YYSTYPE * yylval_param,yyscan_t* scan_t); */
 /* 前缀可同时使用自定义前缀以及yy */
 /* Flex额外参数的具体类型 在yylex_init_extra时可使用到 */
+#define YY_NO_UNISTD_H 1
 
 
-#line 1911 "t2CSSLex.cpp"
+#line 1912 "t2CSSLex.cpp"
 
 #define INITIAL 0
 #define mediaquery 1
@@ -2145,14 +2146,14 @@ YY_DECL
 	register int yy_act;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-#line 74 "Flex-8-CSS2.l"
+#line 77 "Flex-8-CSS2.l"
 
 
 
 	class t2CSSAST* parser = yyextra; 
 
 
-#line 2156 "t2CSSLex.cpp"
+#line 2157 "t2CSSLex.cpp"
 
     yylval = yylval_param;
 
@@ -2213,16 +2214,12 @@ yy_match:
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 5570 );
+		while ( yy_current_state != 554 );
+		yy_cp = yyg->yy_last_accepting_cpos;
+		yy_current_state = yyg->yy_last_accepting_state;
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
-		if ( yy_act == 0 )
-			{ /* have to back up */
-			yy_cp = yyg->yy_last_accepting_cpos;
-			yy_current_state = yyg->yy_last_accepting_state;
-			yy_act = yy_accept[yy_current_state];
-			}
 
 		YY_DO_BEFORE_ACTION;
 
@@ -2240,439 +2237,439 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 80 "Flex-8-CSS2.l"
+#line 83 "Flex-8-CSS2.l"
 {/* ignore comments */ }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 82 "Flex-8-CSS2.l"
+#line 85 "Flex-8-CSS2.l"
 { t2Token = WHITESPACE; return t2Token; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 84 "Flex-8-CSS2.l"
+#line 87 "Flex-8-CSS2.l"
 { t2Token = SGML_CD; return t2Token; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 86 "Flex-8-CSS2.l"
+#line 89 "Flex-8-CSS2.l"
 { t2Token = SGML_CD; return t2Token; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 88 "Flex-8-CSS2.l"
+#line 91 "Flex-8-CSS2.l"
 { t2Token = INCLUDES; return t2Token; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 90 "Flex-8-CSS2.l"
+#line 93 "Flex-8-CSS2.l"
 { t2Token = DASHMATCH; return t2Token; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 92 "Flex-8-CSS2.l"
+#line 95 "Flex-8-CSS2.l"
 { t2Token = BEGINSWITH; return t2Token; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 94 "Flex-8-CSS2.l"
+#line 97 "Flex-8-CSS2.l"
 { t2Token = ENDSWITH; return t2Token; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 96 "Flex-8-CSS2.l"
+#line 99 "Flex-8-CSS2.l"
 { t2Token = CONTAINS; return t2Token; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 98 "Flex-8-CSS2.l"
+#line 101 "Flex-8-CSS2.l"
 { t2Token = MEDIA_NOT; return t2Token; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 100 "Flex-8-CSS2.l"
+#line 103 "Flex-8-CSS2.l"
 { t2Token = MEDIA_ONLY; return t2Token; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 102 "Flex-8-CSS2.l"
+#line 105 "Flex-8-CSS2.l"
 { t2Token = MEDIA_AND; return t2Token; }
 	YY_BREAK
 case 13:
 /* rule 13 can match eol */
 YY_RULE_SETUP
-#line 105 "Flex-8-CSS2.l"
+#line 108 "Flex-8-CSS2.l"
 { t2SaveTokenString; return STRING; }
 	YY_BREAK
 case 14:
 /* rule 14 can match eol */
 YY_RULE_SETUP
-#line 107 "Flex-8-CSS2.l"
+#line 110 "Flex-8-CSS2.l"
 { t2SaveTokenString; return IDENT; }
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
-#line 109 "Flex-8-CSS2.l"
+#line 112 "Flex-8-CSS2.l"
 { t2SaveTokenString; return NTH; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 112 "Flex-8-CSS2.l"
+#line 115 "Flex-8-CSS2.l"
 { t2SaveTokenString; return HEX; }
 	YY_BREAK
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 114 "Flex-8-CSS2.l"
+#line 117 "Flex-8-CSS2.l"
 { t2SaveTokenString; return IDSEL; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 116 "Flex-8-CSS2.l"
+#line 119 "Flex-8-CSS2.l"
 {BEGIN(mediaquery);  t2Token = IMPORT_SYM; return t2Token; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 118 "Flex-8-CSS2.l"
+#line 121 "Flex-8-CSS2.l"
 { t2Token = PAGE_SYM; return t2Token; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 120 "Flex-8-CSS2.l"
+#line 123 "Flex-8-CSS2.l"
 { t2Token = TOPLEFTCORNER_SYM; return t2Token; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 122 "Flex-8-CSS2.l"
+#line 125 "Flex-8-CSS2.l"
 { t2Token = TOPLEFT_SYM; return t2Token; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 124 "Flex-8-CSS2.l"
+#line 127 "Flex-8-CSS2.l"
 { t2Token = TOPCENTER_SYM; return t2Token; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 126 "Flex-8-CSS2.l"
+#line 129 "Flex-8-CSS2.l"
 { t2Token = TOPRIGHT_SYM; return t2Token; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 128 "Flex-8-CSS2.l"
+#line 131 "Flex-8-CSS2.l"
 { t2Token = TOPRIGHTCORNER_SYM; return t2Token; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 130 "Flex-8-CSS2.l"
+#line 133 "Flex-8-CSS2.l"
 { t2Token = BOTTOMLEFTCORNER_SYM; return t2Token; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 132 "Flex-8-CSS2.l"
+#line 135 "Flex-8-CSS2.l"
 { t2Token = BOTTOMLEFT_SYM; return t2Token; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 134 "Flex-8-CSS2.l"
+#line 137 "Flex-8-CSS2.l"
 { t2Token = BOTTOMCENTER_SYM; return t2Token; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 136 "Flex-8-CSS2.l"
+#line 139 "Flex-8-CSS2.l"
 { t2Token = BOTTOMRIGHT_SYM; return t2Token; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 138 "Flex-8-CSS2.l"
+#line 141 "Flex-8-CSS2.l"
 { t2Token = BOTTOMRIGHTCORNER_SYM; return t2Token; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 140 "Flex-8-CSS2.l"
+#line 143 "Flex-8-CSS2.l"
 { t2Token = LEFTTOP_SYM; return t2Token; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 142 "Flex-8-CSS2.l"
+#line 145 "Flex-8-CSS2.l"
 { t2Token = LEFTMIDDLE_SYM; return t2Token; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 144 "Flex-8-CSS2.l"
+#line 147 "Flex-8-CSS2.l"
 { t2Token = LEFTBOTTOM_SYM; return t2Token; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 146 "Flex-8-CSS2.l"
+#line 149 "Flex-8-CSS2.l"
 { t2Token = RIGHTTOP_SYM; return t2Token; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 148 "Flex-8-CSS2.l"
+#line 151 "Flex-8-CSS2.l"
 { t2Token = RIGHTMIDDLE_SYM; return t2Token; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 150 "Flex-8-CSS2.l"
+#line 153 "Flex-8-CSS2.l"
 { t2Token = RIGHTBOTTOM_SYM; return t2Token; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 152 "Flex-8-CSS2.l"
+#line 155 "Flex-8-CSS2.l"
 {BEGIN(mediaquery);  t2Token = MEDIA_SYM; return t2Token; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 154 "Flex-8-CSS2.l"
+#line 157 "Flex-8-CSS2.l"
 { t2Token = FONT_FACE_SYM; return t2Token; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 156 "Flex-8-CSS2.l"
+#line 159 "Flex-8-CSS2.l"
 { t2Token = CHARSET_SYM; return t2Token; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 158 "Flex-8-CSS2.l"
+#line 161 "Flex-8-CSS2.l"
 { t2Token = NAMESPACE_SYM; return t2Token;  }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 160 "Flex-8-CSS2.l"
+#line 163 "Flex-8-CSS2.l"
 { t2Token = WEBKIT_RULE_SYM; return t2Token;  }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 162 "Flex-8-CSS2.l"
+#line 165 "Flex-8-CSS2.l"
 { t2Token = WEBKIT_DECLS_SYM; return t2Token;  }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 164 "Flex-8-CSS2.l"
+#line 167 "Flex-8-CSS2.l"
 { t2Token = WEBKIT_VALUE_SYM; return t2Token;  }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 166 "Flex-8-CSS2.l"
+#line 169 "Flex-8-CSS2.l"
 {BEGIN(mediaquery);  t2Token = WEBKIT_MEDIAQUERY_SYM; return t2Token;  }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 168 "Flex-8-CSS2.l"
+#line 171 "Flex-8-CSS2.l"
 { t2Token = WEBKIT_SELECTOR_SYM; return t2Token;  }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 170 "Flex-8-CSS2.l"
+#line 173 "Flex-8-CSS2.l"
 { t2Token = WEBKIT_KEYFRAMES_SYM; return t2Token;  }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 172 "Flex-8-CSS2.l"
+#line 175 "Flex-8-CSS2.l"
 { t2Token = WEBKIT_KEYFRAME_RULE_SYM; return t2Token;  }
 	YY_BREAK
 case 47:
 /* rule 47 can match eol */
 YY_RULE_SETUP
-#line 174 "Flex-8-CSS2.l"
+#line 177 "Flex-8-CSS2.l"
 { t2Token = ATKEYWORD; return t2Token;  }
 	YY_BREAK
 case 48:
 /* rule 48 can match eol */
 YY_RULE_SETUP
-#line 176 "Flex-8-CSS2.l"
+#line 179 "Flex-8-CSS2.l"
 { t2Token = IMPORTANT_SYM; return t2Token; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 178 "Flex-8-CSS2.l"
+#line 181 "Flex-8-CSS2.l"
 { t2Token = EMS; return t2Token; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 180 "Flex-8-CSS2.l"
+#line 183 "Flex-8-CSS2.l"
 { t2Token = REMS; return t2Token; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 182 "Flex-8-CSS2.l"
+#line 185 "Flex-8-CSS2.l"
 { t2Token = QEMS; return t2Token; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 184 "Flex-8-CSS2.l"
+#line 187 "Flex-8-CSS2.l"
 { t2Token = EXS; return t2Token; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 186 "Flex-8-CSS2.l"
+#line 189 "Flex-8-CSS2.l"
 { t2Token = PXS; return t2Token; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 188 "Flex-8-CSS2.l"
+#line 191 "Flex-8-CSS2.l"
 { t2Token = CMS; return t2Token; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 190 "Flex-8-CSS2.l"
+#line 193 "Flex-8-CSS2.l"
 { t2Token = MMS; return t2Token; }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 192 "Flex-8-CSS2.l"
+#line 195 "Flex-8-CSS2.l"
 { t2Token = INS; return t2Token; }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 194 "Flex-8-CSS2.l"
+#line 197 "Flex-8-CSS2.l"
 { t2Token = PTS; return t2Token; }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 196 "Flex-8-CSS2.l"
+#line 199 "Flex-8-CSS2.l"
 { t2Token = PCS; return t2Token; }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 198 "Flex-8-CSS2.l"
+#line 201 "Flex-8-CSS2.l"
 { t2Token = DEGS; return t2Token; }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 200 "Flex-8-CSS2.l"
+#line 203 "Flex-8-CSS2.l"
 { t2Token = RADS; return t2Token; }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 202 "Flex-8-CSS2.l"
+#line 205 "Flex-8-CSS2.l"
 { t2Token = GRADS; return t2Token; }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 204 "Flex-8-CSS2.l"
+#line 207 "Flex-8-CSS2.l"
 { t2Token = TURNS; return t2Token; }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 206 "Flex-8-CSS2.l"
+#line 209 "Flex-8-CSS2.l"
 { t2Token = MSECS; return t2Token; }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 208 "Flex-8-CSS2.l"
+#line 211 "Flex-8-CSS2.l"
 { t2Token = SECS; return t2Token; }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 210 "Flex-8-CSS2.l"
+#line 213 "Flex-8-CSS2.l"
 { t2Token = HERTZ; return t2Token; }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 212 "Flex-8-CSS2.l"
+#line 215 "Flex-8-CSS2.l"
 { t2Token = KHERTZ; return t2Token; }
 	YY_BREAK
 case 67:
 /* rule 67 can match eol */
 YY_RULE_SETUP
-#line 214 "Flex-8-CSS2.l"
+#line 217 "Flex-8-CSS2.l"
 { t2Token = DIMEN; return t2Token; }
 	YY_BREAK
 case 68:
 /* rule 68 can match eol */
 YY_RULE_SETUP
-#line 216 "Flex-8-CSS2.l"
+#line 219 "Flex-8-CSS2.l"
 { t2Token = INVALIDDIMEN; return t2Token; }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 218 "Flex-8-CSS2.l"
+#line 221 "Flex-8-CSS2.l"
 { t2Token = PERCENTAGE; return t2Token; }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 221 "Flex-8-CSS2.l"
+#line 224 "Flex-8-CSS2.l"
 { t2SaveTokenNumber; return INTEGER; }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 223 "Flex-8-CSS2.l"
+#line 226 "Flex-8-CSS2.l"
 { t2SaveTokenNumber; return FLOATTOKEN; }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 226 "Flex-8-CSS2.l"
+#line 229 "Flex-8-CSS2.l"
 { t2Token = ANYFUNCTION; return t2Token; }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 228 "Flex-8-CSS2.l"
+#line 231 "Flex-8-CSS2.l"
 { t2Token = NOTFUNCTION; return t2Token; }
 	YY_BREAK
 case 74:
 /* rule 74 can match eol */
 YY_RULE_SETUP
-#line 230 "Flex-8-CSS2.l"
+#line 233 "Flex-8-CSS2.l"
 { t2Token = URI; return t2Token; }
 	YY_BREAK
 case 75:
 /* rule 75 can match eol */
 YY_RULE_SETUP
-#line 232 "Flex-8-CSS2.l"
+#line 235 "Flex-8-CSS2.l"
 { t2Token = URI; return t2Token; }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 234 "Flex-8-CSS2.l"
+#line 237 "Flex-8-CSS2.l"
 { t2Token = CALCFUNCTION; return t2Token; }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 236 "Flex-8-CSS2.l"
+#line 239 "Flex-8-CSS2.l"
 { t2Token = MINFUNCTION; return t2Token; }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 238 "Flex-8-CSS2.l"
+#line 241 "Flex-8-CSS2.l"
 { t2Token = MAXFUNCTION; return t2Token; }
 	YY_BREAK
 case 79:
 /* rule 79 can match eol */
 YY_RULE_SETUP
-#line 240 "Flex-8-CSS2.l"
+#line 243 "Flex-8-CSS2.l"
 { t2Token = FUNCTION; return t2Token; }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 243 "Flex-8-CSS2.l"
+#line 246 "Flex-8-CSS2.l"
 { t2Token = UNICODERANGE; return t2Token; }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 245 "Flex-8-CSS2.l"
+#line 248 "Flex-8-CSS2.l"
 { t2Token = UNICODERANGE; return t2Token; }
 	YY_BREAK
 case 82:
-#line 249 "Flex-8-CSS2.l"
+#line 252 "Flex-8-CSS2.l"
 case 83:
 YY_RULE_SETUP
-#line 250 "Flex-8-CSS2.l"
+#line 253 "Flex-8-CSS2.l"
 { BEGIN(INITIAL);  t2Token = *yytext; return t2Token; }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 252 "Flex-8-CSS2.l"
+#line 255 "Flex-8-CSS2.l"
 { t2Token = *yytext; return t2Token; }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 254 "Flex-8-CSS2.l"
+#line 257 "Flex-8-CSS2.l"
 ECHO;
 	YY_BREAK
-#line 2676 "t2CSSLex.cpp"
+#line 2673 "t2CSSLex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(mediaquery):
 case YY_STATE_EOF(forkeyword):
@@ -2741,7 +2738,8 @@ case YY_STATE_EOF(forkeyword):
 
 			else
 				{
-				yy_cp = yyg->yy_c_buf_p;
+				yy_cp = yyg->yy_last_accepting_cpos;
+				yy_current_state = yyg->yy_last_accepting_state;
 				goto yy_find_action;
 				}
 			}
@@ -3233,10 +3231,6 @@ static void yy_load_buffer_state  (yyscan_t yyscanner)
 	yyfree((void *) b ,yyscanner );
 }
 
-#ifndef __cplusplus
-extern int isatty (int );
-#endif /* __cplusplus */
-    
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a yyrestart() or at EOF.
@@ -3261,7 +3255,7 @@ extern int isatty (int );
         b->yy_bs_column = 0;
     }
 
-        b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
+        b->yy_is_interactive = 0;
     
 	errno = oerrno;
 }
@@ -3841,6 +3835,6 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 254 "Flex-8-CSS2.l"
+#line 257 "Flex-8-CSS2.l"
 
 

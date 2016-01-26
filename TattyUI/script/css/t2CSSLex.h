@@ -234,6 +234,9 @@ void yyfree (void * ,yyscan_t yyscanner );
 
 #endif
 
+// 人为添加 Flex option命令不支持此行与.h中生成
+#define YY_NO_UNISTD_H 1
+
 #ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
  * down here because we want the user's section 1 to have been scanned first.
@@ -347,7 +350,7 @@ extern int yylex \
 #undef YY_DECL
 #endif
 
-#line 254 "Flex-8-CSS2.l"
+#line 257 "Flex-8-CSS2.l"
 
 
 #line 354 "t2CSSLex.h"

@@ -1,0 +1,81 @@
+.frame{
+	background-color: #ffffff;
+	height: 50;
+	width: 1280;
+	font-family: "../resources/font/arialbd.ttf";
+}
+
+.menu_button{
+	color: #ffffff;
+	background-color: #000000;
+	border-radius: 0;
+	font-size: 14;
+	/*box-shadow: 0, 0, 2, #000000;*/
+	opacity: 1.0;
+	width: 150;
+	height: 50;
+	margin: 0, 0, 0, 0;
+}
+.menu_button:hover{
+	background-color: #555555;
+}
+
+.menu_button:active{
+	background-color: #000000;
+}
+
+.menu_bar{
+	background-color: #000000;
+	width: 150;
+	height: 720;
+}
+/* Menu List */
+/*.menu:hover  .menu_list:hover{
+	background-color: #cacbcd;
+}
+
+.menu:hover .menu_list{
+	display: block;
+}
+
+.menu:hover .menu_list:active{
+	background-color: #babbbc;
+}
+
+.menu .menu_list{
+	color: #696969;
+	background-color: #e0e1e2;
+	border-radius: 3;
+	font-size: 17;
+	opacity: 1.0;
+	width: 80;
+	height: 40;
+	margin: 15, 0, 0, 20;
+	display: none;
+}*/
+
+.menu{
+	height: 100;
+	width: 1100;
+	font-size: 17;
+}
+
+.menu_list{
+	display: none;
+	color: #FFFFFF;
+	background-color: #000000;
+	border-radius: 0;
+	font-size: 14;
+	opacity: 1.0;
+	width: 150;
+	height: 50;
+	margin: 0, 0, 0, 0;
+}
+
+.menu_list:hover{
+	background-color: #cacbcd;
+}
+
+.menu_list:active{
+	background-color: #babbbc;
+}

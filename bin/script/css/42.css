@@ -20,6 +20,15 @@
 	margin-right: 1280;
 }
 
+.title_2{
+	font-size: 30;
+	width: 10;
+	height: 30;
+	margin-left: 50;
+	margin-right: 1280;
+}
+
+/* Button */
 .ui_button{
 	color: #696969;
 	background-color: #e0e1e2;
@@ -77,6 +86,7 @@
 	background-color: #343637;
 }
 
+/* Size */
 .mini_ui_button{
 	color: #696969;
 	background-color: #e0e1e2;
@@ -184,5 +194,75 @@
 .big_ui_button:active,
 .huge_ui_button:active,
 .massive_ui_button:active{
+	background-color: #babbbc;
+}
+
+.menu_button{
+	color: #696969;
+	background-color: #e0e1e2;
+	border-radius: 3;
+	font-size: 17;
+	/*box-shadow: 0, 0, 2, #000000;*/
+	opacity: 1.0;
+	width: 80;
+	height: 40;
+	margin: 15, 0, 0, 20;
+}
+.menu_button:hover{
+	background-color: #cacbcd;
+}
+
+.menu_button:active{
+	background-color: #babbbc;
+}
+
+/* Menu List */
+/*.menu:hover  .menu_list:hover{
+	background-color: #cacbcd;
+}
+
+.menu:hover .menu_list{
+	display: block;
+}
+
+.menu:hover .menu_list:active{
+	background-color: #babbbc;
+}
+
+.menu .menu_list{
+	color: #696969;
+	background-color: #e0e1e2;
+	border-radius: 3;
+	font-size: 17;
+	opacity: 1.0;
+	width: 80;
+	height: 40;
+	margin: 15, 0, 0, 20;
+	display: none;
+}*/
+
+.menu{
+	height: 100;
+	width: 1100;
+	font-size: 17;
+}
+
+.menu_list{
+	display: none;
+	color: #696969;
+	background-color: #e0e1e2;
+	border-radius: 3;
+	font-size: 17;
+	opacity: 1.0;
+	width: 80;
+	height: 40;
+	margin: 15, 0, 0, 5;
+}
+
+.menu_list:hover{
+	background-color: #cacbcd;
+}
+
+.menu_list:active{
 	background-color: #babbbc;
 }

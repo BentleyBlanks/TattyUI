@@ -25,31 +25,82 @@ namespace TattyUI
     void t2LayoutController::update()
     {
         t2DivController* divController = t2DivController::getInstance();
+        t2Div* root = divController->getRoot();
 
-        for(auto it : divController->divTable)
+        // --!层序遍历
+        static t3Queue<t2Div*> queue;
+        if(!root) return;
+        queue.push(root);
+
+        for(;;)
         {
-            if(it.second->getSuitCSS().display != T2_DISPLAY_NONE)
-                updateDiv(it.second);
+            t2Div* temp;
+
+            if(queue.isEmpty()) temp = NULL;
+            else temp = queue.pop();
+
+            if(temp)
+            {
+                int restoreStatus = temp->getStatus();
+
+                // 三种状态全权更新
+                for(int i = T2_NORMAL; i <= T2_ACTIVE; i++)
+                {
+                    temp->setStatus(i);
+                    updateDiv(temp, false);
+
+                    //if(temp->hasCondition())
+                    updateDiv(temp, true);
+                }
+
+                temp->setStatus(restoreStatus);
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
+            }
+            else break;
         }
     }
 
     void t2LayoutController::updateAll()
     {
         t2DivController* divController = t2DivController::getInstance();
+        t2Div* root = divController->getRoot();
 
-        for(auto it : divController->divTable)
+        // --!层序遍历
+        t3Queue<t2Div*> queue;
+        if(!root) return;
+        queue.push(root);
+
+        for(;;)
         {
-            // 三种状态全权更新
-            for(int i = T2_NORMAL; i <= T2_ACTIVE; i++)
+            t2Div* temp;
+
+            if(queue.isEmpty()) temp = NULL;
+            else temp = queue.pop();
+
+            if(temp)
             {
-                it.second->setStatus(i);
-                updateDiv(it.second, false);
+                int restoreStatus = temp->getStatus();
 
-                if(it.second->hasCondition())
-                    updateDiv(it.second, true);
+                // 三种状态全权更新
+                for(int i = T2_NORMAL; i <= T2_ACTIVE; i++)
+                {
+                    temp->setStatus(i);
+                    updateDiv(temp, false);
+
+                    //if(temp->hasCondition())
+                        updateDiv(temp, true);
+                }
+
+                temp->setStatus(restoreStatus);
+
+                // 将所有兄弟结点入队列
+                for(t2Div* c = temp->child; c != NULL; c = c->next)
+                    queue.push(c);
             }
-
-            it.second->setStatus(T2_NORMAL);
+            else break;
         }
     }
 

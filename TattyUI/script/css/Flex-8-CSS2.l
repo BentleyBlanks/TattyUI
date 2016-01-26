@@ -26,6 +26,9 @@
 
 /* 前缀可同时使用自定义前缀以及yy */
 /* Flex额外参数的具体类型 在yylex_init_extra时可使用到 */
+%option nounistd
+%option never-interactive
+
 %option noyywrap
 %option case-insensitive
 %option header-file="t2CSSLex.h"

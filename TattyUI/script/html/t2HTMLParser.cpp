@@ -169,7 +169,7 @@ namespace TattyUI
                     string id;
                     GumboAttribute *idName = gumbo_get_attribute(&child->v.element.attributes, "id");
                     if(idName)
-                        div->className = idName->value;
+                        id = idName->value;
                     else
                         id = getDivGlobalID();
 
