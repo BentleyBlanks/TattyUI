@@ -101,6 +101,8 @@ color: #ffffff;
 
 5.margin负数时未考虑，会直接忽略这种情况而重置为0。
 
+6.目前请尽量使用稳定的```t2WindowBase```来创建窗口,t2Window尚有未解决的布局BUG。
+
 #版本说明
 TattyUI ver 0.0.7 中感谢[ccss](https://github.com/jdeng/ccss)给我提供了非常好的使用正则表达式解析CSS的案例。
 

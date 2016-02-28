@@ -1,23 +1,23 @@
 ﻿// 基本矢量图形渲染测试
-//#include <TattyUI/test/graphicsTest.h>
+//#include <TattyUI/Test/graphics.h>
 
 // div样式控制渲染测试
-//#include <TattyUI/test/divTest.h>
+//#include <TattyUI/Test/div.h>
 
 // CSS库基本解析测试
-//#include <TattyUI/test/libCCSSTest.h>
+//#include <TattyUI/Test/libCCSS.h>
 
 // div层级测试
-//#include <TattyUI/test/cascadingDiv.h>
+//#include <TattyUI/Test/cascadingDiv.h>
 
 // 正则表达式测试
-//#include <TattyUI/test/cssTest.h>
+//#include <TattyUI/Test/css.h>
 
 // TattyUI窗口测试
-//#include <TattyUI/test/windowTest.h>
+//#include <TattyUI/Test/window.h>
 
 // HTML解析测试
-#include <TattyUI/test/htmlTest.h>
+#include <TattyUI/Test/html.h>
 
 // AST解析测试
-//#include <TattyUI/test/astTest.h>
+//#include <TattyUI/Test/ast.h>

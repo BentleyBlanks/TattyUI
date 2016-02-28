@@ -189,6 +189,7 @@ int main()
     root.child = &div1;
 
     t2Renderer *renderer = t2Renderer::getInstance();
+    t2LayoutController* layoutController = t2LayoutController::getInstance();
     //renderer->loadFont("mono", "../resources/font/Roboto-Regular.ttf");
     renderer->setFont("mono");
 
@@ -208,6 +209,8 @@ int main()
 
     divController->init();
 
+    layoutController->updateAll();
+
     float i = 0;
 
     while(1)
@@ -216,6 +219,8 @@ int main()
 
         renderer->begin();
         
+        layoutController->update();
+
         divController->draw();
 
         renderer->end();

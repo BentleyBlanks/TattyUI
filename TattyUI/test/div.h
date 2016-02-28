@@ -15,7 +15,9 @@ int main(int argc, char* argv[])
     window->initCallBack();
     window->setVeticalSync(false);
 
-    t2Renderer *renderer = t2Renderer::getInstance();
+    t2Renderer *renderer = t2Renderer::getInstance(); 
+    t2LayoutController* layoutController = t2LayoutController::getInstance();
+
     renderer->loadFont("mono", "../resources/font/mono.ttf");
     renderer->setFont("mono");
 
@@ -27,7 +29,7 @@ int main(int argc, char* argv[])
     div.normal.y = 100;
 
     div.normal.backgroundColor.set(250, 250, 250);
-    div.normal.boxShadowColor.set(0, 0, 0, 100);
+    div.normal.boxShadowInColor.set(0, 0, 0, 100);
     div.normal.boxShadowBlur = 10;
     div.normal.vBoxShadow = 4;
     div.normal.borderRadius = 5;
@@ -53,7 +55,7 @@ int main(int argc, char* argv[])
     button.normal.y = 470;
 
     button.normal.backgroundColor.set(28, 131, 193);
-    button.normal.boxShadowColor.set(0, 0, 0, 100);
+    button.normal.boxShadowInColor.set(0, 0, 0, 100);
     button.normal.boxShadowBlur = 4;
     button.normal.vBoxShadow = 2;
     button.normal.borderRadius = 5;
@@ -77,7 +79,7 @@ int main(int argc, char* argv[])
     button1.normal.y = 470;
 
     button1.normal.backgroundColor.set(217, 92, 92);
-    button1.normal.boxShadowColor.set(0, 0, 0, 100);
+    button1.normal.boxShadowInColor.set(0, 0, 0, 100);
     button1.normal.boxShadowBlur = 4;
     button1.normal.vBoxShadow = 2;
     button1.normal.borderRadius = 5;
@@ -101,7 +103,7 @@ int main(int argc, char* argv[])
     button2.normal.y = 470;
 
     button2.normal.backgroundColor.set(0, 181, 173);
-    button2.normal.boxShadowColor.set(0, 0, 0, 100);
+    button2.normal.boxShadowInColor.set(0, 0, 0, 100);
     button2.normal.boxShadowBlur = 4;
     button2.normal.vBoxShadow = 2;
     button2.normal.borderRadius = 5;
@@ -120,11 +122,16 @@ int main(int argc, char* argv[])
 
     button2.init();
 
+
     t2DivController *divController = t2DivController::getInstance();
     divController->addDiv("Who's Your Daddy", &div);
     divController->addDiv("I'm", &button);
     divController->addDiv("Your", &button1);
     divController->addDiv("Father", &button2);
+    divController->setRoot("Who's Your Daddy");
+
+    divController->init();
+    layoutController->updateAll();
 
     div.mouseMovedIn = [&div](int x, int y, int px, int py)
     {
@@ -166,6 +173,8 @@ int main(int argc, char* argv[])
         renderer->clear(238, 238, 238);
 
         renderer->begin();
+
+        layoutController->update();
 
         divController->draw();
 

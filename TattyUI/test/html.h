@@ -181,7 +181,7 @@ int main()
     t2DivController* divController = t2DivController::getInstance();
 
     vector<string> htmlPaths;
-    htmlPaths.push_back("../bin/script/html/index.html");
+    htmlPaths.push_back("../bin/script/html/index-1.html");
     htmlController->loadHTML(htmlPaths);
     htmlController->parse();
 
@@ -220,11 +220,6 @@ int main()
             t2Log("Menu mouse released\n");
         };
     }
-
-    //(*divController)["div1"]->mouseMovedOut = [](int x, int y, int px, int py)
-    //{
-    //    t2Log("Root MovedOut\n");
-    //};
 
     while(1)
     {
