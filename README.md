@@ -11,7 +11,7 @@ TattyUI第一个较为成熟的production级的产品将会是为 [WIP2D](https:
 
 底层[CSS解析器](https://github.com/BentleyBlanks/t2CSSPareser)为使用Flex+Bison，借鉴[Webkit](https://www.webkit.org/)与[W3C](http://www.w3.org/)中CSS2.0实现，详见[t2CSSParser](https://github.com/BentleyBlanks/t2CSSPareser)介绍。
 
-#依赖项说明
+# 依赖项说明
 1.[GLFW](http://www.glfw.org/) ver 3.11
 
 2.[GLEW](http://glew.sourceforge.net/) ver 1.13.0
@@ -25,7 +25,7 @@ TattyUI第一个较为成熟的production级的产品将会是为 [WIP2D](https:
 > 依赖项已全部附带至Git，也可以根据需要自行更换
 > 目前依赖项静态库为直接给出，可以根据平台需要以及Debug/Release模式的不同自行更换
 
-#构建说明
+# 构建说明
 1.TattyUI采用CMake做跨平台搭建工作,支持Windows,OSX(OSX下的静态库配置仍需手动完成)等
 
 2.假设您构建在新文件夹build中，那么仅需在IDE中设置包含```../TattyUI```即可
@@ -34,7 +34,7 @@ TattyUI第一个较为成熟的production级的产品将会是为 [WIP2D](https:
 
 4.给出的文件夹```bin/graph```中包含了[Graphviz](www.graphviz.org/)生成的脚本与渲染出的可视AST，也可根据需要自行更换生成。
 
-#使用说明
+# 使用说明
 1.CSS目前支持的属性已在```t2Style.cpp```声明，可自行查阅。
 
 2.C++通过和t2DivController交互即可获取想要的```<div>```列表，所有C++代码都会直接或者间接的与全局表```divTable```进行交互。
@@ -75,7 +75,7 @@ t2Div *div2 = divController["div2"];
 
 4.CSS解析部分支持大部分CSS2.0语法，部分未支持的语法规则已在[t2CSSParser](https://github.com/BentleyBlanks/t2CSSPareser)简介中给出
 
-#已知BUG
+# 已知BUG
 1.html中不给出```class```标签直接崩溃的错误
 
 2.新解析器不支持类似```function```写法的错误，如下
@@ -103,14 +103,15 @@ color: #ffffff;
 
 6.目前请尽量使用稳定的```t2WindowBase```来创建窗口,t2Window尚有未解决的布局BUG。
 
-#版本说明
+# 版本说明
+```
 TattyUI ver 0.0.7 中感谢[ccss](https://github.com/jdeng/ccss)给我提供了非常好的使用正则表达式解析CSS的案例。
 
 TattyUI ver 0.0.3 之前采用XML+Json+Lua的脚本配合
 
 TattyUI ver 0.0.4 之后直接采用HTML+CSS+Lua的脚本
-
-##关于作者
+```
+## 关于作者
 ```cpp
 int 官某某 = "Bingo";
 
